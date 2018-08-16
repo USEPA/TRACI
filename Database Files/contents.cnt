@@ -1,0 +1,78 @@
+:Base traci2.hlp
+:Title TRACI Help
+1 Overview
+2 Purpose of TRACI=IDH_Traci>Help
+2 User's Guide=IDH_User's Manual>Help
+2 Installing TRACI=IDH_Installing TRACI>Help
+2 Un-installation=IDH_Un-installation>Help
+2 Screen Appearance=IDH_Screen Appearance>Help
+1 Accessing Help
+2 Online Help Feature=IDH_Obtaining Help>Help
+2 Printing Help Topics=IDH_Printing Help>Help
+1 Life Cycle Assessment
+2 Definition of LCA=IDH_LCA>Help
+2 Life Cycle Inventory=IDH_LCI>Help
+2 Comparing Products=IDH_Comparing Products>help
+1 Introductory Screens
+2 Bypassing Introductory Screens=IDH_Bypassing Screens>Help
+1 Main Menu
+2 Main Menu Screen=IDH_Main Menu>Larger
+1 Enter/Edit Project Data
+2 Projects in TRACI
+3 Projects in TRACI=IDH_Projects Summary>Larger
+3 Search for a Project=IDH_Search>Help
+3 Selecting Related Projects=IDH_Related Projects>Help
+2 Add a Project
+3 Add a New Project=IDH_Add Project>Larger
+3 Project Description=IDH_Project Description>Help
+2 View Existing Project
+3 View Details of an Existing Project=IDH_Project Details>Larger
+1 Entering LCI Data
+2 Add a Product
+3 Conducting an LCI=IDH_Traci's LCI>Help
+3 Entering LCI Data=IDH_Product Details>Larger
+2 Life Cycle Stages
+3 Life Cycle of a Product=IDH_Product Stages>Help
+3 Adding/Editing a Life Cycle Stage=IDH_Adding/Editing a LC Stage>larger
+2 Adding/Editing a Process
+3 Adding a Process=IDH_Adding a Process>larger
+3 Editing a Process=IDH_Editing a Process>larger
+2 Regional Data
+3 Geographic Location=IDH_location>larger
+2 Data Quality
+3 Process Details=IDH_Details>Larger
+3 Data Quality=IDH_Data Quality>Help
+3 Process Boundaries=IDH_process boundaries>larger
+3 Add Data Quality=IDH_add data quality>larger
+2 Adding/Editing Inventory Data
+3 Adding/Editing Inventory Data=IDH_Adding/Editing Inventory Data>larger
+3 Viewing Inventory Data=IDH_Viewing Resource/Release>larger
+3 Editing a Resource/Release=IDH_Editing a Resource/Release>larger
+3 Adding a Resource/Release=IDH_Adding a Resource/Release>larger
+3 Adding New Chemical Releases=IDH_Adding New Chemical Releases>larger
+3 Entering Land Use Data=IDH_Entering Land Use Data>larger
+3 Entering Fossil Fuel Use Data=IDH_Entering Fossil Fuel Depletion Data>larger
+3 Entering Water Use Data=IDH_Entering Water Intake Data>larger
+3 Impact Factors=IDH_Impact Factors
+1 Transfer Data
+2 Exporting Data=IDH_Import/Export>Help
+2 How to Export=IDH_Exporting>Help
+1 Do Calculations
+2 Performing Calculations
+3 Performing Calculations=IDH_Performing Calculations>Larger
+2 View Results
+3 View Results=IDH_view results>larger
+2 Classification/Characterization
+3 Classification/Characterization=IDH_classification and characterization>class
+2 Impact Categories
+3 Global Warming=IDH_global warming impact>splash
+3 Acidification=IDH_acidification impact>help
+3 Ozone Depletion=IDH_ozone impact>intro
+3 Photochemical Smog=IDH_smog impact>help
+3 Human Health Cancer and Non-cancer=IDH_human health impact>intro
+3 Eutrophication=IDH_eutrophication impact>help
+3 Habitat (T and E Species)=IDH_land use>splash
+3 Fossil Fuel Use=IDH_fossil fuel depletion>splash
+3 Water Use=IDH_water intake>help
+3 Human Health Criteria=IDH_human health criteria>help
+3 Ecotoxicity=IDH_eco model>help

@@ -1,0 +1,156 @@
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\audio/basic]
+"Extension"=".au"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\audio/wav]
+"Extension"=".wav"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\audio/x-wav]
+"Extension"=".wav"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\audio/aiff]
+"Extension"=".aiff"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\audio/x-aiff]
+"Extension"=".aiff"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\image/gif]
+"Extension"=".gif"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\image/jpeg]
+"Extension"=".jpeg"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\image/xbm]
+"Extension"=".xbm"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\image/x-xbitmap]
+"Extension"=".xbm"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\video/avi]
+"Extension"=".avi"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\video/x-msvideo]
+"Extension"=".avi"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\video/x-sgi-movie]
+"Extension"=".movie"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\video/quicktime]
+"Extension"=".qt"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\video/mpeg]
+"Extension"=".mpeg"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\image/tiff]
+"Extension"=".tiff"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/x-tar]
+"Extension"=".tar"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/x-compressed]
+"Extension"=".tgz"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/x-troff-man]
+"Extension"=".man"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/x-latex]
+"Extension"=".latex"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/postscript]
+"Extension"=".ps"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/x-stuffit]
+"Extension"=".sit"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/mac-binhex40]
+"Extension"=".hqx"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/fractals]
+"Extension"=".fif"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/x-zip-compressed]
+"Extension"=".zip"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/x-gzip]
+"Extension"=".gz"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\application/x-compress]
+"Extension"=".z"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\audio/x-pn-realaudio]
+"Extension"=".ram"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\text/html]
+"Extension"=".html"
+
+[HKEY_CLASSES_ROOT\MIME\Database\Content Type\text/plain]
+"Extension"=".txt"
+
+[HKEY_CLASSES_ROOT\CLSID\{79eac9f1-baf9-11ce-8c82-00aa004ba90b}]
+@="UrlMoniker ProxyStub Factory"
+
+[HKEY_CLASSES_ROOT\CLSID\{79eac9f1-baf9-11ce-8c82-00aa004ba90b}\InprocServer32]
+@="<system dir>\\urlmon.dll"
+"ThreadingModel"="Apartment"
+
+[HKEY_CLASSES_ROOT\CLSID\{79eac9e0-baf9-11ce-8c82-00aa004ba90b}]
+@= "URL Moniker"
+[HKEY_CLASSES_ROOT\CLSID\{79eac9e0-baf9-11ce-8c82-00aa004ba90b}\InprocServer32]
+@= "urlmon.dll"
+"ThreadingModel"="Apartment"
+
+[HKEY_CLASSES_ROOT\CLSID\{79eac9f2-baf9-11ce-8c82-00aa004ba90b}]
+@= "Async BindCtx"
+[HKEY_CLASSES_ROOT\CLSID\{79eac9f2-baf9-11ce-8c82-00aa004ba90b}\InprocServer32]
+@= "urlmon.dll"
+"ThreadingModel"="Apartment"
+
+[HKEY_CLASSES_ROOT\Interface\{fc4801a1-2ba9-11cf-a229-00aa003d7352}]
+@= "IBindHost"
+[HKEY_CLASSES_ROOT\Interface\{fc4801a1-2ba9-11cf-a229-00aa003d7352}\ProxyStubClsid32]
+@= "{79eac9f1-baf9-11ce-8c82-00aa004ba90b}"
+
+[HKEY_CLASSES_ROOT\Interface\{79eac9c0-baf9-11ce-8c82-00aa004ba90b}]
+@= "IBinding"
+[HKEY_CLASSES_ROOT\Interface\{79eac9c0-baf9-11ce-8c82-00aa004ba90b}\ProxyStubClsid32]
+@= "{79eac9f1-baf9-11ce-8c82-00aa004ba90b}"
+
+[HKEY_CLASSES_ROOT\Interface\{79eac9c1-baf9-11ce-8c82-00aa004ba90b}]
+@= "IBindStatusCallback"
+[HKEY_CLASSES_ROOT\Interface\{79eac9c1-baf9-11ce-8c82-00aa004ba90b}\ProxyStubClsid32]
+@= "{79eac9f1-baf9-11ce-8c82-00aa004ba90b}"
+
+[HKEY_CLASSES_ROOT\Interface\{79eac9c9-baf9-11ce-8c82-00aa004ba90b}]
+@= "IPersistMoniker"
+[HKEY_CLASSES_ROOT\Interface\{79eac9c9-baf9-11ce-8c82-00aa004ba90b}\ProxyStubClsid32]
+@= "{79eac9f1-baf9-11ce-8c82-00aa004ba90b}"
+
+[HKEY_CLASSES_ROOT\Interface\{79eac9cb-baf9-11ce-8c82-00aa004ba90b}]
+@= "IBindStatusCallbackMsg"
+[HKEY_CLASSES_ROOT\Interface\{79eac9cb-baf9-11ce-8c82-00aa004ba90b}\ProxyStubClsid32]
+@= "{79eac9f1-baf9-11ce-8c82-00aa004ba90b}"
+
+[HKEY_CLASSES_ROOT\Interface\{79eac9ce-baf9-11ce-8c82-00aa004ba90b}]
+@= "IMediaHolder"
+[HKEY_CLASSES_ROOT\Interface\{79eac9ce-baf9-11ce-8c82-00aa004ba90b}\ProxyStubClsid32]
+@= "{79eac9f1-baf9-11ce-8c82-00aa004ba90b}"
+
+[HKEY_CLASSES_ROOT\Interface\{79eac9cf-baf9-11ce-8c82-00aa004ba90b}]
+@= "ITransactionData"
+[HKEY_CLASSES_ROOT\Interface\{79eac9cf-baf9-11ce-8c82-00aa004ba90b}\ProxyStubClsid32]
+@= "{79eac9f1-baf9-11ce-8c82-00aa004ba90b}"
+
+[HKEY_CLASSES_ROOT\Interface\{79eac9d2-baf9-11ce-8c82-00aa004ba90b}]
+@= "IHttpNegotiate"
+[HKEY_CLASSES_ROOT\Interface\{79eac9d2-baf9-11ce-8c82-00aa004ba90b}\ProxyStubClsid32]
+@= "{79eac9f1-baf9-11ce-8c82-00aa004ba90b}"
+
+[HKEY_CLASSES_ROOT\Interface\{79eac9d6-bafa-11ce-8c82-00aa004ba90b}]
+@= "IWinInetInfo"
+[HKEY_CLASSES_ROOT\Interface\{79eac9d6-bafa-11ce-8c82-00aa004ba90b}\ProxyStubClsid32]
+@= "{79eac9f1-baf9-11ce-8c82-00aa004ba90b}"
+
+[HKEY_CLASSES_ROOT\Interface\{79eac9d8-bafa-11ce-8c82-00aa004ba90b}]
+@= "IWinInetHttpInfo"
+[HKEY_CLASSES_ROOT\Interface\{79eac9d8-bafa-11ce-8c82-00aa004ba90b}\ProxyStubClsid32]
+@= "{79eac9f1-baf9-11ce-8c82-00aa004ba90b}"
