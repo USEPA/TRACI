@@ -1,3 +1,9 @@
+# settings.py
+# !/usr/bin/env python3
+# coding=utf-8
+# young.daniel@epa.gov
+
+
 """
 Django settings for traci project.
 
