@@ -12,7 +12,7 @@
 #---------------------------------------------------------------------------------------#
 
 atomicwrites==1.3.0             # Simple high-level API that wraps a very flexible class-based API.
-attrs==9.1.0                    # Class decorator to declaratively define the attributes on that class.
+# attrs==9.1.0                    # Class decorator to declaratively define the attributes on that class.
 autopep8==1.4.4                 # Automatically formats Python code to conform to the PEP 8 style guide.
 coverage==4.5.3                 # Measures code coverage, typically during test execution.
 Django==2.2                     # Python Modules.
