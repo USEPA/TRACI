@@ -1,11 +1,17 @@
-{% extends "layout.html" %}
+{% extends "main/base.html" %}
 
 {% block content %}
 
 <div class="jumbotron">
     <h1>TRACI</h1>
     <p class="lead">TRACI - the Tool for the Reduction and Assessment of Chemical and other environmental Impacts.</p>
-    <p><a href="https://github.com/USEPA/TRACI" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+    <div class="row">
+        <p class="col-md-4"><a href="https://github.com/USEPA/TRACI" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+        <div class="row col-md-4 float-right">
+            <p class="col-md-6"><a href="{% url 'login' %}" class="btn btn-primary btn-large">Log in</a></p>
+            {#<p class="col-md-6"><a href="{% url 'register' %}" class="btn btn-primary btn-large">Register</a></p>#}
+        </div>
+    </div>
 </div>
 
 <div class="row">

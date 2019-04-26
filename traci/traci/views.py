@@ -42,7 +42,7 @@ def about(request):
     assert isinstance(request, HttpRequest)
     return render(
         request,
-        'about.html',
+        'main/about.html',
         {
             'title':'About',
             'message':'Your application description page.',
