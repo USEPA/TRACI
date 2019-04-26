@@ -1,49 +1,248 @@
 ﻿<!DOCTYPE html>
-<html>
+<!-- saved from url=(0065)https://www.epa.gov/sites/all/libraries/template2/standalone.html -->
+<html class="not-oldie js" lang="en" dir="ltr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} - TRACI Application</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="true">
+
     {% load staticfiles %}
+    <link rel="shortcut icon" href="https://www.epa.gov/sites/all/themes/epa/favicon.ico" type="image/vnd.microsoft.icon">
+    <meta name="MobileOptimized" content="width">
+    <meta http-equiv="cleartype" content="on">
+    <meta http-equiv="ImageToolbar" content="false">
+    <meta name="viewport" content="width=device-width">
+    <meta name="version" content="20161218">
+    <!--googleon: all-->
+    <meta name="DC.description" content="">
+    <meta name="DC.title" content="">
+    <title>TRACI | US EPA</title>
+    <!--googleoff: snippet-->
+    <meta name="keywords" content="">
+    <link rel="shortlink" href="https://www.epa.gov/sites/all/libraries/template2/standalone.html">
+    <link rel="canonical" href="https://www.epa.gov/sites/all/libraries/template2/standalone.html">
+    <meta name="DC.creator" content="">
+    <meta name="DC.language" content="en">
+    <meta name="DC.Subject.epachannel" content="">
+    <meta name="DC.type" content="">
+    <meta name="DC.date.created" content="">
+    <meta name="DC.date.modified" content="">
+    <!--googleoff: all-->
+
     <link rel="stylesheet" type="text/css" href="{% static 'content/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'content/site.css' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'EPA_files/s.css' %}" media="all">
     <script src="{% static 'scripts/modernizr-2.6.2.js' %}"></script>
-</head>
 
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="/" class="navbar-brand">Application name</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'about' %}">About</a></li>
-                    <li><a href="{% url 'contact' %}">Contact</a></li>
-                </ul>
-                {% include 'loginpartial.html' %}
-            </div>
+    <!--[if lt IE 9]><link type="text/css" rel="stylesheet" href="https://www.epa.gov/sites/all/themes/epa/css/ie.css" media="all" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml" title="EPA.gov All Press Releases" href="https://www.epa.gov/newsreleases/search/rss">
+    <link rel="alternate" type="application/atom+xml" title="EPA.gov Headquarters Press Releases" href="https://www.epa.gov/newsreleases/search/rss/field_press_office/headquarters">
+    <link rel="alternate" type="application/atom+xml" title="Greenversations, EPA&#39;s Blog" href="https://blog.epa.gov/blog/feed/">
+    <!--[if lt IE 9]><script src="https://www.epa.gov/sites/all/themes/epa/js/html5.js"></script><![endif]-->
+</head>
+<body class="node-type-(web-area|page|document|webform) (microsite|resource-directory) hasGoogleVoiceExt">
+    <!-- Google Tag Manager -->
+    <!--<noscript>&lt;iframe src="//www.googletagmanager.com/ns.html?id=GTM-L8ZB" height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-L8ZB');</script>-->
+    <!-- End Google Tag Manager -->
+    <div class="skip-links">
+        <a href="https://www.epa.gov/sites/all/libraries/template2/standalone.html#main-content"
+           class="skip-link element-invisible element-focusable">Jump to main content</a>
+    </div>
+
+    <header class="masthead clearfix" role="banner">
+        <img class="site-logo" src="../../static/EPA_files/logo.png" alt="">
+        <hgroup class="site-name-and-slogan">
+            <h1 class="site-name"><a href="https://www.epa.gov/" title="Go to the home page" rel="home"><span>US EPA</span></a></h1>
+            <div class="site-slogan">United States Environmental Protection Agency</div>
+        </hgroup>
+    </header>
+
+    <!-- Nav bar from EPA Template -->
+    <nav class="nav main-nav clearfix" role="navigation">
+        <div class="nav__inner">
+            <h2 class="element-invisible">Main menu</h2>
+            <ul class="menu" role="menu" id="navbar">
+                {% url 'about' as about_url %}
+                <li {% if self.path == about_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                    <a href="{{about_url}}" {% if self.path == about_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">What is TRACI?</a>
+                </li>
+
+                <!-- navbar when user is logged in -->
+                {% if user.is_authenticated %}
+                <li class="dropdown menu-item navbar-right" role="presentation">
+                    <a data-toggle="dropdown" href="javascript:void(0)" class="menu-link dropdown-toggle" role="menuitem">
+                        {% if user.first_name %}
+                        {{user.first_name}}
+                        {% else %}
+                        {{user.username}}
+                        {% endif %}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="menu-item">
+                            <a class="menu-link" href="{% url 'profile' %}">My profile</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li class="menu-item">
+                            <a class="menu-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Else user is not logged in -->
+                {% else %}
+                {% url 'about' as about_url %}
+                <li {% if self.path == about_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                    <a href="{{about_url}}" {% if self.path == about_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">About</a>
+                </li>
+                {% url 'register' as register_url %}
+                <li {% if self.path == register_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                    <a href="{{register_url}}" {% if self.path == register_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Register</a>
+                </li>
+                {% url 'login' as login_url %}
+                <li {% if self.path == login_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                    <a href="{{login_url}}" {% if self.path == login_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Log-In</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div id="mobile-nav" class="mobile-nav">
+        <div class="mobile-bar clearfix">
+            <a class="menu-button" href="#" onclick="toggleMenu()">Menu</a>
+        </div>
+        <div id="mobile-links" class="mobile-links element-hidden" style="height: 400px; margin-top: 0px;">
         </div>
     </div>
 
-    <div class="container body-content">
-{% block content %}{% endblock %}
-        <hr/>
-        <footer>
-            <p>&copy; {{ year }} - TRACI Application</p>
-        </footer>
-    </div>
+    <section id="main-content" class="main-content clearfix" role="main" tabindex="-1">
+        <div class="main-column clearfix">
+            <!-- main content block - override in partials/sub-templates -->
+            <div>
+                {% block content %}
+                <!-- If the user is logged in, we should redirect to the dashboard as the 'landing page' -->
+                {% if user.is_authenticated %}
+                <script>
+                    window.location = 'about/';
+                </script>
+                {% endif %}
+                <div class="splash">
+                    <div class="welcome">
+                        <div class="row">
+                            <div>
+                                <h1 class="home-header col-sm-8">TRACI - Tool for the Reduction and Assessment of Chemical and other environmental Impacts</h1>
+
+                                <div class="col-sm-4 vmargin10 vpadding10">
+                                    {% if not user.is_authenticated %}
+                                    <div>
+                                        <a href="/accounts/login/" style="width: 80%;">
+                                            <input id="login" name="login" type="submit" value="Log-in" />
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                    <div class="vpadding10">
+                                        <a href="/accounts/register/" style="width: 80%;">
+                                            <input id="register" name="register" type="submit" value="Register" />
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h2>Getting started</h2>
+                                        <p>
+                                            Software/Secondary Data and its intended application The EPA National Risk Tool for
+                                            Management Research Laboratory (NRMRL) has developed TRACI � the Reduction and
+                                            Assessment of Chemical and other environmental Impacts � to provide the impact
+                                            assessment framework, methodologies, and associated factors to allow assessment
+                                            of various impact categories. The impact categories selected for inclusion within
+                                            TRACI are considered a minimal set that may be expanded with future versions. The
+                                            associated work will support further development of the basic research underlying
+                                            the taxonomy of comprehensive impact assessment, the impact assessment methodologies
+                                            and associated factors, case studies, and normalization.
+                                        </p>
+                                        <p><a class="btn btn-default" href="https://www.epa.gov/land-research">Land, Oil Spill, and Waste Management Research &raquo;</a></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h2>United States Environmental Protection Agency</h2>
+                                        <p>Models, Tools, and Databases for Land and Waste Management Research.</p>
+                                        <p><a class="btn btn-default" href="https://www.epa.gov/land-research/models-tools-and-databases-land-and-waste-management-research">Learn more &raquo;</a></p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h2>US EPA, Office of Reseach and Development (ORD)</h2>
+                                        <p>About the Office of Reseach and Development.</p>
+                                        <p><a class="btn btn-default" href="https://19january2017snapshot.epa.gov/aboutepa/about-office-research-and-development-ord_.html">Learn more &raquo;</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock %}
+            </div>
+
+
+
+            <!--googleon: all-->
+            {#<h1 class="page-title">{PAGE TITLE}</h1>#}
+            <div class="panel-pane pane-node-content">
+                <div class="pane-content">
+                    <div class="node node-page clearfix view-mode-full">
+                        {#{PAGE CONTENT}#}
+                    </div>
+                </div>
+            </div>
+            <div id="block-epa-og-footer" class="block block-epa-og">
+                {#<p>{FOOTER CONTENT}</p>#}
+            </div>
+            <!--googleoff: all-->
+        </div>
+    </section>
+
+    <footer class="main-footer clearfix" role="contentinfo">
+        <div class="main-footer__inner">
+            <div class="region-footer">
+                <div class="block block-pane block-pane-epa-global-footer">
+                    <h4>Software Disclaimer</h4>
+                    <div>
+                        {{APP_DISCLAIMER}}
+                    </div>
+                    <div>
+                        Version {{APP_VERSION}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script src="{% static 'scripts/jquery-1.10.2.js' %}"></script>
     <script src="{% static 'scripts/bootstrap.js' %}"></script>
     <script src="{% static 'scripts/respond.js' %}"></script>
-{% block scripts %}{% endblock %}
+    {% block scripts %}{% endblock %}
 
 </body>
 </html>
