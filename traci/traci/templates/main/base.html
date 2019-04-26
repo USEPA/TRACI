@@ -29,9 +29,15 @@
     <meta name="DC.date.modified" content="">
     <!--googleoff: all-->
 
-    <link rel="stylesheet" type="text/css" href="{% static 'content/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'content/site.css' %}" />
-    <link type="text/css" rel="stylesheet" href="{% static 'EPA_files/s.css' %}" media="all">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/site.css' %}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/jquery-ui.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/jquery-ui.structure.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/jquery-ui.theme.css' %}">
+    <!-- main CSS -->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'EPA_files/s.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style.css' %}">
+
     <script src="{% static 'scripts/modernizr-2.6.2.js' %}"></script>
 
     <!--[if lt IE 9]><link type="text/css" rel="stylesheet" href="https://www.epa.gov/sites/all/themes/epa/css/ie.css" media="all" /><![endif]-->
@@ -63,9 +69,13 @@
         <div class="nav__inner">
             <h2 class="element-invisible">Main menu</h2>
             <ul class="menu" role="menu" id="navbar">
-                {% url 'about' as about_url %}
-                <li {% if self.path == about_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
-                    <a href="{{about_url}}" {% if self.path == about_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">What is TRACI?</a>
+                {% url 'home' as home_url %}
+                <li {% if self.path == home_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                    <a href="{{home_url}}" {% if self.path == home_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">What is TRACI?</a>
+                </li>
+                {% url 'contact' as contact_url %}
+                <li {% if self.path == contact_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                    <a href="{{contact_url}}" {% if self.path == contact_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Contact</a>
                 </li>
 
                 <!-- navbar when user is logged in -->
@@ -92,10 +102,6 @@
 
                 <!-- Else user is not logged in -->
                 {% else %}
-                {% url 'contact' as contact_url %}
-                <li {% if self.path == contact_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
-                    <a href="{{contact_url}}" {% if self.path == contact_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Contact</a>
-                </li>
                 {% url 'register' as register_url %}
                 <li {% if self.path == register_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
                     <a href="{{register_url}}" {% if self.path == register_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Register</a>
@@ -117,8 +123,11 @@
         </div>
     </div>
 
+
+
     <section id="main-content" class="main-content clearfix" role="main" tabindex="-1">
         <div class="main-column clearfix">
+
             <!-- main content block - override in partials/sub-templates -->
             <div>
                 {% block content %}
@@ -130,51 +139,53 @@
                 {% endif %}
                 <div class="splash">
                     <div class="welcome">
-                        <div class="row">
-                            <div>
-                                <h1 class="home-header col-sm-8">TRACI - Tool for the Reduction and Assessment of Chemical and other environmental Impacts</h1>
-
-                                <div class="col-sm-4 vmargin10 vpadding10">
-                                    {% if not user.is_authenticated %}
+                        <div class="row vmargin10">
+                            <div class="row vmargin10">
+                                <h2 class="home-header col-sm-8">
+                                    TRACI - Tool for the Reduction and Assessment of Chemical and other environmental Impacts
+                                </h2>
+                                
+                                {% if not user.is_authenticated %}
+                                <div class="col-sm-4">
                                     <div>
                                         <a href="/accounts/login/" style="width: 80%;">
                                             <input id="login" name="login" type="submit" value="Log-in" />
                                         </a>
                                     </div>
-                                    {% endif %}
-                                    <div class="vpadding10">
+                                    <div>
                                         <a href="/accounts/register/" style="width: 80%;">
                                             <input id="register" name="register" type="submit" value="Register" />
                                         </a>
                                     </div>
                                 </div>
+                                {% endif %}
+                            </div>
 
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <h2>Getting started</h2>
-                                        <p>
-                                            Software/Secondary Data and its intended application The EPA National Risk Tool for
-                                            Management Research Laboratory (NRMRL) has developed TRACI � the Reduction and
-                                            Assessment of Chemical and other environmental Impacts � to provide the impact
-                                            assessment framework, methodologies, and associated factors to allow assessment
-                                            of various impact categories. The impact categories selected for inclusion within
-                                            TRACI are considered a minimal set that may be expanded with future versions. The
-                                            associated work will support further development of the basic research underlying
-                                            the taxonomy of comprehensive impact assessment, the impact assessment methodologies
-                                            and associated factors, case studies, and normalization.
-                                        </p>
-                                        <p><a class="btn btn-default" href="https://www.epa.gov/land-research">Land, Oil Spill, and Waste Management Research &raquo;</a></p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <h2>United States Environmental Protection Agency</h2>
-                                        <p>Models, Tools, and Databases for Land and Waste Management Research.</p>
-                                        <p><a class="btn btn-default" href="https://www.epa.gov/land-research/models-tools-and-databases-land-and-waste-management-research">Learn more &raquo;</a></p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <h2>US EPA, Office of Reseach and Development (ORD)</h2>
-                                        <p>About the Office of Reseach and Development.</p>
-                                        <p><a class="btn btn-default" href="https://19january2017snapshot.epa.gov/aboutepa/about-office-research-and-development-ord_.html">Learn more &raquo;</a></p>
-                                    </div>
+                            <div class="row vmargin10">
+                                <div class="col-md-4">
+                                    <h3>Getting started</h3>
+                                    <p>
+                                        Software/Secondary Data and its intended application The EPA National Risk Tool for
+                                        Management Research Laboratory (NRMRL) has developed TRACI - the Reduction and
+                                        Assessment of Chemical and other environmental Impacts - to provide the impact
+                                        assessment framework, methodologies, and associated factors to allow assessment
+                                        of various impact categories. The impact categories selected for inclusion within
+                                        TRACI are considered a minimal set that may be expanded with future versions. The
+                                        associated work will support further development of the basic research underlying
+                                        the taxonomy of comprehensive impact assessment, the impact assessment methodologies
+                                        and associated factors, case studies, and normalization.
+                                    </p>
+                                    <p><a class="btn btn-default" href="https://www.epa.gov/land-research">Land, Oil Spill, and Waste Management Research &raquo;</a></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h3>United States Environmental Protection Agency</h3>
+                                    <p>Models, Tools, and Databases for Land and Waste Management Research.</p>
+                                    <p><a class="btn btn-default" href="https://www.epa.gov/land-research/models-tools-and-databases-land-and-waste-management-research">Learn more &raquo;</a></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h3>US EPA, Office of Reseach and Development (ORD)</h3>
+                                    <p>About the Office of Reseach and Development.</p>
+                                    <p><a class="btn btn-default" href="https://19january2017snapshot.epa.gov/aboutepa/about-office-research-and-development-ord_.html">Learn more &raquo;</a></p>
                                 </div>
                             </div>
                         </div>
