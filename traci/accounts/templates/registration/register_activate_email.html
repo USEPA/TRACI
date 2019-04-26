@@ -1,0 +1,15 @@
+
+You are receiving this email because a potential user requested an account at {{ site_name }}.
+
+Please see below the user's information:
+{{ email }}
+
+Please click the link below to activate the account:
+{{protocol}}://{{ domain }}{% url 'register_activate' uidb64=uid token=token %}
+
+If you received this email in error, please disregard.
+
+Thank you for using {{APP_NAME}}.
+
+{{APP_NAME}} is a engineering materials management tool developed by the United States
+Environmental Protection Agency.

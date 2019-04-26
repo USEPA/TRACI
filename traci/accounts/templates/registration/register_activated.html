@@ -1,0 +1,12 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<div class="white-box">
+    <div>
+        <h3>Your {{APP_NAME}} account is now active</h3>
+        <div>
+            Please click <a href="{% url 'login' %}">here</a> to login to {{APP_NAME}}.
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<div class="white-box">
+    <div>
+        <h3>The user account for '{{user.username}}' has been approved and the user has been notified.</h3>
+        <div>
+            Please click <a href="{% url 'dashboard' %}">here</a> to return to {{APP_NAME}}.
+        </div>
+    </div>
+</div>
+{% endblock %}

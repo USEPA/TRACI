@@ -2,7 +2,8 @@
 .mypy_cache/
 
 # Default taken from https://github.com/github/gitignore/blob/master/Python.gitignore
-*log*
+# *log* # Causing login.html and similar files to be ignored.
+*.log
 Backup/
 temp/
 gemm_doxygen_config.txt

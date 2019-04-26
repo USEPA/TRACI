@@ -1,0 +1,41 @@
+{% extends "main/base.html" %}
+{% load humanize %}
+{#{% load custom_filters %}#}
+{% block content %}
+<div class="white-box">
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard' %}?show=teams">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active">Team name</li>
+    </ol>
+
+    <h5 class="separator">Edit the team name for '{{team.name}}'</h5>
+
+    <div>
+        <form class="form-horizontal" method="post" action="{% url 'team_edit' team.id %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="name" class="col-sm-1 control-label">Name</label>
+                <div class="col-sm-11">
+                    <input class="form-control" type="text" name="name" value="{{team.name}}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10"></div>
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                    <a href="{% url 'dashboard' %}?show=teams" type="submit" class="btn btn-sm btn-warning">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="small">
+    </div>
+
+</div>
+{% endblock %}

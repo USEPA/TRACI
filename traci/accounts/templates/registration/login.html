@@ -1,0 +1,70 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<script>
+    {% if self.user.id %}
+        window.location = "/";
+    {% endif %}
+</script>
+
+<div class="splash">
+    <div>
+        <form id="login_form" enctype="multipart/form-data" method="post" action="."
+              role="form" class="well login">
+            <h4>Welcome to {{APP_NAME}}</h4>
+            {% if error %}
+            <div class="vmargin15 alert alert-danger">
+                <label>The username or password you entered was invalid. Please try again.</label>
+            </div>
+            {% endif %}
+            <div>Please log in below</div>
+            {% csrf_token %}
+            <div class="form-group vmargin10">
+                <label>Username</label>
+                <input type="text" class="form-control" id="login_username" name="username"
+                       placeholder="Enter username" >
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" id="login_password" name="password"
+                       placeholder="Enter password" >
+            </div>
+            <div class="centered">
+                <input type="hidden" id="user_action" name="user_action" value=""/>
+                <button type="submit" id="login_submit"
+                        onclick="document.getElementById('user_action').value = 'login';"
+                        class="btn btn-sm btn-info">
+                    Submit
+                </button>
+                <button type="submit" id="login_register"
+                        onclick="document.getElementById('user_action').value = 'register';"
+                        class="btn btn-sm btn-warning">
+                    New User
+                </button>
+            </div>
+            <div class="row">
+                <div class="col-sm-7"> </div>
+                <div class="col-sm-5">
+                    <div class="small">
+                        <a href="{% url 'password_reset' %}">Forgot password</a> |
+                        <a href="{% url 'username_reminder' %}">Forgot username</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="small">
+                    <p>
+                        For information on this app please contact:
+                        <a href="mailto:young.daniel@epa.gov">young.daniel@epa.gov</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

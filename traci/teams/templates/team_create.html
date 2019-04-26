@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="white-box">
+    <ol class="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard' %}?show=teams">
+                Dashboard
+            </a>
+        </li>
+        <li class="breadcrumb-item active">Create Team</li>
+    </ol>
+    <form method="post" action="{% url 'team_create' %}">
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <h5>Please correct the following errors</h5>
+            {% for field in form %}
+                {% if field.errors %}
+                <div>{{field.label_tag}} {{ field.errors|striptags }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="alert alert-success">
+            <span class="glyphicon glyphicon-ok"></span> Your team has been created.
+        </div>
+        {% endif %}
+
+        {% csrf_token %}
+        <h3 class="separator">Create a Project Team</h3>
+        <h4>
+            Select a name for your team.
+        </h4>
+        <div class="form-group">
+            <label for="name" class="control-label">{{form.name.label_tag}}</label>
+            <div>
+                {{form.name}}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-9"> </div>
+            <div class="col-sm-3">
+                <input class="btn btn-primary" type="submit" value="Save" />
+                <a class="btn btn-warning" href="{% url 'dashboard' %}?show=teams">Cancel</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

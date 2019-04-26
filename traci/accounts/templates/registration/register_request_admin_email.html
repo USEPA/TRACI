@@ -1,0 +1,29 @@
+A new user has requested an account for {{APP_NAME}}.  The request details are shown below:
+
+Username: {{user.username}}
+First Name: {{user.first_name}}
+Last Name: {{user.last_name}}
+Email: {{user.email}}
+
+Affiliation: {{user.userprofile.affiliation}}
+Sector: {{sector}}
+Job Title: {{user.userprofile.job_title}}
+Role: {{role}}
+
+Address (line 1): {{user.userprofile.address_line1}}
+Address (line 2): {{user.userprofile.address_line2}}
+City: {{user.userprofile.city}}
+State: {{state}}
+Zipcode: {{user.userprofile.zipcode}}
+Country: {{country}}
+
+
+To approve this user, click the link below:
+{{protocol}}://{{ domain }}{% url 'register_approve' uidb64=uid %}
+
+
+To deny this user, click the link below:
+{{protocol}}://{{ domain }}{% url 'register_deny' uidb64=uid %}
+
+
+

@@ -1,0 +1,19 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="splash">
+    <div class="well login">
+        <h4>Your username self has been received</h4>
+        <div>
+            An email containing the requested username has been sent to {{user.email}}.
+        </div>
+        <div>
+            Please check your inbox and then click <a href="/accounts/login">here</a> to login to {{APP_NAME}}.
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+

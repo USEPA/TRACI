@@ -1,0 +1,168 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+<div class="white-box">
+    <form class="form-horizontal" method="post" action="{% url 'profile' %}">
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <h5>Please correct the following errors</h5>
+            {% for field in form %}
+                {% if field.errors %}
+                <div>{{field.label_tag}} {{ field.errors|striptags }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="alert alert-success">
+            Your profile has been updated. <span class="glyphicon glyphicon-ok"></span>
+        </div>
+        {% endif %}
+
+        {% csrf_token %}
+        <h4 class="separator">Personal Information</h4>
+        <hr />
+
+        <div class="form-group">
+            <label for="username" class="col-sm-3 control-label">{{form.username.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.username}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="last_login" class="col-sm-3 control-label">{{form.last_login.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.last_login}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="first_name" class="col-sm-3 control-label">{{form.first_name.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.first_name}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="last_name" class="col-sm-3 control-label">{{form.last_name.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.last_name}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email" class="col-sm-3 control-label">{{form.email.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.email}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="affiliation" class="col-sm-3 control-label">{{form.affiliation.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.affiliation}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sector" class="col-sm-3 control-label">{{form.sector.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.sector}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="job_title" class="col-sm-3 control-label">{{form.job_title.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.job_title}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="role" class="col-sm-3 control-label">{{form.role.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.role}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="address_line1" class="col-sm-3 control-label">{{form.address_line1.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.address_line1}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="address_line2" class="col-sm-3 control-label">{{form.address_line2.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.address_line2}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="city" class="col-sm-3 control-label">{{form.city.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.city}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="state" class="col-sm-3 control-label">{{form.state.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.state}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="zipcode" class="col-sm-3 control-label">{{form.zipcode.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.zipcode}}
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="country" class="col-sm-3 control-label">{{form.country.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.country}}
+            </div>
+        </div>
+        
+        <h4 class="separator">Change Password</h4>
+        <hr />
+
+        <div class="form-group">
+            <label for="current_password" class="col-sm-3 control-label">{{form.current_password.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.current_password}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password1" class="col-sm-3 control-label">{{form.password1.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.password1}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password2" class="col-sm-3 control-label">{{form.password2.label_tag}}</label>
+            <div class="col-sm-9">
+                {{form.password2}}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-9"> </div>
+            <div class="col-sm-3">
+                <input class="btn btn-primary" type="submit" value="Save" />
+                <a class="btn btn-warning" href="{% url 'profile' %}">Undo changes</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
