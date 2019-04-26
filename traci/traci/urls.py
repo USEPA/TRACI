@@ -15,10 +15,9 @@ from django.urls import include
 from traci.forms import BootstrapAuthenticationForm
 from traci.views import home, contact, about
 
-# Uncomment the next lines to enable the admin:
-# from django.conf.urls import include
-# from django.contrib import admin
-# admin.autodiscover()
+from django.conf.urls import include
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = [
     # Examples:
