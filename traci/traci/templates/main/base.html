@@ -92,9 +92,9 @@
 
                 <!-- Else user is not logged in -->
                 {% else %}
-                {% url 'about' as about_url %}
-                <li {% if self.path == about_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
-                    <a href="{{about_url}}" {% if self.path == about_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">About</a>
+                {% url 'contact' as contact_url %}
+                <li {% if self.path == contact_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                    <a href="{{contact_url}}" {% if self.path == contact_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Contact</a>
                 </li>
                 {% url 'register' as register_url %}
                 <li {% if self.path == register_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
