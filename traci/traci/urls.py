@@ -12,8 +12,8 @@ from datetime import datetime
 from django.conf.urls import url
 import django.contrib.auth.views
 
-import app.forms
-import app.views
+from traci.forms import BootstrapAuthenticationForm
+from traci.views import home, contact, about
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
@@ -22,14 +22,14 @@ import app.views
 
 urlpatterns = [
     # Examples:
-    url(r'^$', app.views.home, name='home'),
-    url(r'^contact$', app.views.contact, name='contact'),
-    url(r'^about$', app.views.about, name='about'),
+    url(r'^$', home, name='home'),
+    url(r'^contact$', contact, name='contact'),
+    url(r'^about$', about, name='about'),
     url(r'^login/$',
-        django.contrib.auth.views.login,
+        django.contrib.auth.views.LoginView,
         {
-            'template_name': 'app/login.html',
-            'authentication_form': app.forms.BootstrapAuthenticationForm,
+            'template_name': 'login.html',
+            'authentication_form': BootstrapAuthenticationForm,
             'extra_context':
             {
                 'title': 'Log in',
@@ -38,7 +38,7 @@ urlpatterns = [
         },
         name='login'),
     url(r'^logout$',
-        django.contrib.auth.views.logout,
+        django.contrib.auth.views.LogoutView,
         {
             'next_page': '/',
         },
