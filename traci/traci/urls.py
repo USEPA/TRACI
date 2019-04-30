@@ -24,12 +24,12 @@ urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^contact$', contact, name='contact'),
     url(r'^about$', about, name='about'),
-    
+
     # User profile / accounts pages.
     url(r'^accounts/', include('accounts.urls')),
     url('teams/', include('teams.urls')),
 
-    #url(r'^login/$', django.contrib.auth.views.LoginView, 
+    #url(r'^login/$', django.contrib.auth.views.LoginView,
     #    {'template_name': 'login.html', 'authentication_form': BootstrapAuthenticationForm,
     #     'extra_context': {'title': 'Log in', 'year': datetime.now().year,}}, name='login'),
     #url(r'^logout$', django.contrib.auth.views.LogoutView, {'next_page': '/', }, name='logout'),

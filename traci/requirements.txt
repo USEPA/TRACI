@@ -25,6 +25,8 @@ pluggy==0.9.0                   # Core framework used by the pytest, tox, and de
 py==1.8.0                       # Python development support library.
 pycodestyle==2.5.0              # Tool to check your Python code against some of the style conventions in PEP 8 & PEP 257.
 pyflakes==2.1.1                 # Analyzes programs and detects various errors.
+pylint_django==2.0.9            # pylint_django.checkers.db_performance looks for migrations which add new model fields and these fields have a default value.
+pylint==2.3.1                   # Static code analysis tool which looks for programming errors, helps enforcing PEP 8 coding standard.
 pytest==4.4.1                   # Framework to write small tests, yet scales to support complex functional testing for apps/lib.
 pytz==2019.1                    # UTC is pytz.timezone('UTC') True.
 setuptools==41.0.1              # Easily download, build, install, upgrade, and uninstall Python packages.
