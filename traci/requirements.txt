@@ -14,20 +14,26 @@
 atomicwrites==1.3.0             # Simple high-level API that wraps a very flexible class-based API.
 autopep8==1.4.4                 # Automatically formats Python code to conform to the PEP 8 style guide.
 coverage==4.5.3                 # Measures code coverage, typically during test execution.
-Django==2.2                     # Python Modules.
-djangorestframework==3.9.3      # Powerful and flexible toolkit for building Web APIs.
+Django==2.2.2                   # Python Modules.
+djangorestframework==3.9.4      # Powerful and flexible toolkit for building Web APIs.
 entrypoints==0.3                # Python packages to advertise objects with some common interface.
 flake8==3.7.7                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder’s McCabe script.
+isort==4.3.20                   # Python utility / library to sort imports alphabetically, and automatically separated into sections.
+lazy-object-proxy==1.4.1        # A fast and thorough lazy object proxy.
 mccabe==0.6.1                   # McCabe checker, plugin for flake8.
 pep8==1.7.1                     # Tool to check your Python code against some of the style conventions in PEP 8.
-pip==19.1                       # The PyPA recommended tool for installing Python packages.
-pluggy==0.9.0                   # Core framework used by the pytest, tox, and devpi projects.
+pip==19.1.1                     # The PyPA recommended tool for installing Python packages.
+pluggy==0.12.0                  # Core framework used by the pytest, tox, and devpi projects.
 py==1.8.0                       # Python development support library.
 pycodestyle==2.5.0              # Tool to check your Python code against some of the style conventions in PEP 8 & PEP 257.
 pyflakes==2.1.1                 # Analyzes programs and detects various errors.
 pylint_django==2.0.9            # pylint_django.checkers.db_performance looks for migrations which add new model fields and these fields have a default value.
 pylint==2.3.1                   # Static code analysis tool which looks for programming errors, helps enforcing PEP 8 coding standard.
-pytest==4.4.1                   # Framework to write small tests, yet scales to support complex functional testing for apps/lib.
+pytest==4.6.3                   # Framework to write small tests, yet scales to support complex functional testing for apps/lib.
 pytz==2019.1                    # UTC is pytz.timezone('UTC') True.
 setuptools==41.0.1              # Easily download, build, install, upgrade, and uninstall Python packages.
 sqlparse==0.3.0                 # Non-validating SQL parser provides support parsing, splitting and formatting SQL statements.
+Typed-ast==1.4.0                # Python 3 package that provides a parser similar to the standard ast library.
+wcwidth==0.1.7                  # Library for implementing a Terminal Emulator, or programs that carefully produce output to be interpreted by one.
+wrapt==1.11.2                   # Transparent object proxy for Python, can be used as basis for construction of function wrappers and decorator functions.
+zipp==0.5.1                     # A pathlib-compatible Zipfile object wrapper. A backport of the Path object.
