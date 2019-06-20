@@ -4,9 +4,7 @@
 # young.daniel@epa.gov
 
 
-"""
-Definition of urls for traci.
-"""
+"""Definition of urls for traci."""
 
 from datetime import datetime
 from django.conf.urls import url

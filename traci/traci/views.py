@@ -3,9 +3,7 @@
 # coding=utf-8
 # young.daniel@epa.gov
 
-"""
-Definition of views.
-"""
+"""Definition of views."""
 
 from django.shortcuts import render, redirect
 from django.http import HttpRequest

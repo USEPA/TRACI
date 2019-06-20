@@ -4,9 +4,7 @@
 # young.daniel@epa.gov
 
 
-"""
-Definition of models.
-"""
+"""Definition of models."""
 
 from django.db import models
 
