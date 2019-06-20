@@ -3,9 +3,7 @@
 # young.daniel@epa.gov
 
 
-"""
-Command-line utility for administrative tasks.
-"""
+"""Command-line utility for administrative tasks."""
 
 import os
 import sys
