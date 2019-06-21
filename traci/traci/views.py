@@ -10,12 +10,14 @@ from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
 
+
 def home(request):
     """Navigate to the base page or dashboard, depending on user login status."""
     if request.user.is_authenticated:
         # Redirect to DashboardView::GET
         return redirect('about')
     return render(request, 'main/base.html', {})
+
 
 def contact(request):
     """Renders the contact page."""
@@ -24,11 +26,12 @@ def contact(request):
         request,
         'contact.html',
         {
-            'title':'Contact',
-            'message':'Your contact page.',
-            'year':datetime.now().year,
+            'title': 'Contact',
+            'message': 'Your contact page.',
+            'year': datetime.now().year,
         }
     )
+
 
 def about(request):
     """Renders the about page."""
@@ -37,8 +40,8 @@ def about(request):
         request,
         'main/about.html',
         {
-            'title':'About',
-            'message':'Your application description page.',
-            'year':datetime.now().year,
+            'title': 'About',
+            'message': 'Your application description page.',
+            'year': datetime.now().year,
         }
     )

@@ -49,7 +49,7 @@ class Country(models.Model):
         """
         :return:
         """
-        return (self.country,)
+        return self.country,
 
     def __str__(self):
         """Request country."""
@@ -78,7 +78,7 @@ class Sector(models.Model):
         """
         :return:
         """
-        return (self.sector,)
+        return self.sector,
 
     def __str__(self):
         return self.sector
@@ -93,7 +93,7 @@ class Role(models.Model):
         """
         :return:
         """
-        return (self.role,)
+        return self.role,
 
     def __str__(self):
         return self.role

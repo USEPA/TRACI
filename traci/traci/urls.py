@@ -27,10 +27,10 @@ urlpatterns = [
     url(r'^accounts/', include('accounts.urls')),
     url('teams/', include('teams.urls')),
 
-    #url(r'^login/$', django.contrib.auth.views.LoginView,
+    # url(r'^login/$', django.contrib.auth.views.LoginView,
     #    {'template_name': 'login.html', 'authentication_form': BootstrapAuthenticationForm,
     #     'extra_context': {'title': 'Log in', 'year': datetime.now().year,}}, name='login'),
-    #url(r'^logout$', django.contrib.auth.views.LogoutView, {'next_page': '/', }, name='logout'),
+    # url(r'^logout$', django.contrib.auth.views.LogoutView, {'next_page': '/', }, name='logout'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

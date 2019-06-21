@@ -291,7 +291,7 @@ class APITeamDetailView(APIView):
             )
             for membership in team.team_memberships.all():
                 if user == membership.member:
-                    return (team, membership)
+                    return team, membership
             raise Http404
         except Team.DoesNotExist:
             raise Http404
@@ -399,7 +399,7 @@ class APITeamMembershipDetailView(APIView):
             # make sure this user can view this team information
             for membership in current_membership.team.team_memberships.all():
                 if user == membership.member:
-                    return (current_membership, membership.can_edit)
+                    return current_membership, membership.can_edit
             raise Http404
         except Team.DoesNotExist:
             raise Http404
