@@ -144,3 +144,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+
+APP_NAME = 'TRACI'
+APP_VERSION = '0.0.01'
+APP_DISCLAIMER = "TODO Disclaimer"
+
+try:
+    from traci.local_settings import *
+except ImportError:
+    pass

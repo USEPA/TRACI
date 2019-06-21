@@ -363,7 +363,7 @@ class UserRegistrationView(FormView):
                 'email': settings.EMAIL_HOST_USER,
                 'domain': request.META['HTTP_HOST'],
                 'site_name': settings.SITE_NAME,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'user': user,
                 'sector': sector,
                 'role': role,

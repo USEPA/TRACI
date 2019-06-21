@@ -76,9 +76,9 @@
                 </li>
                 {% endif %}
 
-                {% url 'home' as home_url %}
-                <li {% if self.path == home_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
-                    <a href="{{home_url}}" {% if self.path == home_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">What is TRACI?</a>
+                {% url 'about' as about_url %}
+                <li {% if self.path == about_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                    <a href="{{about_url}}" {% if self.path == about_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">What is TRACI?</a>
                 </li>
                 {% url 'contact' as contact_url %}
                 <li {% if self.path == contact_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
@@ -141,7 +141,7 @@
                 <!-- If the user is logged in, we should redirect to the dashboard as the 'landing page' -->
                 {% if user.is_authenticated %}
                 <script>
-                    window.location = 'about/';
+                    //window.location = 'dashboard';
                 </script>
                 {% endif %}
                 <div class="splash">
@@ -200,8 +200,6 @@
                 </div>
                 {% endblock %}
             </div>
-
-
 
             <!--googleon: all-->
             {#<h1 class="page-title">{PAGE TITLE}</h1>#}

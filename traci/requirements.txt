@@ -16,6 +16,7 @@ autopep8==1.4.4                 # Automatically formats Python code to conform t
 coverage==4.5.3                 # Measures code coverage, typically during test execution.
 Django==2.2.2                   # Python Modules.
 djangorestframework==3.9.4      # Powerful and flexible toolkit for building Web APIs.
+django-session-security==2.6.5  # Provides a mechanism to logout inactive authenticated users.
 entrypoints==0.3                # Python packages to advertise objects with some common interface.
 flake8==3.7.7                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder’s McCabe script.
 isort==4.3.20                   # Python utility / library to sort imports alphabetically, and automatically separated into sections.
@@ -24,6 +25,7 @@ mccabe==0.6.1                   # McCabe checker, plugin for flake8.
 pep8==1.7.1                     # Tool to check your Python code against some of the style conventions in PEP 8.
 pip==19.1.1                     # The PyPA recommended tool for installing Python packages.
 pluggy==0.12.0                  # Core framework used by the pytest, tox, and devpi projects.
+psycopg2==2.8.2                 # Python-PostgreSQL Database Adapter.
 py==1.8.0                       # Python development support library.
 pycodestyle==2.5.0              # Tool to check your Python code against some of the style conventions in PEP 8 & PEP 257.
 pyflakes==2.1.1                 # Analyzes programs and detects various errors.
