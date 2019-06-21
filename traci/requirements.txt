@@ -31,6 +31,7 @@ pylint_django==2.0.9            # pylint_django.checkers.db_performance looks fo
 pylint==2.3.1                   # Static code analysis tool which looks for programming errors, helps enforcing PEP 8 coding standard.
 pytest==4.6.3                   # Framework to write small tests, yet scales to support complex functional testing for apps/lib.
 pytz==2019.1                    # UTC is pytz.timezone('UTC') True.
+requests==2.22.0                # Automatically decompresses gzip-encoded responses, decodes response content to unicode when possible.
 setuptools==41.0.1              # Easily download, build, install, upgrade, and uninstall Python packages.
 sqlparse==0.3.0                 # Non-validating SQL parser provides support parsing, splitting and formatting SQL statements.
 Typed-ast==1.4.0                # Python 3 package that provides a parser similar to the standard ast library.

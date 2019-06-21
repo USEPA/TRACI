@@ -11,7 +11,7 @@ from django.conf.urls import url
 from django.urls import include
 
 from traci.forms import BootstrapAuthenticationForm
-from traci.views import home, contact, about
+from traci.views import home, contact, about, DashboardView
 
 from django.conf.urls import include
 from django.contrib import admin
@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^contact$', contact, name='contact'),
     url(r'^about$', about, name='about'),
+    url(r'^dashboard/$', DashboardView.as_view(), name='dashboard'),
 
     # User profile / accounts pages.
     url(r'^accounts/', include('accounts.urls')),

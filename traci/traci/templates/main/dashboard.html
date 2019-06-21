@@ -1,0 +1,106 @@
+{% extends "main/base.html" %}
+{% load humanize %}
+{% block content %}
+<div class="white-box">
+    <h2 class="vmargin10">
+        {% if request.user.first_name %}{{request.user.first_name}}{% else %}{{request.user.username}}{% endif %}'s
+        Dashboard
+    </h2>
+    <div>
+        <p>
+            Details here
+        </p>
+    </div>
+
+    <!-- tab navigation -->
+    <ul class="nav nav-tabs">
+        <li>
+            <a href="" data-toggle="tab">Tab 1</a>
+        </li>
+        <li class="{% if open_tab == 'teams' %}active{% endif %}">
+            <a href="#teams" data-toggle="tab">Teams</a>
+        </li>
+        <li>
+            <a href="" data-toggle="tab">Tab 3</a>
+        </li>
+    </ul>
+
+    <div id="dashboardTabContent" class="tab-content">
+        <!-- First list tab -->
+        <!-------------------->
+        <!-- List of teams tab -->
+        <div class="tab-pane fade {% if open_tab == 'teams' %}active{% endif %} in" id="teams">
+            <div class="padding10">
+                <div class="content-group">
+                    {% if teams %}
+                    <div id="team_list">
+                        <form class="form-horizontal">
+                            <div class="form-group col-sm-5">
+                                <div class="input-group">
+                                    <input type="text" class="search form-control" placeholder="Search teams"
+                                           aria-describedby="team-search-addon" />
+                                    <div class="input-group-addon " id="team-search-addon">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <table class="bordered white table table-responsive table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-4">Name</th>
+                                    <th class="col-sm-5">
+                                        Members <span class="text-muted" style="font-weight: normal;">(owner in bold)</span>
+                                    </th>
+                                    <th class="col-sm-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                {% for team in teams %}
+                                <tr>
+                                    <td class="name">{{team.name}}</td>
+                                    <td>
+                                        {% for membership in team.team_memberships %}
+                                        {% if membership.is_owner %}<strong>{{membership.member.username}}</strong>{% else %}{{membership.member.username}}{% endif %}{% if not forloop.last %},{% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <div class="small">
+                                            <a href="{% url 'team_edit' team.id %}">Edit team name</a>                                        |
+                                            <a href="{% url 'team_manage' team.id %}">Manage members</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-muted vmargin10">
+                        You are not currently a member of any teams.
+                    </div>
+                    {% endif %}
+                    <div>
+                        <a href="{% url 'team_create' %}" class="btn btn-sm btn-default">
+                            <span class="glyphicon glyphicon-plus"></span> Create Team
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Third list tab -->
+        <!-------------------->
+    </div>
+</div>
+
+<script>
+    $(document).ready( function () {
+        $('[data-toggle="popover"]').popover({html:true})
+        var userList = new List('project_list', { valueNames: [ 'name' ]});
+        var teamList = new List('team_list', { valueNames: [ 'name' ]});
+        var compoundList = new List('compound_list', { valueNames: [ 'name' ]});
+    } );
+</script>
+{% endblock %}

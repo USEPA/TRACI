@@ -69,6 +69,13 @@
         <div class="nav__inner">
             <h2 class="element-invisible">Main menu</h2>
             <ul class="menu" role="menu" id="navbar">
+                {% if user.is_authenticated %}
+                {% url 'dashboard' as dashboard_url %}
+                <li {% if request.path == dashboard_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                    <a href="{{dashboard_url}}" {% if request.path == dashboard_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Dashboard</a>
+                </li>
+                {% endif %}
+
                 {% url 'home' as home_url %}
                 <li {% if self.path == home_url %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
                     <a href="{{home_url}}" {% if self.path == home_url %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">What is TRACI?</a>
