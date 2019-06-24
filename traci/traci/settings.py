@@ -101,8 +101,12 @@ WSGI_APPLICATION = 'traci.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': '__DB_NAME__',
+        'USER': '__DB_USER__',
+        'PASSWORD': '__DB_PASSWORD__',
+        'HOST': '__DB_HOST__',
+        'PORT': '__DB_PORT__'
     }
 }
 

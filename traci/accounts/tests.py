@@ -1454,13 +1454,13 @@ class LiveServerTestCase(TransactionTestCase):
     def setupclass(cls):
         super().setupclass()
         connections_override = {}
-        for conn in connections.all():
-            # If using in-memory sqlite databases, pass the connections to
-            # the server thread.
-            if conn.vendor == 'sqlite' and conn.is_in_memory_db():
-                # Explicitly enable thread-shareability for this connection
-                conn.allow_thread_sharing = True
-                connections_override[conn.alias] = conn
+        # for conn in connections.all():
+        #     # If using in-memory sqlite databases, pass the connections to
+        #     # the server thread.
+        #     if conn.vendor == 'sqlite' and conn.is_in_memory_db():
+        #         # Explicitly enable thread-shareability for this connection
+        #         conn.allow_thread_sharing = True
+        #         connections_override[conn.alias] = conn
 
         cls._live_server_modified_settings = modify_settings(
             ALLOWED_HOSTS={'append': cls.host},
@@ -1495,9 +1495,9 @@ class LiveServerTestCase(TransactionTestCase):
             cls.server_thread.terminate()
 
         # Restore sqlite in-memory database connections' non-shareability
-        for conn in connections.all():
-            if conn.vendor == 'sqlite' and conn.is_in_memory_db():
-                conn.allow_thread_sharing = False
+        # for conn in connections.all():
+        #     if conn.vendor == 'sqlite' and conn.is_in_memory_db():
+        #         conn.allow_thread_sharing = False
 
     @classmethod
     def teardownclass(cls):
