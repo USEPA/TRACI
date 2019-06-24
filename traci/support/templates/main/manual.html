@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block content %}
+<div class="white-box">
+    <h3>TRACI Introduction</h3>
+    <div>
+        <p>TODO description here.</p>
+    </div>
+    <div>
+        <div class="well">
+            <h4>Quick links</h4>
+            <div><a href="{% url 'citation' %}">Download Citations (txt)</a></div>
+            <div><a href="{% url 'download_manual' %}">View the TRACI user manual</a></div>
+            <div><a href="{% url 'download_excel_tool' %}">Download the TRACI Excel Tool</a></div>
+            <div><a href="{% url 'dashboard' %}">Access the main dashboard</a></div>
+            {% if request.user.is_superuser %}
+            <div>
+                <a href="{% url 'admin:index' %}">Manage user accounts</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -326,10 +326,10 @@ class UserRegistrationView(FormView):
     confirmation message displayed.
     """
     template_register = "registration/register.html"
-    # email and subject line for the message sent to the GREENSCOPE admins
+    # email and subject line for the message sent to the app admins
     admin_subject_template_name = 'registration/register_request_admin_subject.txt'
     admin_email_template_name = 'registration/register_request_admin_email.html'
-    # email and subject line for the message sent to the potential GREENSCOPE user
+    # email and subject line for the message sent to the potential app user
     user_subject_template_name = 'registration/register_request_user_subject.txt'
     user_email_template_name = 'registration/register_request_user_email.html'
     form_class = ProfileCreationForm

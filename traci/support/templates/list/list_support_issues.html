@@ -1,0 +1,66 @@
+{% extends "main/base.html" %}
+{% load humanize %}
+{% block content %}
+<div class="col-sm-12">
+{% if objs %}
+
+  <p><h3>Support Query: {{query_show}}</h3>
+
+  <table class="example table-autosort:5 table-stripeclass:alternate table-autofilter" id="support_table">
+    <thead id="support_head">
+    <tr>
+      <th class="table-sortable:alphanumeric">Return Email</th>
+      <th class="table-sortable:alphanumeric">Type</th>
+      <th class="table-sortable:alphanumeric">Title</th>
+      <th class="table-sortable:alphanumeric">Subject</th>
+
+      <th class="table-header">Description</th>
+      <th class="table-header">Date Created</th>
+      <th class="table-header">Date Resolved</th>
+
+      <th class="table-header">Edit</th>
+      <th class="table-header">Show</th>
+      <th class="table-header">Delete</th>
+    </tr>
+    <tr>
+      <th class="table-filterable"></th>
+      <th class="table-filterable"></th>
+      <th class="table-filterable"></th>
+      <th class="table-filterable"></th>
+
+      <th class="table-filterable"></th>
+      <th class="table-filterable"></th>
+      <th class="table-filterable"></th>
+
+      <th class="table-header"></th>
+      <th class="table-header"></th>
+      <th class="table-header"></th>
+      </tr>
+
+    </thead>
+    <tbody id="support_body">
+
+      {% for obj in objs %}
+        <tr>
+          <td>{{obj.weblink}}</td>
+          <td>{{obj.support_type.name}}</td>
+          <td>{{obj.name}}</td>
+          <td>{{obj.subject}}</td>
+
+          <td width="200">{{obj.the_description}}</td>
+          <td>{{obj.created|date:"Y-m-d"}}</td>
+          <td>{{obj.date_resolved|date:"Y-m-d"}}</td>
+
+          <td><a href={% url 'edit_support' obj.id %}>Edit</td>
+          <td><a href={% url 'show_support' obj.id %}>Show</td>
+          <td><a href={% url 'delete_support' obj.id %}>Delete</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+  {% else %}
+  <table><tr><td>No Support Issues Found For This Query.</td></tr></table>
+{% endif %}
+</div>
+
+{% endblock %}

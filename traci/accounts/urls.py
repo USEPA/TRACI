@@ -31,7 +31,7 @@ urlpatterns = [
 
     # new user registration
     url(r'^register/$', UserRegistrationView.as_view(), name='register'),
-    # Give admins a chance to approve or deny new users, taken from Greenscope
+    # Give admins a chance to approve or deny new users, taken from app
     url(r'^register/approve/(?P<uidb64>[0-9A-Za-z]+)/$',
         UserApprovalView.as_view(), name='register_approve'),
     url(r'^register/deny/(?P<uidb64>[0-9A-Za-z]+)/$',

@@ -1,0 +1,20 @@
+{% extends "main/base.html" %}
+{% load humanize %}
+
+{% block content %}
+<h3>Show {{obj.abbreviation}}</h3>
+
+<div class="col-sm-12">
+  <div class="reg">Name<div class="orange">{{obj.name}}</div></div>
+</div>
+<div class="col-sm-12">
+  <div class="reg">Subject<div class="orange">{{obj.subject}}</div></div>
+</div>
+<div class="col-sm-12">
+  <div class="reg">Description<div class="orange">{{obj.the_description}}</div></div>
+</div>
+<div class="col-sm-12">
+  <div class="reg">Website Reference<div class="orange"><a href={{obj.weblink}}>{{obj.weblink}}</a></div></div>
+</div>
+
+{% endblock %}

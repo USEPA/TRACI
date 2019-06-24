@@ -87,6 +87,20 @@
 
                 <!-- navbar when user is logged in -->
                 {% if user.is_authenticated %}
+                <li {% if request.path == go_to_support %} class="dropdown expanded active-trail menu-item"
+                    {% elif request.path == treatment_url %} class="dropdown expanded active-trail menu-item"
+                    {% else %} class="dropdown menu-item" {% endif %} role="presentation">
+                    <a  {% if request.path == go_to_support %} class="active-trail menu-link active"
+                        {% elif request.path == user_manual %} class="active-trail menu-link active"
+                        {% else %} class="menu-link dropdown-toggle" {% endif %} data-toggle="dropdown" href="javascript:void(0)" role="menuitem">
+                        Help <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'go_to_support' %}">Suggestions</a></li>
+                        <li><a href="{% url 'documentation' %}">User Documentation</a></li>
+                    </ul>
+                </li>
+
                 <li class="dropdown menu-item navbar-right" role="presentation">
                     <a data-toggle="dropdown" href="javascript:void(0)" class="menu-link dropdown-toggle" role="menuitem">
                         {% if user.first_name %}
@@ -100,6 +114,11 @@
                         <li class="menu-item">
                             <a class="menu-link" href="{% url 'profile' %}">My profile</a>
                         </li>
+                        {% if request.user.is_staff %}
+                        <li class="menu-item">
+                            <a class="menu-link" href="{% url 'admin:index' %}">Admin</a>
+                        </li>
+                        {% endif %}
                         <li role="separator" class="divider"></li>
                         <li class="menu-item">
                             <a class="menu-link" href="{% url 'logout' %}">Logout</a>

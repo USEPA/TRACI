@@ -1,0 +1,14 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<div class="white-box">
+    <h3 >Your Request has been received</h3>
+    <div>
+        A TRACI team member will follow up with you soon.
+    </div>
+    <div>
+        Please click <a href="{% url 'home' %}">here</a> to return to TRACI.
+    </div>
+</div>
+
+{% endblock %}

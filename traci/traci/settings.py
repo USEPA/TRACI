@@ -43,6 +43,7 @@ REST_FRAMEWORK = {
 INSTALLED_APPS = [
     # Add your apps here to enable them
     'django.contrib.admin',
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'accounts',
     'teams',
+    'support',
     'rest_framework',
     'traci',
 ]
@@ -137,13 +139,27 @@ USE_L10N = True
 
 USE_TZ = True
 
+if os.name == 'nt':
+    LOCALE_STRING = 'English_United States.1252'
+    SCRIPT_EXT = 'bat'
+else:
+    LOCALE_STRING = 'en_US.UTF-8'
+    SCRIPT_EXT = 'sh'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+
+########################################################################
+DOWNLOADS_DIR = os.path.join("..", "DOCS")
+MANUAL_NAME = 'traciusersguide.pdf'
+EXCEL_TOOL_NAME = 'TRACI_2_1_2017_April_24.xlsx'
+
+# TODO add TRACI Citation:
+CITATION = ''
+CITE_SCRIPT = 'cite.' + SCRIPT_EXT
 
 APP_NAME = 'TRACI'
 APP_VERSION = '0.0.01'

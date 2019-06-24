@@ -1,0 +1,49 @@
+{% extends "main/base.html" %}
+{% load humanize %}
+{% block content %}
+
+<div class="white-box">
+    <div>
+        Enter the details of your support inquiry below.
+        Fields marked with a red <span style="color:red;">*</span> are required.
+    </div>
+    <form enctype="multipart/form-data" method="post" action="." role="form">
+        {% csrf_token %}
+
+        {% if form.errors %}
+
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}: {{field.label_tag}}</strong>
+        </div>
+        {% endfor %}
+        {% endfor %}
+
+        {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}: {{ form.non_field_errors }}</strong>
+        </div>
+        {% endfor %}
+
+        {% endif %}
+
+
+        {% for field in form %}
+        <div class="form-group">
+            {{field.label_tag}} {% if field.errors %}<div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>{{field.errors}}</div>{% endif %}{{field}}
+            <p class="help-block">{{field.help_text}} + Reference or note</p>
+        </div>
+        {% endfor %}
+
+        <div>
+            <input type="submit" value="{% if button_name %}{{button_name}}{% else %}Create{% endif %}"
+               class="btn btn-success">
+            <a href="{% url 'go_to_support' %}" class="btn btn-warning">Cancel</a>
+        </div>
+
+
+    </form>
+</div>
+{% endblock %}
