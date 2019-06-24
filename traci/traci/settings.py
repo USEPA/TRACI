@@ -170,6 +170,6 @@ APP_VERSION = '0.0.01'
 APP_DISCLAIMER = "TODO Disclaimer"
 
 try:
-    from traci.local_settings import *
+    from .local_settings import *  # pylint: disable=unused-wildcard-import,wildcard-import
 except ImportError:
     pass
