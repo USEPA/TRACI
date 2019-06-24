@@ -25,7 +25,7 @@ mccabe==0.6.1                   # McCabe checker, plugin for flake8.
 pep8==1.7.1                     # Tool to check your Python code against some of the style conventions in PEP 8.
 pip==19.1.1                     # The PyPA recommended tool for installing Python packages.
 pluggy==0.12.0                  # Core framework used by the pytest, tox, and devpi projects.
-psycopg2==2.8.2                 # Python-PostgreSQL Database Adapter.
+psycopg2==2.8.3                 # Python-PostgreSQL Database Adapter.
 py==1.8.0                       # Python development support library.
 pycodestyle==2.5.0              # Tool to check your Python code against some of the style conventions in PEP 8 & PEP 257.
 pyflakes==2.1.1                 # Analyzes programs and detects various errors.
