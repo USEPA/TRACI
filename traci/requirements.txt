@@ -18,7 +18,7 @@ Django==2.2.2                   # Python Modules.
 djangorestframework==3.9.4      # Powerful and flexible toolkit for building Web APIs.
 django-session-security==2.6.5  # Provides a mechanism to logout inactive authenticated users.
 entrypoints==0.3                # Python packages to advertise objects with some common interface.
-flake8==3.7.7                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder’s McCabe script.
+flake8==3.7.7                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder's McCabe script.
 isort==4.3.20                   # Python utility / library to sort imports alphabetically, and automatically separated into sections.
 lazy-object-proxy==1.4.1        # A fast and thorough lazy object proxy.
 mccabe==0.6.1                   # McCabe checker, plugin for flake8.
