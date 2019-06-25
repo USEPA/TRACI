@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^dashboard/$', DashboardView.as_view(), name='dashboard'),
     url(r'^support/', include('support.urls')),
     url(r'^teams/', include('teams.urls')),
-    
+
     url(r'^citation/$', citation, name='citation'),
     url(r'^download_manual/$', download_manual, name="download_manual"),
     url(r'^download_excel_tool/$', download_excel_tool, name="download_excel_tool"),
