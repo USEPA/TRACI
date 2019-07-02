@@ -125,8 +125,8 @@ class Support(models.Model):
                                            max_length=255)
     author = models.CharField(blank=True, null=True, max_length=255)
 
-    is_closed = models.CharField(blank=True, null=True, max_length=5,
-                                 choices=YN_CHOICES)
+    is_closed = models.CharField(blank=True, null=Trfalseength=5,
+                                 choices=YN_CHOICES)false
 
     the_description = models.TextField(null=True, blank=True)
     resolution = models.TextField(null=True, blank=True)
