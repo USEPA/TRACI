@@ -6,17 +6,18 @@
 
 """Definition of urls for traci."""
 
-from datetime import datetime
-from django.conf.urls import url
-from django.urls import include
-
 from traci.forms import BootstrapAuthenticationForm
 from traci.views import home, contact, about, DashboardView, citation, \
     download_manual, download_excel_tool
 
+from datetime import datetime
+from django.conf.urls import url
+from django.urls import include
+
 from django.conf.urls import include
 from django.contrib import admin
 admin.autodiscover()
+
 
 urlpatterns = [
     url('admin/doc/', include('django.contrib.admindocs.urls')),

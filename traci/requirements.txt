@@ -22,6 +22,7 @@ flake8==3.7.7                   # Flake8 is a wrapper around these tools: PyFlak
 isort==4.3.21                   # Python utility / library to sort imports alphabetically, and automatically separated into sections.
 lazy-object-proxy==1.4.1        # A fast and thorough lazy object proxy.
 mccabe==0.6.1                   # McCabe checker, plugin for flake8.
+openpyxl==2.6.2                 # Python library to read/write Excel 2010 xlsx/xlsm/xltx/xltm files.
 pep8==1.7.1                     # Tool to check your Python code against some of the style conventions in PEP 8.
 pip==19.1.1                     # The PyPA recommended tool for installing Python packages.
 pluggy==0.12.0                  # Core framework used by the pytest, tox, and devpi projects.
