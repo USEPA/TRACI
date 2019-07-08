@@ -30,9 +30,9 @@ psycopg2==2.8.3                 # Python-PostgreSQL Database Adapter.
 py==1.8.0                       # Python development support library.
 pycodestyle==2.5.0              # Tool to check your Python code against some of the style conventions in PEP 8 & PEP 257.
 pyflakes==2.1.1                 # Analyzes programs and detects various errors.
-pylint_django==2.0.9            # pylint_django.checkers.db_performance looks for migrations which add new model fields and these fields have a default value.
+pylint_django==2.0.10           # pylint_django.checkers.db_performance looks for migrations which add new model fields and these fields have a default value.
 pylint==2.3.1                   # Static code analysis tool which looks for programming errors, helps enforcing PEP 8 coding standard.
-pytest==5.0.0                   # Framework to write small tests, yet scales to support complex functional testing for apps/lib.
+pytest==5.0.1                   # Framework to write small tests, yet scales to support complex functional testing for apps/lib.
 pytz==2019.1                    # UTC is pytz.timezone('UTC') True.
 requests==2.22.0                # Automatically decompresses gzip-encoded responses, decodes response content to unicode when possible.
 setuptools==41.0.1              # Easily download, build, install, upgrade, and uninstall Python packages.
@@ -40,4 +40,4 @@ sqlparse==0.3.0                 # Non-validating SQL parser provides support par
 Typed-ast==1.4.0                # Python 3 package that provides a parser similar to the standard ast library.
 wcwidth==0.1.7                  # Library for implementing a Terminal Emulator, or programs that carefully produce output to be interpreted by one.
 wrapt==1.11.2                   # Transparent object proxy for Python, can be used as basis for construction of function wrappers and decorator functions.
-zipp==0.5.1                     # A pathlib-compatible Zipfile object wrapper. A backport of the Path object.
+zipp==0.5.2                     # A pathlib-compatible Zipfile object wrapper. A backport of the Path object.
