@@ -34,8 +34,8 @@ def contact(request):
         request,
         'contact.html',
         {
-            'title': 'Contact',
-            'message': 'Your contact page.',
+            'title': 'Contact US EPA, Office of Research & Development',
+            'message': 'For additional information on TRACI.',
             'year': datetime.now().year,
         }
     )
@@ -48,12 +48,11 @@ def about(request):
         request,
         'main/about.html',
         {
-            'title': 'About',
-            'message': 'Your application description page.',
+            'title': 'Tool for the Reduction and Assessment of Chemical and Other Environmental Impacts (TRACI)',
+            'message': 'TRACI allows the examination of the potential for impacts associated with fossil fuel use and chemical releases resulting from the processes involved in producing a product. TRACI allows the user to examine the potential for impacts for a single life cycle stage, or the whole life cycle, and to compare the results among products or processes.',
             'year': datetime.now().year,
         }
     )
-
 
 
 class DashboardView(TemplateView):
@@ -136,7 +135,8 @@ def download_file(reposnse, name):
 
     elif 'xls' in ext:
         with open(file, 'rb') as xls:
-            response = HttpResponse(xls, content_type="application/vnd.vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response = HttpResponse(xls,
+                                    content_type="application/vnd.vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             response['Content-Disposition'] = 'attachment; filename="' + name + '"'
             return response
 
