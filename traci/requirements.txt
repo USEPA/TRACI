@@ -13,24 +13,24 @@
 
 atomicwrites==1.3.0             # Simple high-level API that wraps a very flexible class-based API.
 autopep8==1.4.4                 # Automatically formats Python code to conform to the PEP 8 style guide.
-coverage==4.5.3                 # Measures code coverage, typically during test execution.
+coverage==4.5.4                 # Measures code coverage, typically during test execution.
 Django==2.2.3                   # Python Modules.
-djangorestframework==3.9.4      # Powerful and flexible toolkit for building Web APIs.
+djangorestframework==3.10.2     # Powerful and flexible toolkit for building Web APIs.
 django-session-security==2.6.5  # Provides a mechanism to logout inactive authenticated users.
 entrypoints==0.3                # Python packages to advertise objects with some common interface.
-flake8==3.7.7                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder's McCabe script.
+flake8==3.7.8                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder's McCabe script.
 isort==4.3.21                   # Python utility / library to sort imports alphabetically, and automatically separated into sections.
 lazy-object-proxy==1.4.1        # A fast and thorough lazy object proxy.
 mccabe==0.6.1                   # McCabe checker, plugin for flake8.
 openpyxl==2.6.2                 # Python library to read/write Excel 2010 xlsx/xlsm/xltx/xltm files.
 pep8==1.7.1                     # Tool to check your Python code against some of the style conventions in PEP 8.
-pip==19.1.1                     # The PyPA recommended tool for installing Python packages.
+pip==19.2.1                     # The PyPA recommended tool for installing Python packages.
 pluggy==0.12.0                  # Core framework used by the pytest, tox, and devpi projects.
 psycopg2==2.8.3                 # Python-PostgreSQL Database Adapter.
 py==1.8.0                       # Python development support library.
 pycodestyle==2.5.0              # Tool to check your Python code against some of the style conventions in PEP 8 & PEP 257.
 pyflakes==2.1.1                 # Analyzes programs and detects various errors.
-pylint_django==2.0.10           # pylint_django.checkers.db_performance looks for migrations which add new model fields and these fields have a default value.
+pylint_django==2.0.11           # pylint_django.checkers.db_performance looks for migrations which add new model fields and these fields have a default value.
 pylint==2.3.1                   # Static code analysis tool which looks for programming errors, helps enforcing PEP 8 coding standard.
 pytest==5.0.1                   # Framework to write small tests, yet scales to support complex functional testing for apps/lib.
 pytz==2019.1                    # UTC is pytz.timezone('UTC') True.

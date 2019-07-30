@@ -440,7 +440,7 @@ def assertcontains(self, response, text, count=None, status_code=200,
             real_count, count,
             msg_prefix + "Found %d instances of %s in response (expected "
                          "%d)" % (
-                            real_count, text_repr, count)
+                real_count, text_repr, count)
         )
     else:
         self.assertTrue(real_count != 0,
@@ -592,7 +592,7 @@ def assertformseterror(self, response, formset, form_index, field, errors,
                                 msg_prefix + "The formset '%s', form %d in context %d "
                                              "does not contain the non-field error "
                                              "'%s' (actual errors: %s)" % (
-                                                formset, form_index, i, err, repr(non_field_errors))
+                                    formset, form_index, i, err, repr(non_field_errors))
                                 )
             else:
                 non_form_errors = context[formset].non_form_errors()
@@ -1060,8 +1060,8 @@ class TransactionTestCase(SimpleTestCase):
                     (  # Inhibit the post_migrate signal when using serialized
                         # rollback to avoid trying to recreate the
                         # serialized data.
-                        self.serialized_rollback and
-                        hasattr(connections[db_name],
+                            self.serialized_rollback and
+                            hasattr(connections[db_name],
                                     '_test_serialized_contents')
                     )
             )
