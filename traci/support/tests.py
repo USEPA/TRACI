@@ -200,7 +200,7 @@ class TestSupport(TestCase):
     # def test_support_post_one(self):
     #    """Tests the support ticket post method on an invalid form."""
     #    response = self.client.post("/support/create/suggestion/", {})
-    #    # TODO Assert?
+    # TODO Assert?
     #    # self.assertContains(response, 'This field is required.', 7, 200)
     #    # self.assertContains(response, 'Temperature values are required and
     #    # must be greater than 0!', 1, 200)
@@ -209,7 +209,7 @@ class TestSupport(TestCase):
     #    """Tests the support ticket post method on an Valid form."""
     #    data = SUPPORT_PASS_ONE.__dict__
     #    response = self.client.post("/support/create/suggestion/", data)
-    #    # TODO Assert?
+    # TODO Assert?
 
     # def test_support_ticket_edit_one(self):
     #     """Test the support ticket edit form when you use suggestion."""
