@@ -32,6 +32,7 @@ jdcal==1.4.1                    # Julian dates from proleptic Gregorian and Juli
 lazy-object-proxy==1.4.1        # A fast and thorough lazy object proxy.
 mccabe==0.6.1                   # McCabe checker, plugin for flake8.
 more-itertools==7.2.0           # More routines for operating on iterables, beyond itertools.
+mypy==0.720                     # Optional static typing for Python.
 openpyxl==2.6.2                 # Python library to read/write Excel 2010 xlsx/xlsm/xltx/xltm files.
 packaging==19.1                 # Core utilities for Python packages.
 pep8==1.7.1                     # Tool to check your Python code against some of the style conventions in PEP 8.
