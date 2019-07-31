@@ -15,13 +15,15 @@
     <!-- tab navigation -->
     <ul class="nav nav-tabs">
         <li>
-            <a href="" data-toggle="tab">Scenario</a>
+            <li class="{% if open_tab == 'scenario' %}active{% endif %}">
+            <a href="#scenario" data-toggle="tab">Scenario</a>
         </li>
         <li class="{% if open_tab == 'teams' %}active{% endif %}">
             <a href="#teams" data-toggle="tab">Teams</a>
         </li>
         <li>
-            <a href="" data-toggle="tab">Inventory of Stressors</a>
+            <li class="{% if open_tab == 'Inventory of Stressors' %}active{% endif %}">
+            <a href="#Inventory of Stressors" data-toggle="tab">Inventory of Stressors</a>
         </li>
     </ul>
 
