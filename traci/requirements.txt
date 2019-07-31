@@ -11,18 +11,29 @@
 # All of these packages appear to be necessary for both Windows and Linux environments. #
 #---------------------------------------------------------------------------------------#
 
+astroid==2.25                   # Currently the library powering pylint’s capabilities.
 atomicwrites==1.3.0             # Simple high-level API that wraps a very flexible class-based API.
+attrs==19.1.0                   # Class decorator and a way to declaratively define the attributes on that class.
 autopep8==1.4.4                 # Automatically formats Python code to conform to the PEP 8 style guide.
+certifi==2019.6.16              # Collection of Root Certificates for validating trustworthiness of SSL certificates while verifying identity TLS hosts.
+chardet==3.0.4                  # Universal encoding detector for Python 2 and 3.
+colorama==0.4.1                 # Cross-platform colored terminal text.
 coverage==4.5.4                 # Measures code coverage, typically during test execution.
+django-session-security==2.6.5  # Provides a mechanism to logout inactive authenticated users.
 Django==2.2.3                   # Python Modules.
 djangorestframework==3.10.2     # Powerful and flexible toolkit for building Web APIs.
-django-session-security==2.6.5  # Provides a mechanism to logout inactive authenticated users.
 entrypoints==0.3                # Python packages to advertise objects with some common interface.
+et-xmlfile==1.0.1               # An implementation of lxml.xmlfile for the standard library.
 flake8==3.7.8                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder's McCabe script.
+idna==2.8                       # Internationalized Domain Names in Applications (IDNA).
+importlib-metadata==0.19        # Library to access the metadata for a Python package.
 isort==4.3.21                   # Python utility / library to sort imports alphabetically, and automatically separated into sections.
+jdcal==1.4.1                    # Julian dates from proleptic Gregorian and Julian calendars.
 lazy-object-proxy==1.4.1        # A fast and thorough lazy object proxy.
 mccabe==0.6.1                   # McCabe checker, plugin for flake8.
+more-itertools==7.2.0           # More routines for operating on iterables, beyond itertools.
 openpyxl==2.6.2                 # Python library to read/write Excel 2010 xlsx/xlsm/xltx/xltm files.
+packaging==19.1                 # Core utilities for Python packages.
 pep8==1.7.1                     # Tool to check your Python code against some of the style conventions in PEP 8.
 pip==19.2.1                     # The PyPA recommended tool for installing Python packages.
 pluggy==0.12.0                  # Core framework used by the pytest, tox, and devpi projects.
@@ -31,7 +42,9 @@ py==1.8.0                       # Python development support library.
 pycodestyle==2.5.0              # Tool to check your Python code against some of the style conventions in PEP 8 & PEP 257.
 pyflakes==2.1.1                 # Analyzes programs and detects various errors.
 pylint_django==2.0.11           # pylint_django.checkers.db_performance looks for migrations which add new model fields and these fields have a default value.
+pylint-plugin-utils==0.5        # Utilities and helpers for writing Pylint plugins.
 pylint==2.3.1                   # Static code analysis tool which looks for programming errors, helps enforcing PEP 8 coding standard.
+pyparsing==2.4.2                # Python parsing module.
 pytest==5.0.1                   # Framework to write small tests, yet scales to support complex functional testing for apps/lib.
 pytz==2019.1                    # UTC is pytz.timezone('UTC') True.
 requests==2.22.0                # Automatically decompresses gzip-encoded responses, decodes response content to unicode when possible.
