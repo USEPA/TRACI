@@ -75,7 +75,6 @@ class UsernameReminderRequestView(FormView):
         :param kwargs:
         :return:
         """
-
         form = self.form_class(request.POST)
         try:
             if form.is_valid():
@@ -131,11 +130,13 @@ class UsernameReminderRequestView(FormView):
 
 class PasswordResetRequestView(FormView):
     """
-    View for starting the password reset process. This view renders the form
-    to enter a username or email address. Upon successful entry of a user
-    email, an email is sent with password reset instructions and a confirmation
-    message displayed.
+    View for starting the password reset process.
+
+    This view renders the form to enter a username or email address. Upon
+    successful entry of a user email, an email is sent with password reset
+    instructions and a confirmation message displayed.
     """
+
     template_name = "registration/password_reset.html"
     form_class = PasswordResetRequestForm
 
@@ -226,17 +227,17 @@ class PasswordResetRequestView(FormView):
 
 class PasswordResetConfirmView(FormView):
     """
-    This view handles the actual password reset for a user that has forgotten
-    their password. The view first checks the hash in a password reset link
-    and then presents a form to enter a new password.
+    This view handles the actual password reset for user forgot their password.
+
+    The view first checks the hash in a password reset link and then presents a
+    form to enter a new password.
     """
+
     template_name = "registration/password_reset_confirm.html"
     form_class = SetPasswordForm
 
     def get(self, request, uidb64=None, token=None):
-        """
-        Responds to link from password reset email
-        """
+        """Responds to link from password reset email."""
         form = self.form_class(None)
         if uidb64 is None or token is None:
             return render(request, 'registration/password_reset_confirm_no_token.html', {'form': form})
@@ -292,12 +293,14 @@ class PasswordResetConfirmView(FormView):
 
 class ProfileView(FormView):
     """View of the user account information from the dashboard."""
+
     form_class = ProfileUpdateForm
 
     @method_decorator(login_required)
     def get(self, request, **kwargs):
         """
         Display the user profile.
+
         :param request:
         """
         form = ProfileUpdateForm(instance=request.user)
@@ -320,11 +323,13 @@ class ProfileView(FormView):
 
 class UserRegistrationView(FormView):
     """
-    View for starting the password reset process. This view renders the form
-    to enter a username or email address. Upon successful entry of a
-    user/email, an email is sent with password reset instructions and a
-    confirmation message displayed.
+    View for starting the password reset process.
+
+    This view renders the form to enter a username or email address. Upon
+    successful entry of a user/email, an email is sent with password reset
+    instructions and a confirmation message displayed.
     """
+
     template_register = "registration/register.html"
     # email and subject line for the message sent to the app admins
     admin_subject_template_name = 'registration/register_request_admin_subject.txt'
@@ -407,6 +412,7 @@ class UserApprovalView(TemplateView):
     This view can only be accessed by an administrator.  Typically accessed
     from the registration request email sent to the gemm email address.
     """
+
     template_name = "registration/register_approved.html"
     template_name_no_uid = "registration/register_approved_no_uid.html"
     # email and subject line for approval email
@@ -463,6 +469,7 @@ class UserDenialView(TemplateView):
     Upon successful entry of a user/email, an email is sent with password reset instructions
     and a confirmation message displayed.
     """
+
     template_name = "registration/register_denied.html"
     template_name_no_uid = "registration/register_denied_no_uid.html"
     # email and subject line for denial message
@@ -513,6 +520,7 @@ class UserActivationView(TemplateView):
     successful entry of a user/email, an email is sent with password reset
     instructions and a confirmation message displayed.
     """
+
     template_name = "registration/register_activated.html"
 
     def get(self, request, uidb64=None, token=None):

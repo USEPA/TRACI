@@ -81,6 +81,7 @@ class Sector(models.Model):
         return self.sector
 
     def __str__(self):
+        """Add docstring.""" # TODO
         return self.sector
 
 
@@ -96,6 +97,7 @@ class Role(models.Model):
         return self.role
 
     def __str__(self):
+        """Add docstring.""" # TODO
         return self.role
 
 
@@ -128,6 +130,7 @@ class UserProfile(models.Model):
                                 on_delete=models.CASCADE)
 
     def __str__(self):
+        """Add docstring.""" # TODO
         return self.user.last_name + ', ' + self.user.first_name
 
 

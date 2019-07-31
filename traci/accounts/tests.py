@@ -134,6 +134,7 @@ class _AssertTemplateUsedContext:
     def on_template_render(self, sender, signal, template, context, **kwargs):
         """
         Arguments:
+
             sender {[type]} -- [description]
             signal {[type]} -- [description]
             template {[type]} -- [description]
@@ -179,7 +180,7 @@ class _AssertTemplateNotUsedContext(_AssertTemplateUsedContext):
         return self.template_name not in self.rendered_template_names
 
     def message(self):
-        """Add dcostring."""
+        """Add docstring."""
         return '%s was rendered.' % self.template_name
 
 
@@ -274,6 +275,7 @@ def __call__(self, result=None):
 def _pre_setup(self):
     """
     Perform pre-test setup:
+
     * Create a test client.
     * Clear the mail test outbox.
     """
@@ -293,8 +295,9 @@ def settings(self, **kwargs):
 
 def modify_settings(self, **kwargs):
     """
-    Context mgr temp applies changes list setting reverts back to original
-    value when exiting the context.
+    Context mgr temp applies changes list setting.
+
+    Reverts back to original value when exiting the context.
     """
     return modify_settings(**kwargs)
 
@@ -303,8 +306,7 @@ def assertredirects(self, response, expected_url, status_code=302,
                     target_status_code=200, msg_prefix='',
                     fetch_redirect_response=True):
     """
-    Assert that a response redirected to a specific URL and that the
-    redirect URL can be loaded.
+    Assert response redirected to specific URL and redirect URL can be loaded.
 
     Will not work for external links since it uses the test client to do a
     request (use fetch_redirect_response=False to check such links without
@@ -426,11 +428,11 @@ def _assert_contains(self, response, text, status_code, msg_prefix, html):
 def assertcontains(self, response, text, count=None, status_code=200,
                    msg_prefix='', html=False):
     """
-    Assert that a response indicates that some content was retrieved
-    successfully, (i.e., the HTTP status code was as expected) and that
-    ``text`` occurs ``count`` times in the content of the response.
-    If ``count`` is None, the count does not matter - the assertion is true
-    if the text occurs at least once in the response.
+    Assert response indicates that some content was retrieved successfully.
+
+    (i.e., the HTTP status code was as expected) and ``text`` occur ``count``
+    times in the content of the response. If ``count`` is None, the count does
+    not matter - assertion is true if text occurs at least once in response.
     """
     text_repr, real_count, msg_prefix = self._assert_contains(
         response, text, status_code, msg_prefix, html)
@@ -451,9 +453,10 @@ def assertcontains(self, response, text, count=None, status_code=200,
 def assertnotcontains(self, response, text, status_code=200, msg_prefix='',
                       html=False):
     """
-    Assert that a response indicates that some content was retrieved
-    successfully, (i.e., the HTTP status code was as expected) and that
-    ``text`` does not occurs in the content of the response.
+    Assert response indicates that some content was retrieved successfully.
+    
+    (i.e., the HTTP status code was as expected) and that ``text`` does not
+    occur in the content of the response.
     """
     text_repr, real_count, msg_prefix = self._assert_contains(
         response, text, status_code, msg_prefix, html)
@@ -1131,6 +1134,7 @@ class TestCase(TransactionTestCase):
 
     @classmethod
     def setupclass(cls):
+        """Add docstring.""" # TODO
         super().setupclass()
         if not conns_support_trans():
             return
@@ -1223,7 +1227,6 @@ class CheckCondition:
 
 def _deferredskip(condition, reason):
     """Add docstring."""  # TODO add docstring.
-
     def decorator(test_func):
         """Add docstring."""  # TODO add docstring.
         if not (isinstance(test_func, type) and
@@ -1430,16 +1433,16 @@ class LiveServerThread(threading.Thread):
 
 class LiveServerTestCase(TransactionTestCase):
     """
-    Do basically the same as TransactionTestCase but also launch a live HTTP
-    server in a separate thread so that the tests may use another testing
-    framework, such as Selenium for example, instead of the built-in dummy
-    client.
-    It inherits from TransactionTestCase instead of TestCase because the
-    threads don't share the same transactions (unless if using in-memory
-    sqlite)
-    and each thread needs to commit all their transactions so that the other
-    thread can see the changes.
+    Basically the same as TransactionTestCase.
+
+    In addition, launch a live HTTP server in separate thread so tests may use
+    another testing framework, e.g., Selenium for example, instead of built-in
+    dummy client. It inherits from TransactionTestCase instead of TestCase
+    because the threads don't share the same transactions (unless if using
+    in-memory sqlite) and each thread needs to commit all their transactions so
+    the other thread can see the changes.
     """
+
     host = 'localhost'
     port = 0
     server_thread_class = LiveServerThread
@@ -1516,6 +1519,7 @@ class SerializeMixin:
 
     Place it early in the MRO in order to isolate setupclass()/teardownclass().
     """
+
     lockfile = None
 
     @classmethod
