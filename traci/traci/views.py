@@ -145,11 +145,11 @@ def download_file(reposnse, name):
 
 @login_required
 def download_manual(request):
-    """Receives GET requests will start download GWSC user manual stored on the server."""
+    """Receives GET requests will start download TRACI user manual stored on the server."""
     return download_file(request, MANUAL_NAME)
 
 
 @login_required
 def download_excel_tool(request):
-    """Receives GET requests will start download GWSC Excel Tool stored on the server."""
+    """Receives GET requests will start download TRACI Excel Tool stored on the server."""
     return download_file(request, EXCEL_TOOL_NAME)

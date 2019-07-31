@@ -47,7 +47,7 @@ class SupportForm(forms.ModelForm):
                               help_text="Please Submit Your Return Email Address")
 
     class Meta:
-        """Add doctring."""
+        """Add docstring."""
 
         model = Support
         fields = (
@@ -93,7 +93,7 @@ class SupportAdminForm(forms.ModelForm):
                               required=False)
 
     class Meta:
-        """Add doctring."""
+        """Add docstring."""
 
         model = Support
         fields = (
@@ -113,7 +113,7 @@ class SupportTypeForm(forms.ModelForm):
         attrs={'class': 'form-control'}), required=False)
 
     class Meta:
-        """Add doctring."""
+        """Add docstring."""
 
         model = SupportType
         fields = ("name",)

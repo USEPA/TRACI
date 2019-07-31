@@ -13,8 +13,7 @@ Available functions:
 # TODO Test Email sender:
 # https://stackoverflow.com/questions/3728528/testing-email-sending
 
-# from GSC_SSSENR.calculate import calculate_bredehoeft, calculate_schmidt,
-# calculate_hatch, calculate_mccallum, sub_datetime_strings
+# This needs to be geared to TRACI not GWSC.
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.test.client import RequestFactory
@@ -190,13 +189,13 @@ class TestSupport(TestCase):
     #     """Test the support ticket form when you use suggestion."""
     #     # create/(?P<support_type_name>\w+)
     #     response = self.client.get('/support/create/suggestion/')
-    #     self.assertContains(response, 'Describe your suggestion for GWSC below.', 1, 200)
+    #     self.assertContains(response, 'Describe your suggestion for TRACI below.', 1, 200)
 
     # def test_support_ticket_create_two(self):
     #     """Test the support ticket form when you do not use suggestion."""
     #     # create/(?P<support_type_name>\w+)
     #     response = self.client.get('/support/create/OtherWordsHERE/')
-    #     self.assertContains(response, 'Describe the problem you encountered with GWSC below.', 1, 200)
+    #     self.assertContains(response, 'Describe the problem you encountered with TRACI below.', 1, 200)
 
     # def test_support_post_one(self):
     #    """Tests the support ticket post method on an invalid form."""
@@ -216,4 +215,4 @@ class TestSupport(TestCase):
     #     """Test the support ticket edit form when you use suggestion."""
     #     # edit/(?P<support_type_name>\w+)/(?P<obj_id>\d+)/$'
     #     response = self.client.get('/support/edit/suggestion/1/')
-    #     self.assertContains(response, 'Describe your suggestion for GWSC below.', 1, 404)
+    #     self.assertContains(response, 'Describe your suggestion for TRACI below.', 1, 404)
