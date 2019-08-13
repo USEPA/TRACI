@@ -5,17 +5,16 @@
 
 """Definition of views."""
 
+from datetime import datetime
+from os.path import join
 import requests
 import subprocess
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import render, redirect
-from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-from datetime import datetime
-from os.path import join
 from traci.settings import CITE_SCRIPT, DOWNLOADS_DIR, MANUAL_NAME, EXCEL_TOOL_NAME
 
 
@@ -30,14 +29,17 @@ def home(request):
 def contact(request):
     """Renders the contact page."""
     assert isinstance(request, HttpRequest)
+    # TODO add the 'link' to TRACI on contacts.html from
+    # https://www.epa.gov/chemical-research/tool-reduction-and-assessment-chemicals-and-other-environmental-impacts-traci
+    link = 'TRACI'
     return render(
         request,
         'contact.html',
         {
             'title': 'Contact US EPA, Office of Research & Development',
             'message': 'For additional information on TRACI.',
-            'link': 'TRACI'# TODO add the 'link' to TRACI on contacts.html from  https://www.epa.gov/chemical-research/tool-reduction-and-assessment-chemicals-and-other-environmental-impacts-traci
-            'year': datetime.now().year,
+            'link': link,
+            'year': datetime.now().year
         }
     )
 
@@ -50,7 +52,10 @@ def about(request):
         'main/about.html',
         {
             'title': 'Tool for the Reduction and Assessment of Chemical and Other Environmental Impacts (TRACI)',
-            'message': 'TRACI allows the examination of the potential for impacts associated with fossil fuel use and chemical releases resulting from the processes involved in producing a product. TRACI allows the user to examine the potential for impacts for a single life cycle stage, or the whole life cycle, and to compare the results among products or processes.',
+            'message': '''TRACI allows the examination of the potential for impacts associated with fossil
+                          fuel use and chemical releases resulting from the processes involved in producing a product.
+                          TRACI allows the user to examine the potential for impacts for a single life cycle stage,
+                          or the whole life cycle, and to compare the results among products or processes.''',
             'year': datetime.now().year,
         }
     )
@@ -94,29 +99,29 @@ def citation(request):
     :return:
     """
     process = subprocess.Popen([CITE_SCRIPT], stdout=subprocess.PIPE)
-    out, err = process.communicate()
+    out, _err = process.communicate()
     print(out)
     citation_split = out.split("\\r\\n")
     citation_str = citation_split[citation_split.len - 1]
     return citation_str
 
 
-def export_excel(form, results, type):
+def export_excel(_form, _results, _type):
     """Send results to the user as an Excel file."""
-    from openpyxl import Workbook
-    from openpyxl.styles import PatternFill, Font
-    from openpyxl.styles.borders import Border, Side
-    from openpyxl.styles.colors import Color
+    #from openpyxl import Workbook
+    #from openpyxl.styles import PatternFill, Font
+    #from openpyxl.styles.borders import Border, Side
+    #from openpyxl.styles.colors import Color
     filename = "Placeholder.xlsx"
     # Now return the generated excel sheet to be downloaded.
     response = HttpResponse(content_type="application/vnd.vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     response['Content-Disposition'] = 'attachment; filename="%s"' % filename
-    sheet.title = filename.split('.')[0]
-    workbook.save(response)
+    # sheet.title = filename.split('.')[0]
+    # workbook.save(response)
     return response
 
 
-def download_file(reposnse, name):
+def download_file(_reposnse, name):
     """Receives the path, name, extension of file to be returned to user."""
     name_split = name.split('.')
     ext = name_split[len(name_split) - 1]
@@ -136,8 +141,8 @@ def download_file(reposnse, name):
 
     elif 'xls' in ext:
         with open(file, 'rb') as xls:
-            response = HttpResponse(xls,
-                                    content_type="application/vnd.vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            response = HttpResponse(
+                xls, content_type="application/vnd.vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             response['Content-Disposition'] = 'attachment; filename="' + name + '"'
             return response
 

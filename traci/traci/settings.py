@@ -2,6 +2,7 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
+# pylint: skip-file
 
 
 """
@@ -165,7 +166,13 @@ CITE_SCRIPT = 'cite.' + SCRIPT_EXT
 
 APP_NAME = 'TRACI'
 APP_VERSION = '0.0.01'
-APP_DISCLAIMER = "Use of TRACI, including but not limited to the impact assessment modeling, does not create regulatory or scientific approval by the US EPA on any issues to which it is applied, nor does it release any users from any potential liability, either administratively or judicially, for any damage to human health or the environment.  The US EPA does not make any warranty concerning the correctness of the database, any actions taken by third parties as a result of using the model, or the merchantability or fitness for a particular purpose of the model.  The EPA does not endorse any products or services."
+APP_DISCLAIMER = '''Use of TRACI, including but not limited to the impact assessment modeling, 
+                   does not create regulatory or scientific approval by the US EPA on any issues to which it 
+                   is applied, nor does it release any users from any potential liability, either administratively 
+                   or judicially, for any damage to human health or the environment.  The US EPA does not make 
+                   any warranty concerning the correctness of the database, any actions taken by third parties 
+                   as a result of using the model, or the merchantability or fitness for a particular 
+                   purpose of the model.  The EPA does not endorse any products or services.'''
 
 try:
     from .local_settings import *  # pylint: disable=unused-wildcard-import,wildcard-import

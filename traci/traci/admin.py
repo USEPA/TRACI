@@ -12,6 +12,3 @@ Should be an Admin class for each Model that can be modified by an admin user.
 Available functions:
 - TBD
 """
-
-from django.contrib import admin
-from traci import models

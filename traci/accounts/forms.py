@@ -232,9 +232,10 @@ class ProfileUpdateForm(forms.ModelForm):
 class ProfileCreationForm(forms.ModelForm):
     """ProfileCreationForm. Form to create a new user profile."""
 
-    username = forms.CharField(label=_("Username"), widget=forms.TextInput(
-        attrs={'class': 'form-control required'}),
-        max_length=256, required=True)
+    username = forms.CharField(label=_("Username"),
+                               widget=forms.TextInput(
+                                   attrs={'class': 'form-control required'}),
+                               max_length=255, required=True)
     password1 = forms.CharField(label=_("Password"),
                                 widget=forms.PasswordInput(
                                     attrs={'class': 'form-control'}))
