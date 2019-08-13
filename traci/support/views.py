@@ -19,7 +19,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 from django.shortcuts import render
 from support.forms import InformationRequestForm, SupportForm, SupportAdminForm, SupportTypeForm, PriorityForm
 from support.models import Support, Priority, SupportType
@@ -63,11 +63,24 @@ class UserManualView(FormView):
     """
 
     form_class = InformationRequestForm
-
     def get(self, request, *args, **kwargs):
         """Present the request info form."""
         form = self.form_class()
         return render(request, 'main/manual.html', {'form': form})
+
+
+class EventsView(TemplateView):
+    """Support Upcoming Events view."""
+
+    def get(self, request, *args, **kwargs):
+        """
+        :param request:.
+
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return render(request, "main/events.html", {})
 
 
 @login_required

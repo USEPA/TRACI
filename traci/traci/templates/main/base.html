@@ -92,12 +92,14 @@
                     {% else %} class="dropdown menu-item" {% endif %} role="presentation">
                     <a  {% if request.path == go_to_support %} class="active-trail menu-link active"
                         {% elif request.path == user_manual %} class="active-trail menu-link active"
+                        {% elif request.path == events_url %} class="active-trail menu-link active"
                         {% else %} class="menu-link dropdown-toggle" {% endif %} data-toggle="dropdown" href="javascript:void(0)" role="menuitem">
                         Help <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="{% url 'go_to_support' %}">Suggestions</a></li>
                         <li><a href="{% url 'documentation' %}">User Documentation</a></li>
+                        <li><a href="{% url 'events' %}">Upcoming Events</a></li>
                     </ul>
                 </li>
 

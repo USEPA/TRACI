@@ -13,7 +13,7 @@ Available functions:
 """
 
 from django.conf.urls import url
-from support.views import RequestInformationView, UserManualView, create_support, \
+from support.views import RequestInformationView, UserManualView, create_support, EventsView, \
   edit_support, edit_support_admin, delete_support, list_supports, search_support, \
   show_support, create_support_type, edit_support_type, \
   delete_support_type, list_support_types, search_support_type, \
@@ -28,6 +28,7 @@ urlpatterns = [
         name="request_info"),
 
     url(r'^documentation/$', UserManualView.as_view(), name="documentation"),
+    url(r'events/', EventsView.as_view(), name='events'),
 
     url(r'^create/$', create_support, name='create_support'),
     url(r'^edit/(?P<obj_id>\d+)/$', edit_support, name='edit_support'),
