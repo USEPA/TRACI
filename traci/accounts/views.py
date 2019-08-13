@@ -587,8 +587,7 @@ def login(request, template_name='registration/login.html', redirect_field_name=
 
             return HttpResponseRedirect(redirect_to)
 
-        else:
-            error = "invalid username or password"
+        error = "invalid username or password"
 
     else:
         form = authentication_form(request)

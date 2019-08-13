@@ -122,9 +122,9 @@ class TeamEditView(FormView):
                 get_request, team_id=ctx['team_id'], format='json').rendered_content
             ctx['team'] = JSONParser().parse(BytesIO(ctx['team_data']))
             return render(request, self.template, ctx)
-        else:
-            # we should never get here, so just redirect to the dashboard
-            return HttpResponseRedirect(reverse('dashboard'))
+
+        # we should never get here, so just redirect to the dashboard
+        return HttpResponseRedirect(reverse('dashboard'))
 
 
 class TeamManagementView(FormView):
@@ -164,7 +164,7 @@ class TeamManagementView(FormView):
                     # check if the user already has a membership, this can happen if the user reloads the page
                     ctx['membership_list'] = TeamMembership.objects.filter(
                         team_id=ctx['team_id'], member_id=ctx['user_id']).all()
-                    if ctx['membership_list'] is None or ctx['membership_list']:
+                    if ctx['membership_list'] is None or not ctx['membership_list']:
                         # add a membership
                         ctx['team_obj'] = Team.objects.get(id=ctx['team_id'])
                         ctx['member_obj'] = User.objects.get(id=ctx['user_id'])
@@ -214,9 +214,9 @@ class TeamManagementView(FormView):
                 get_request, team_id=ctx['team_id'], nonmember=1, format='json').rendered_content
             ctx['nonmembers'] = JSONParser().parse(BytesIO(ctx['nonmembers_data']))
             return render(request, self.template, ctx)
-        else:
-            # we should never get here, so just redirect to the dashboard
-            return HttpResponseRedirect(reverse('dashboard'))
+
+        # we should never get here, so just redirect to the dashboard
+        return HttpResponseRedirect(reverse('dashboard'))
 
 
 #########################

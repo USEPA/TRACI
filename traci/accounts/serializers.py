@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
     """Serialized for users."""
 
     class Meta:
-        """Add docstring."""  # TODO add docstring.
+        """Meta data for the User Serializer."""
 
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'email')

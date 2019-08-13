@@ -6,16 +6,14 @@
 
 """Definition of urls for traci."""
 
-from traci.forms import BootstrapAuthenticationForm
+
+from django.conf.urls import url
+from django.contrib import admin
+from django.urls import include
+
 from traci.views import home, contact, about, DashboardView, citation, \
     download_manual, download_excel_tool
 
-from datetime import datetime
-from django.conf.urls import url
-from django.urls import include
-
-from django.conf.urls import include
-from django.contrib import admin
 admin.autodiscover()
 
 

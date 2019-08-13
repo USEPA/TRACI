@@ -22,8 +22,8 @@
             <a href="#teams" data-toggle="tab">Teams</a>
         </li>
         <li>
-            <li class="{% if open_tab == 'Inventory of Stressors' %}active{% endif %}">
-            <a href="#Inventory of Stressors" data-toggle="tab">Inventory of Stressors</a>
+            <li class="{% if open_tab == 'stressors' %}active{% endif %}">
+            <a href="#stressors" data-toggle="tab">Inventory of Stressors</a>
         </li>
     </ul>
 
@@ -59,7 +59,7 @@
                       </tbody></table>
             </div>
         </div>
-    </div>
+        
         <!-- Add scenario .xlxs file to open here -->
 
         <!-- List of teams tab -->
@@ -126,13 +126,15 @@
 
         <!-- Inventory of Stressors tab -->
         <!-- Will need to get with Jake on how to add the inventory here from TRACI workbook -->
-        <div class="tab-pane fade {% if open_tab == 'Inventory of Stressors' %}active{% endif %} in" id="Inventory of Stressors">
+        <div class="tab-pane fade {% if open_tab == 'Inventory of Stressors' %}active{% endif %} in" id="stressors">
             <div class="padding10">
-             <img src="DOCS\traci.png" alt="TRACI" width="317" height="218">
+            {% load staticfiles %}
+             <img src="{% static 'images/traci.png' %}" alt="TRACI">
         <!-- Add stressors here from TRACI tool -->
 
     </div>
-</div>
+        </div>
+    </div>
 
 <script>
     $(document).ready( function () {

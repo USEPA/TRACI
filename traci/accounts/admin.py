@@ -17,7 +17,7 @@ from accounts.models import UserProfile
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    """Assigns 'USER ID' number, once user registers with GEMM."""
+    """Assigns 'USER ID' number, once user registers with HELP."""
 
     list_display = ("user_id", )
     search_fields = ("user__username",)
