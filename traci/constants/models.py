@@ -40,3 +40,9 @@ WGK_CHOICES = (('', ''), ('0', 'nwg'), ('1', 'WGK 1'), ('2', 'WGK 2'), ('3', 'WG
 
 YN_CHOICES = (('', ''), ('Y', 'Yes'), ('N', 'No'))
 ONLY_YN_CHOICES = (('Y', 'Y'),)
+
+
+TRACI_FLAG_OPTIONS = (('N/A', 'n/a'),
+                      ('RECOMMENDED','Recommended'),
+                      ('INTERIM', 'Interim'))
+DEFAULT_TRACI_FLAG = 'N/A'
