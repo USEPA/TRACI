@@ -22,23 +22,50 @@
 
 {% block scripts %}
 <script>
-    const LI_START = "<li class='list-group-item'>";
-    const LI_END = "</li>";
-    const CLOSE_BADGE = '<button class="float-right btn-sm" onclick="removeSelectedSubstance(this)">Remove</button>';
-    $(function() {
+    const LI = [
+        '<li class="list-group-item">', '!SUB!',
+        '<button class= "float-right btn-sm" onclick="removeSelectedSubstance(this, \'!SUB!\')">',
+        'Remove',
+        '</button></li> '
+    ].join('');
+    const SUBSTANCES_SOURCE = '/substances/api/substance_list/';
+
+    var selected = [];
+
+    $(function () {
         $("#substances").autocomplete({
-            source: "/substances/api/substance_list/",
+            source: function (request, response) {
+                $.ajax({
+                    url: SUBSTANCES_SOURCE,
+                    data: {
+                        'term': $('#substances').val(),
+                        'except': JSON.stringify(selected)
+                    },
+                    cache: false,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data) response(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus);
+                    }
+                })
+            },
             select: function (event, ui) {
-                $("#selectedSubstances").append(LI_START + ui.item.value + CLOSE_BADGE + LI_END);
+                selected.push(ui.item.value);
+                // Replace all instances of string !SUB! with the substance name
+                $("#selectedSubstances").append(LI.replace(/!SUB!/g, ui.item.value));
+                updateSource();
             },
             minLength: 2,
         });
     });
-
-    function removeSelectedSubstance(el) {
-        console.log('removeSelectedSubstance');
-        console.log(el);
+    
+    function removeSelectedSubstance(el, sub) {
         $(el).closest('li').remove();
+        selected.splice($.inArray(sub, selected), 1);
+        updateSource();
     }
 </script>
 {% endblock %}
