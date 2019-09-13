@@ -1,0 +1,44 @@
+﻿{% extends "main/base.html" %}
+
+{% block content %}
+
+<h2>Scenario Page TODO</h2>
+
+<div class="row">
+    <div class="col-sm-5">
+        <div class="ui-widget">
+            <label for="substances">Substance Search: </label>
+            <input id="substances" class="form-control" />
+        </div>
+    </div>
+    <div class="col-sm-7">
+        <label for="selectedSubstances">Selected Substances: </label>
+        <ul id="selectedSubstances" class="list-group">
+
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const LI_START = "<li class='list-group-item'>";
+    const LI_END = "</li>";
+    const CLOSE_BADGE = '<button class="float-right btn-sm" onclick="removeSelectedSubstance(this)">Remove</button>';
+    $(function() {
+        $("#substances").autocomplete({
+            source: "/substances/api/substance_list/",
+            select: function (event, ui) {
+                $("#selectedSubstances").append(LI_START + ui.item.value + CLOSE_BADGE + LI_END);
+            },
+            minLength: 2,
+        });
+    });
+
+    function removeSelectedSubstance(el) {
+        console.log('removeSelectedSubstance');
+        console.log(el);
+        $(el).closest('li').remove();
+    }
+</script>
+{% endblock %}
