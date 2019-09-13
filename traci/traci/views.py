@@ -91,6 +91,23 @@ class DashboardView(TemplateView):
         return render(request, 'main/dashboard.html', ctx)
 
 
+class ScenarioView(TemplateView):
+    """View for running a scenario."""
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        """Render the scenario template."""
+        ctx = {}
+        return render(request, "scenario.html", ctx)
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        """Render the scenario template."""
+        # TODO
+        ctx = {}
+        return render(request, "scenario.html", ctx)
+
+
 def citation(request):
     """
     Download TRACI citations as a text file.

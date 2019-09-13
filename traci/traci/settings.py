@@ -50,8 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'accounts',
-    'teams',
+    'substances',
     'support',
+    'teams',
     'rest_framework',
     'traci',
 ]
