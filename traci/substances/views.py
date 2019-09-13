@@ -13,8 +13,11 @@ Available functions:
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
+from django.db.models import Q
 from django.http import HttpResponse
+from functools import reduce
 import json
+from operator import and_, or_
 from substances.models import Substance
 from substances.serializers import SubstanceSerializer
 
@@ -38,7 +41,12 @@ def get_substances(request):
     """Retrieve a filtered list of substances."""
     if request.is_ajax():
         q = request.GET.get('term', '')
-        substances = Substance.objects.filter(name__icontains = q)[:20]
+        exceptions = json.loads(request.GET.get('except', '[]'))
+        if exceptions:
+            substances = Substance.objects.exclude(
+                reduce(or_, [Q(name__iexact=q) for q in exceptions])).filter(name__icontains = q)[:20]
+        else:
+            substances = Substance.objects.filter(name__icontains = q)[:20]
         results = []
         for subst in substances:
             substance_json = {}
