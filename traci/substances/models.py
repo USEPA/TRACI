@@ -18,6 +18,7 @@ from constants.models import TRACI_FLAG_OPTIONS, DEFAULT_TRACI_FLAG
 
 class Ecotox(models.Model):
     """Information related to a chemical's ecotoxicity potential."""
+
     ecotox_airu = models.FloatField(blank=True, null=True, default=0)
     ecotox_airc = models.FloatField(blank=True, null=True, default=0)
     ecotox_waterc = models.FloatField(blank=True, null=True, default=0)
@@ -30,13 +31,15 @@ class Ecotox(models.Model):
 
 
 class FossilFuel(models.Model):
-    """Information related to Fossil Fuel CF (MJ/MJ) for specific Fossil Fuels Consumed."""
+    """Info link Fossil Fuel CF (MJ/MJ) for specific Fossil Fuels Consumed."""
+
     name = models.CharField(blank=False, null=False, max_length=255)
     cf = models.FloatField(blank=False, null=False, default=0)
 
 
 class Hhcf(models.Model):
-    """Information related to a chemical's Human Health Characterization Factor."""
+    """Info related to a chemical's Human Health Characterization Factor."""
+
     hhcf_urban_air_cancer = models.FloatField(blank=True, null=True, default=0)
     hhcf_urban_air_noncanc = models.FloatField(blank=True, null=True, default=0)
     hhcf_rural_air_cancer = models.FloatField(blank=True, null=True, default=0)
@@ -59,6 +62,7 @@ class Hhcf(models.Model):
 
 class Substance(models.Model):
     """Substance object contains information related to chemicals and other substances."""
+
     name = models.CharField(blank=False, null=False, max_length=255)
     cas = models.CharField(blank=False, null=False, max_length=32)
     formatted_cas = models.CharField(blank=False, null=False, max_length=32)
