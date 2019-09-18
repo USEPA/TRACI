@@ -125,10 +125,10 @@ def citation(request):
 
 def export_excel(_form, _results, _type):
     """Send results to the user as an Excel file."""
-    #from openpyxl import Workbook
-    #from openpyxl.styles import PatternFill, Font
-    #from openpyxl.styles.borders import Border, Side
-    #from openpyxl.styles.colors import Color
+    # from openpyxl import Workbook
+    # from openpyxl.styles import PatternFill, Font
+    # from openpyxl.styles.borders import Border, Side
+    # from openpyxl.styles.colors import Color
     filename = "Placeholder.xlsx"
     # Now return the generated excel sheet to be downloaded.
     response = HttpResponse(content_type="application/vnd.vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -138,7 +138,7 @@ def export_excel(_form, _results, _type):
     return response
 
 
-def download_file(_reposnse, name):
+def download_file(_response, name):
     """Receives the path, name, extension of file to be returned to user."""
     name_split = name.split('.')
     ext = name_split[len(name_split) - 1]
