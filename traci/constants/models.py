@@ -43,6 +43,6 @@ ONLY_YN_CHOICES = (('Y', 'Y'),)
 
 
 TRACI_FLAG_OPTIONS = (('N/A', 'n/a'),
-                      ('RECOMMENDED','Recommended'),
+                      ('RECOMMENDED', 'Recommended'),
                       ('INTERIM', 'Interim'))
 DEFAULT_TRACI_FLAG = 'N/A'
