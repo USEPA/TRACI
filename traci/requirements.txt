@@ -34,7 +34,7 @@ mccabe==0.6.1                   # McCabe checker, plugin for flake8.
 more-itertools==7.2.0           # More routines for operating on iterables, beyond itertools.
 mypy==0.720                     # Optional static typing for Python.
 openpyxl==2.6.3                 # Python library to read/write Excel 2010 xlsx/xlsm/xltx/xltm files.
-packaging==19.1                 # Core utilities for Python packages.
+packaging==19.2                 # Core utilities for Python packages.
 pep8==1.7.1                     # Tool to check your Python code against some of the style conventions in PEP 8.
 # pip==19.2.3                   # The PyPA recommended tool for installing Python packages.
 pluggy==0.13.0                  # Core framework used by the pytest, tox, and devpi projects.
@@ -53,6 +53,8 @@ setuptools==41.2.0              # Easily download, build, install, upgrade, and 
 six==1.12.0                     # Python 2 and 3 compatibility utilities.
 sqlparse==0.3.0                 # Non-validating SQL parser provides support parsing, splitting and formatting SQL statements.
 Typed-ast==1.4.0                # Python 3 package that provides a parser similar to the standard ast library.
+typing-extensions==3.7.4        # Backported and Experimental Type Hints for Python 3.5+.
+urllib3==1.25.5                 # HTTP library with thread-safe connection pooling, file post, and more.
 wcwidth==0.1.7                  # Library for implementing a Terminal Emulator, or programs that carefully produce output to be interpreted by one.
 wrapt==1.11.2                   # Transparent object proxy for Python, can be used as basis for construction of function wrappers and decorator functions.
 zipp==0.6.0                     # A pathlib-compatible Zipfile object wrapper. A backport of the Path object.
