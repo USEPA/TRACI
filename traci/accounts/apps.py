@@ -22,6 +22,10 @@ in the apps.py.
 # "Effective Python, 59 Specific Ways to Write Better Python," Addison-
 # Wesley: New York, 2015. ISBN-13: 978-0-13-403428-7. p. 17.
 
+# Python Version Installed to check python version against requirements.txt
+import sys
+print(sys.version)
+
 from django.apps import AppConfig
 
 
