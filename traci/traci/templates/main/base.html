@@ -246,29 +246,26 @@
             </div>
         </section>
 
-        <footer class="main-footer clearfix" role="contentinfo">
-            <div class="main-footer__inner">
-                <div class="region-footer">
-                    <div class="block block-pane block-pane-epa-global-footer">
-                        <h4>Software Disclaimer</h4>
-                        <div>
-                            {{APP_DISCLAIMER}}
-                        </div>
-                        <div>
-                            Version {{APP_VERSION}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    
-
-
         <script src="{% static 'EPA_files/jquery.js.download' %}"></script>
         <script src="{% static 'EPA_files/js.js.download' %}"></script>
         <!--[if lt IE 9]><script src="https://www.epa.gov/sites/all/themes/epa/js/ie.js"></script><![endif]-->
         <!-- REMOVE if not using -->
         {% block scripts %}{% endblock %}
 
+        <footer class="main-footer clearfix" role="contentinfo">
+            <div class="main-footer__inner">
+                <div class="region-footer">
+                    <div class="block block-pane block-pane-epa-global-footer">
+                        <h4>Software Disclaimer</h4>
+                        <div class="my-1">
+                            {{APP_DISCLAIMER}}
+                        </div>
+                        <div class="my-3">
+                            Version {{APP_VERSION}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
