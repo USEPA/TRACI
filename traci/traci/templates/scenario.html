@@ -19,7 +19,7 @@
 
 <div class="row my-1">
     <div class="col-sm-12 text-center">
-        <button class="btn btn-sm btn-info mx-1">Run Calculation</button>
+        <button class="btn btn-sm btn-info mx-1" onclick="runCalculation()">Run Calculation</button>
         <button class="btn btn-sm btn-warning mx-1" onclick="clearSubstances()">Clear Substances</button>
     </div>
 </div>
@@ -62,7 +62,11 @@
                 selected.push(ui.item.value);
                 // Replace all instances of string !SUB! with the substance name
                 $("#selectedSubstances").append(LI.replace(/!SUB!/g, ui.item.value));
-                updateSource();
+                // Remove the selected substance from the dropdown.
+                $("#ui-id-1 li:contains('" + ui.item.value + "')")[0].remove();
+                // If we cleanly return from this function, then the dropdown will disappear.
+                // This throw is a dirty workaround to keep the dropdown open after selecting a substance.
+                throw 'Expected error...';
             },
             minLength: 2,
         });
@@ -71,7 +75,7 @@
     function removeSelectedSubstance(el, sub) {
         $(el).closest('li').remove();
         selected.splice($.inArray(sub, selected), 1);
-        updateSource();
+        //updateSource();
     }
 
     function clearSubstances() {
@@ -79,6 +83,10 @@
         selected.length = 0;
         // Empty the list
         $("#selectedSubstances").empty();
+    }
+
+    function runCalculation() {
+        console.log("TODO run calculation");
     }
 </script>
 {% endblock %}
