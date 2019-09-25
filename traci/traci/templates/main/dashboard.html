@@ -18,7 +18,7 @@
             <li class="{% if open_tab == 'scenario' %}active{% endif %}">
             <a href="#scenario" data-toggle="tab">Scenario</a>
         </li>
-        <li class="{% if open_tab == 'teams' %}active{% endif %}">
+        <li class="{% if open_tab != 'scenario' and open_tab != 'stressors' %}active{% endif %}">
             <a href="#teams" data-toggle="tab">Teams</a>
         </li>
         <li>
@@ -141,19 +141,19 @@
         <div class="tab-pane fade {% if open_tab == 'Inventory of Stressors' %}active{% endif %} in" id="stressors">
             <div class="padding10">
             {% load staticfiles %}
-             <img src="{% static 'images/traci.png' %}" alt="TRACI">
+             <img src="{% static 'img/traci.png' %}" alt="TRACI">
         <!-- Add stressors here from TRACI tool -->
 
     </div>
         </div>
     </div>
+{% endblock %}
 
-<script>
-    $(document).ready( function () {
-        $('[data-toggle="popover"]').popover({html:true})
-        var userList = new List('project_list', { valueNames: [ 'name' ]});
-        var teamList = new List('team_list', { valueNames: [ 'name' ]});
-        var compoundList = new List('compound_list', { valueNames: [ 'name' ]});
-    } );
-</script>
+{% block scripts %}
+    {% load staticfiles %}
+    <script>
+        $(document).ready( function () {
+            $('[data-toggle="popover"]').popover({ html: true });
+        } );
+    </script>
 {% endblock %}

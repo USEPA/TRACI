@@ -1,5 +1,6 @@
 # Other custom ignores:
 .mypy_cache/
+node_modules/
 
 # Default taken from https://github.com/github/gitignore/blob/master/Python.gitignore
 # *log* # Causing login.html and similar files to be ignored.

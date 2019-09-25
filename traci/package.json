@@ -1,0 +1,16 @@
+{
+    "name": "traci",
+    "private": true,
+    "dependencies": {
+        "bootstrap": "^4.3.1",
+        "dist": "^0.1.2",
+        "gulp": "^4.0.2",
+        "jquery": "^3.4.1",
+        "jquery-ui-dist": "^1.12.1",
+        "jquery-validation": "^1.19.1",
+        "popper.js": "^1.15.0"
+    },
+    "scripts": {
+        "install": "gulp"
+    }
+}
