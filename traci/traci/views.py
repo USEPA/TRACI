@@ -29,9 +29,8 @@ def home(request):
 def contact(request):
     """Renders the contact page."""
     assert isinstance(request, HttpRequest)
-    # TODO add the 'link' to TRACI on contacts.html from
-    # https://www.epa.gov/chemical-research/tool-reduction-and-assessment-chemicals-and-other-environmental-impacts-traci
-    link = 'TRACI'
+    link = 'https://www.epa.gov/chemical-research/tool-reduction-and-assessment-chemicals-and-other-environmental-impacts-traci'
+    link_label = 'TRACI'
     return render(
         request,
         'contact.html',
@@ -39,6 +38,7 @@ def contact(request):
             'title': 'Contact US EPA, Office of Research & Development',
             'message': 'For additional information on TRACI.',
             'link': link,
+            'link_label': link_label,
             'year': datetime.now().year
         }
     )
@@ -102,7 +102,7 @@ class ScenarioView(TemplateView):
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
-        """Render the scenario template."""
+        """Process the data from a Scenario and run calculations."""
         # TODO
         ctx = {}
         return render(request, "scenario.html", ctx)
