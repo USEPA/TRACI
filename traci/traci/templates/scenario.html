@@ -13,18 +13,24 @@
     </div>
     <div class="col-sm-7">
         <label for="selectedSubstances">Selected Substances: </label>
-        <ul id="selectedSubstances" class="list-group">
-
-        </ul>
+        <ul id="selectedSubstances" class="list-group"></ul>
     </div>
 </div>
+
+<div class="row my-1">
+    <div class="col-sm-12 text-center">
+        <button class="btn btn-sm btn-info mx-1">Run Calculation</button>
+        <button class="btn btn-sm btn-warning mx-1" onclick="clearSubstances()">Clear Substances</button>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
     const LI = [
         '<li class="list-group-item">', '!SUB!',
-        '<button class= "float-right btn-sm" onclick="removeSelectedSubstance(this, \'!SUB!\')">',
+        '<button class= "float-right btn-sm mb-0" onclick="removeSelectedSubstance(this, \'!SUB!\')">',
         'Remove',
         '</button></li> '
     ].join('');
@@ -66,6 +72,13 @@
         $(el).closest('li').remove();
         selected.splice($.inArray(sub, selected), 1);
         updateSource();
+    }
+
+    function clearSubstances() {
+        // Clear the selected array.
+        selected.length = 0;
+        // Empty the list
+        $("#selectedSubstances").empty();
     }
 </script>
 {% endblock %}
