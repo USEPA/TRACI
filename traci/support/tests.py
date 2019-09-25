@@ -13,12 +13,11 @@ Available functions:
 # TODO Test Email sender:
 # https://stackoverflow.com/questions/3728528/testing-email-sending
 
-# This needs to be geared to TRACI not GWSC.
+# TODO This needs to be refactored for TRACI not GWSC.
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.test.client import RequestFactory
 from support.test_data.support_data import SUPPORT_ONE, data, files, SUPPORT_FORM
-# from support.test_data.support_forms import SUPPORT_PASS_ONE
 
 
 class TestSupport(TestCase):
@@ -134,7 +133,6 @@ class TestSupport(TestCase):
         response = self.client.post('/support/type/create/', SUPPORT_FORM)
         self.assertContains(response, 'id', 0, 302)
 
-# TODO commmented code.
     # def test_list_support_types_get(self):
     #     """Tests the list support types get."""
     #     response = self.client.get('/support/type/list/', SUPPORT_FORM)
@@ -200,7 +198,6 @@ class TestSupport(TestCase):
     # def test_support_post_one(self):
     #    """Tests the support ticket post method on an invalid form."""
     #    response = self.client.post("/support/create/suggestion/", {})
-    # TODO Assert?
     #    # self.assertContains(response, 'This field is required.', 7, 200)
     #    # self.assertContains(response, 'Temperature values are required and
     #    # must be greater than 0!', 1, 200)
@@ -209,7 +206,6 @@ class TestSupport(TestCase):
     #    """Tests the support ticket post method on an Valid form."""
     #    data = SUPPORT_PASS_ONE.__dict__
     #    response = self.client.post("/support/create/suggestion/", data)
-    # TODO Assert?
 
     # def test_support_ticket_edit_one(self):
     #     """Test the support ticket edit form when you use suggestion."""

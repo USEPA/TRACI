@@ -13,7 +13,7 @@ Available functions:
 """
 
 from django.conf.urls import url
-from substances.views import APISubstanceListView, get_substances
+from substances.views import get_substances
 
 urlpatterns = [
     url(r'^api/substance_list/', get_substances, name='substance_list'),

@@ -10,8 +10,6 @@ Available models:
 - None yet
 """
 
-from django.db import models
-
 
 #class Project(models.Model):
 #    """Project object contains LCI Data."""

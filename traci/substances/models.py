@@ -77,4 +77,3 @@ class Substance(models.Model):
 
     ecotox = models.OneToOneField(Ecotox, on_delete=models.CASCADE)
     hhcf = models.OneToOneField(Hhcf, on_delete=models.CASCADE)
-

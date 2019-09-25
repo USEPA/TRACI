@@ -65,7 +65,7 @@ class State(models.Model):
         Country, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        """Add docstring."""  # TODO add docstring.
+        """Method to stringify a State."""
         return self.state
 
 
@@ -81,7 +81,7 @@ class Sector(models.Model):
         return self.sector
 
     def __str__(self):
-        """Add docstring.""" # TODO
+        """Method to stringify a Sector."""
         return self.sector
 
 
@@ -97,7 +97,7 @@ class Role(models.Model):
         return self.role
 
     def __str__(self):
-        """Add docstring.""" # TODO
+        """Method to stringify a Role."""
         return self.role
 
 
@@ -130,7 +130,7 @@ class UserProfile(models.Model):
                                 on_delete=models.CASCADE)
 
     def __str__(self):
-        """Add docstring.""" # TODO
+        """Method to stringify a User Profile."""
         return self.user.last_name + ', ' + self.user.first_name
 
 

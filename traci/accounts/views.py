@@ -297,7 +297,7 @@ class ProfileView(FormView):
     form_class = ProfileUpdateForm
 
     @method_decorator(login_required)
-    def get(self, request, **kwargs):
+    def get(self, request, *args, **kwargs):
         """
         Display the user profile.
 

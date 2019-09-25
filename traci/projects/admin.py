@@ -13,6 +13,4 @@ Available functions:
 - TBD
 """
 
-from django.contrib import admin
-
 # Register your models here.

@@ -24,9 +24,8 @@ in the apps.py.
 
 # Python Version Installed to check python version against requirements.txt
 import sys
-print(sys.version)
-
 from django.apps import AppConfig
+print(sys.version)
 
 
 class AccountsConfig(AppConfig):

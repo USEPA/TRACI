@@ -25,7 +25,7 @@ class TeamManagementForm(forms.ModelForm):
                                attrs={'class': 'form-control'}), required=True)
 
     class Meta:
-        """Add docstring."""  # TODO add docstring.
+        """Meta data for the Team Management Form."""
 
         model = Team
         fields = ("name",)
