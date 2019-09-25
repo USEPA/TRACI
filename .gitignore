@@ -1,6 +1,8 @@
 # Other custom ignores:
 .mypy_cache/
 node_modules/
+traci/traci/static/admin/
+traci/traci/static/rest_framework/
 
 # Default taken from https://github.com/github/gitignore/blob/master/Python.gitignore
 # *log* # Causing login.html and similar files to be ignored.
