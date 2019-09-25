@@ -338,7 +338,7 @@ class APITeamMembershipListView(APIView):
 
     @classmethod
     def get_object(cls, p_id, user):
-        """Get team memberships for the provided user and p_id.""" 
+        """Get team memberships for the provided user and p_id."""
         try:
             team = (
                 Team.objects
@@ -389,7 +389,7 @@ class APITeamMembershipDetailView(APIView):
 
     @classmethod
     def get_object(cls, membership_id, user):
-        """Get current membership information for the provided user and membership_id.""" 
+        """Get current membership information for the provided user and membership_id."""
         try:
             current_membership = (
                 TeamMembership.objects
