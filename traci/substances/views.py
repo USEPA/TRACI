@@ -10,14 +10,14 @@ Available functions:
 - API GET substances
 """
 
+from functools import reduce
+import json
+from operator import or_
+from django.db.models import Q
+from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
-from django.db.models import Q
-from django.http import HttpResponse
-from functools import reduce
-import json
-from operator import and_, or_
 from substances.models import Substance
 from substances.serializers import SubstanceSerializer
 
@@ -30,7 +30,7 @@ class APISubstanceListView(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
 
-    def get(self, request, exclude=None, format=None):
+    def get(self, request, exclude=None, _format=None):
         """Return all substances."""
         substances = (Substance.objects.all())
         serializer = SubstanceSerializer(substances, many=True)
@@ -40,13 +40,13 @@ class APISubstanceListView(APIView):
 def get_substances(request):
     """Retrieve a filtered list of substances."""
     if request.is_ajax():
-        q = request.GET.get('term', '')
+        query = request.GET.get('term', '')
         exceptions = json.loads(request.GET.get('except', '[]'))
         if exceptions:
             substances = Substance.objects.exclude(
-                reduce(or_, [Q(name__iexact=q) for q in exceptions])).filter(name__icontains = q)[:20]
+                reduce(or_, [Q(name__iexact=query) for query in exceptions])).filter(name__icontains=query)[:20]
         else:
-            substances = Substance.objects.filter(name__icontains = q)[:20]
+            substances = Substance.objects.filter(name__icontains=query)[:20]
         results = []
         for subst in substances:
             substance_json = {}

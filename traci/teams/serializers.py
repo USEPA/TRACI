@@ -26,7 +26,7 @@ class TeamMembershipSerializer(serializers.ModelSerializer):
     member = UserSerializer(many=False)
 
     class Meta:
-        """Add docstring."""  # TODO add docstring.
+        """Meta data related to the Team Membership serializer."""
 
         model = TeamMembership
         fields = ('id', 'added_date', 'is_owner', 'can_edit', 'member')
@@ -50,7 +50,7 @@ class TeamMembershipModifySerializer(serializers.ModelSerializer):
                                         default=serializers.CreateOnlyDefault(
                                             True))
 
-    def validate(self, data):
+    def validate(self, data, *args, **kwargs):
         """Make sure we do not already have an owner."""
         if "is_owner" in data and data["is_owner"]:
             current_owner = TeamMembership.objects.filter(team=data["team"],
@@ -60,7 +60,7 @@ class TeamMembershipModifySerializer(serializers.ModelSerializer):
         return data
 
     class Meta:
-        """Add docstring."""  # TODO add docstring.
+        """Meta data related to the Team Membership Modification serializer."""
 
         model = TeamMembership
         fields = ('id', 'added_date', 'is_owner', 'can_edit', 'member', 'team')
@@ -84,7 +84,7 @@ class TeamSerializer(serializers.ModelSerializer):
                                                 required=False)
 
     class Meta:
-        """Add docstring."""  # TODO add docstring.
+        """Meta data related to the Team serializer."""
 
         model = Team
         fields = ('id', 'name', 'created_date', 'created_by',
