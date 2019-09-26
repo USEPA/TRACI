@@ -86,7 +86,11 @@
     }
 
     function runCalculation() {
+        if (selected.length === 0) return;
         console.log("TODO run calculation");
+        $.post("/scenario/", { 'substances': JSON.stringify(selected) }, function (result) {
+            console.log(result);
+        });
     }
 </script>
 {% endblock %}
