@@ -7,9 +7,12 @@
         <div class="col-md-12">
             <form method="post">
                 {{form}}
-                <button type="submit" value="Update" class="m-2 col-md-2 btn btn-md btn-success">Save</button>
-                <button type="reset" class="m-2 col-md-2 col-md-offset-1 btn btn-md btn-warning">Reset</button>
-                <a href="/projects/projects/" class="m-2 col-md-2 col-md-offset-1 btn btn-md btn-danger">Cancel</a>
+                <div class="col-md-12">
+                    <button type="submit" value="Update" class="m-2 col-md-2 btn btn-md btn-success">Save</button>
+                    <button type="reset" class="m-2 col-md-2 col-md-offset-1 btn btn-md btn-warning">Reset</button>
+                    <button onclick="window.location.href='/projects/projects/'"
+                            class="m-2 col-md-2 col-md-offset-1 btn btn-md btn-danger">Cancel</button>
+                </div>
             </form>
         </div>
     </div>

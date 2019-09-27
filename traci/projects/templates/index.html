@@ -8,34 +8,14 @@
             <h2>Projects in TRACI</h2>
         </div>
         <div class="col-md-3">
-            <a href="/projects/create/" class="btn btn-md btn-info">Create New Project</a>
+            <button onclick="window.location.href='/projects/create/'" class="btn btn-md btn-info">Create New Project</button>
         </div>
         <div class="col-md-3">
-            <button id="viewEditButton" onclick="viewEditProject()" class="btn btn-md btn-info" disabled>
-                View/Edit Selected
+            <button id="viewDetailsButton" onclick="viewDetailsProject()" class="btn btn-md btn-info" disabled>
+                View Project Details
             </button>
         </div>
     </div>
-    <!--{#<div class="row">
-        <div class="col-md-12">
-            
-            <table id="table"
-                   data-toggle="table"
-                   data-sortable="true"
-                   data-url="/projects/get_projects/"
-                   class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th data-field="name" scope="col" data-sortable="true">Name</th>
-                        <th data-field="version" scope="col" data-sortable="true">Version</th>
-                        <th data-field="organization" scope="col" data-sortable="true">Organization</th>
-                        <th data-field="contact" scope="col" data-sortable="true">Point of Contact</th>
-                        <th data-field="scope" scope="col" data-sortable="true">Scope</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-    </div>#}-->
     <div class="row">
         <div class="col-md-12">
             {% if projects_list %}
@@ -76,12 +56,12 @@
     function rowClick(id) {
         $("tr").removeClass('table-active');
         $("#" + id).addClass('table-active');
-        $("#viewEditButton").removeAttr('disabled');
-        $("#viewEditButton").val(id);
+        $("#viewDetailsButton").removeAttr('disabled');
+        $("#viewDetailsButton").val(id);
     }
 
-    function viewEditProject() {
-        window.location.href = '/projects/edit/' + $("#viewEditButton").val() + '/';
+    function viewDetailsProject() {
+        window.location.href = '/projects/detail/' + $("#viewDetailsButton").val() + '/';
     }
 </script>
 {% endblock %}
