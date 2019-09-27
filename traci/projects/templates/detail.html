@@ -1,98 +1,39 @@
 ﻿{% extends "main/base.html" %}
 
 {% block content %}
-
 <div class="container">
-    <div class="row">
-        <label class="col-md-2">Project Name</label>
-        <div class="col-md-10">{{object.name}}</div>
-    </div>
-
-    <div class="row">
-        <label class="col-md-2">Version</label>
-        <div class="col-md-10">{{object.version}}</div>
-    </div>
-
-    <div class="row">
-        <label class="col-md-2">Organization</label>
-        <div class="col-md-10">{{object.organization}}</div>
-    </div>
-
-    <div class="row">
-        <label class="col-md-2">Organizational Unit</label>
-        <div class="col-md-10">{{object.org_unit}}</div>
-    </div>
-
-    <div class="row">
-        <label class="col-md-2">Point of Contact</label>
-        <div class="col-md-10">{{object.contact}}</div>
-    </div>
-    <div class="row">
-        <label class="col-md-2">Phone Number</label>
-        <div class="col-md-10">{{object.phone_num}}</div>
-    </div>
-
-    <div class="row">
-        <label class="col-md-2">Scope</label>
-        <div class="col-md-10">{{object.scope}}</div>
-    </div>
-
-    <div class="row">
-        <label class="col-md-2">Description</label>
-        <div class="col-md-10">{{object.description}}</div>
-    </div>
-
-    <div class="row">
-        <label class="col-md-2">Functional Unit</label>
-        <div class="col-md-10">{{object.functional_unit}}</div>
-    </div>
-
-    <hr />
-
-    <div class="row">
-        <div class="col-lg-6">
-            <h4>Product List</h4>
-            {% if products_list %}
-            <table class="table table-bordered table-hover">
-                <caption>List of Products</caption>
-                <thead class="table-primary">
-                    <tr>
-                        <th scope="col">Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for prod in products_list %}
-                        <tr id="{{prod.id}}" onclick="rowClick('{{prod.id}}')">
-                            <th scope="row">{{prod.name}}</th>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% endif %}
-        </div>
-        <div class="col-lg-6">
-            <h4>Related Project(s)</h4>
-            {% if related_projects_list %}
-            <table></table>
-            {% endif %}
+    <div class="mb-3 row">
+        <div class="col-sm-9">{% include 'details_partial.html' %}</div>
+        <div class="col-sm-3 my-2">
+            <button onclick="window.location.href='/projects/projects/'"
+                    class="my-2 col-md-12 btn btn-md btn-info">Back to List</button>
+            <button onclick="window.location.href='/projects/edit/{{object.id}}/'"
+                    class="my-2 col-md-12 btn btn-md btn-warning">Edit Project Info</button>
+            <button onclick="window.location.href='/projects/delete/{{object.id}}/'"
+                    class="my-2 col-md-12 btn btn-md btn-danger">Delete Project</button>
         </div>
     </div>
 
-    <hr />
-
-    <div class="row">
-        <button onclick="window.location.href='/projects/projects/'"
-                class="m-2 col-md-2 btn btn-md btn-info">Back to List</button>
-        <button onclick="window.location.href='/projects/edit/{{object.id}}/'"
-                class="m-2 col-md-2 btn btn-md btn-warning">Edit Project Info</button>
-        <button onclick="window.location.href='/projects/delete/{{object.id}}/'"
-                class="m-2 col-md-2 btn btn-md btn-danger">Delete Project</button>
+    <div class="mt-4 row">
+        <div class="col-sm-6">{% include 'product_list_partial.html' %}</div>
+        <div class="col-sm-6">{% include 'related_projects_partial.html' %}</div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block scripts %}
 <script>
+    function addProduct(btn) {
+        if ($(btn).attr('disabled')) return;
+        console.log("TODO add product.");
+    }
+    function editProduct(btn) {
+        if ($(btn).attr('disabled')) return;
+        console.log("TODO edit product.");
+    }
+    function removeProduct(btn) {
+        if ($(btn).attr('disabled')) return;
+        console.log("TODO remove product.");
+    }
 </script>
 {% endblock %}

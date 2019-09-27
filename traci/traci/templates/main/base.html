@@ -46,6 +46,7 @@
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'lib/jquery-ui.theme.min.css' %}">
 
         <!-- main CSS -->
+        <link rel="stylesheet" type="text/css" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
         <link rel="stylesheet" type="text/css" media="all" href="{% static 'EPA_files/s.css' %}">
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/style.css' %}">
 
@@ -96,6 +97,13 @@
 
                     <!-- navbar when user is logged in -->
                     {% if user.is_authenticated %}
+                    <li {% if request.path == scenario %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                        <a href="/scenario/" {% if request.path == scenario %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Scenario</a>
+                    </li>
+                    <li {% if request.path == projects %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
+                        <a href="/projects/projects/" {% if request.path == projects %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Projects</a>
+                    </li>
+
                     <li {% if request.path == go_to_support %} class="dropdown expanded active-trail menu-item"
                         {% elif request.path == treatment_url %} class="dropdown expanded active-trail menu-item"
                         {% else %} class="dropdown menu-item" {% endif %} role="presentation">
