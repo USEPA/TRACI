@@ -13,4 +13,15 @@ Available functions:
 - TBD
 """
 
-# Register your models here.
+from django.contrib import admin
+from projects.models import Project
+
+class ProjectAdmin(admin.ModelAdmin):
+    """Define options used to display and edit Projects on the Django Admin page."""
+
+    list_display = ('name', 'version', 'organization', 'contact', 'scope', 'description')
+    search_fields = ('name', 'version', 'organization', 'contact', 'scope')
+    list_per_page = 25
+
+
+admin.site.register(Project, ProjectAdmin)

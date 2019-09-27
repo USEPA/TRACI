@@ -13,5 +13,15 @@ Available functions:
 - TBD
 """
 
+from django.contrib import admin
+from substances.models import Substance
 
-# Register your models here.
+class SubstanceAdmin(admin.ModelAdmin):
+    """Define options used to display and edit Substances on the Django Admin page."""
+
+    list_display = ('name', 'formatted_cas')
+    search_fields = ('name', 'cas', 'formatted_cas')
+    list_per_page = 100
+
+
+admin.site.register(Substance, SubstanceAdmin)
