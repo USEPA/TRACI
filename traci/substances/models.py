@@ -16,6 +16,7 @@ Available models:
 from django.db import models
 from constants.models import TRACI_FLAG_OPTIONS, DEFAULT_TRACI_FLAG
 
+
 class Ecotox(models.Model):
     """Information related to a chemical's ecotoxicity potential."""
 

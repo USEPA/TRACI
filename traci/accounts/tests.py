@@ -454,7 +454,7 @@ def assertnotcontains(self, response, text, status_code=200, msg_prefix='',
                       html=False):
     """
     Assert response indicates that some content was retrieved successfully.
-    
+
     (i.e., the HTTP status code was as expected) and that ``text`` does not
     occur in the content of the response.
     """
@@ -1134,7 +1134,7 @@ class TestCase(TransactionTestCase):
 
     @classmethod
     def setupclass(cls):
-        """Add docstring.""" # TODO
+        """Add docstring.""" #  TODO
         super().setupclass()
         if not conns_support_trans():
             return
