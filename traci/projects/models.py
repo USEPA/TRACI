@@ -11,7 +11,7 @@ Available models:
 """
 
 
-#class Project(models.Model):
+# class Project(models.Model):
 #    """Project object contains LCI Data."""
 #    #name
 #    #version
