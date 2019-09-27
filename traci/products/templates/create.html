@@ -1,0 +1,22 @@
+﻿{% extends "main/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h3>Creating a new Product for Project ID {{project_id}}</h3>
+        <div class="col-md-12">
+            <form action="/products/create/" method="post">
+                {{form}}
+                {% include 'next_reset_cancel_partial.html' %}
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}
