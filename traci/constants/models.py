@@ -46,3 +46,8 @@ TRACI_FLAG_OPTIONS = (('N/A', 'n/a'),
                       ('RECOMMENDED', 'Recommended'),
                       ('INTERIM', 'Interim'))
 DEFAULT_TRACI_FLAG = 'N/A'
+
+TRACI_SCOPE_OPTIONS = (('cradle_to_grave', 'Cradle to Grave'),
+                       ('cradle_to_entry_gate', 'Cradle to Entry Gate'),
+                       ('entry_gate_to_exit_gate', 'Entry Gate to Exit Gate'),
+                       ('exit_gate_to_grave', 'Exit Gate to Grave'))

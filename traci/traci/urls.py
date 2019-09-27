@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^support/', include('support.urls')),
     url(r'^substances/', include('substances.urls')),
     url(r'^teams/', include('teams.urls')),
+    url(r'^projects/', include('projects.urls')),
 
     url(r'^citation/$', citation, name='citation'),
     url(r'^download_manual/$', download_manual, name="download_manual"),
