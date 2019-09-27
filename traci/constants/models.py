@@ -4,7 +4,7 @@
 # young.daniel@epa.gov
 
 """
-Models for the greenscope application for constants.
+Models for the traci application for constants.
 
 Available functions:
 -
