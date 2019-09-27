@@ -1,0 +1,20 @@
+﻿<div class="col-sm-12"><h4>Related Project(s)</h4></div>
+<table class="table table-bordered table-hover">
+    <caption>List of Related Projects</caption>
+    <thead class="table-secondary">
+        <tr>
+            <th scope="col">Name</th>
+        </tr>
+    </thead>
+    {% if related_projects_list %}
+    <tbody>
+        {% for proj in related_projects_list %}
+        <tr id="{{proj.id}}" onclick="rowClick('{{proj.id}}')">
+            <th scope="row">{{proj.name}}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+    {% else %}
+    <tr><td>This Project has no related Projects!</td></tr>
+    {% endif %}
+</table>
