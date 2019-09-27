@@ -18,6 +18,7 @@ Available models:
 """
 
 from django.db import models
+from substances.models import Substance
 
 
 class Media(models.Model):
@@ -44,9 +45,9 @@ class ResourceReleaseOption(models.Model):
 
 class SubstanceEntry(models.Model):
     """Instance of substance with quanity, unit, and media."""
-    substance = models.ForeignKey('Substance', on_delete=models.CASCADE)
+    substance = models.ForeignKey(Substance, on_delete=models.CASCADE)
     quantity = models.FloatField(blank=True, null=True, default=0)
-    unit = models.CharField(blank=True, null=True, default='')
+    unit = models.CharField(blank=True, null=True, default='', max_length=15)
     media = models.ForeignKey('Media', on_delete=models.CASCADE)
 
 
@@ -58,7 +59,7 @@ class ResourceRelease(models.Model):
     The substances will be a many-to-many relationship.
     """
     name = models.ForeignKey('ResourceReleaseOption', on_delete=models.CASCADE)
-    substances = models.ManyToManyField('SubstanceEntry', on_delete=models.CASCADE)
+    substances = models.ManyToManyField('SubstanceEntry')
 
 
 # class ProcessOption(models.Model):
@@ -89,14 +90,14 @@ class LifeCycleStage(models.Model):
     """
     name = models.CharField(null=False, blank=False, max_length=63)
     # Step 2: Process
-    processes = models.ManyToManyField('Process', on_delete=models.CASCADE)
+    processes = models.ManyToManyField('Process')
 
 
 class Product(models.Model):
     """Product object containing LCI information for contained substances."""
     name = models.CharField(null=False, blank=False, max_length=255)
     # Step 1: Life Cycle Stage (multiselect options) Many to Many relationship with LifeCycleStage table
-    stages = models.ManyToManyField('LifeCycleStage', on_delete=models.CASCADE)
+    stages = models.ManyToManyField('LifeCycleStage')
     # Step 2: Process - is actually a child of lc_stage
     # process = models.ForeignKey('Process', on_delete=models.CASCADE)
     # Step 3: resource/release (dropdown with static options) - is actually a child of lc_stage
