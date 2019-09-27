@@ -1,0 +1,22 @@
+﻿{% extends "main/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h3>Creating a new Life Cycle Stage for Product ID {{product_id}}</h3>
+        <div class="col-md-12">
+            <form action="/products/create/lifecyclestage?product_id={{product_id}}" method="post">
+                {{form}}
+                {% include 'next_reset_cancel_partial.html' %}
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

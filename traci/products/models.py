@@ -18,6 +18,7 @@ Available models:
 """
 
 from django.db import models
+from projects.models import Project
 from substances.models import Substance
 
 
@@ -98,6 +99,7 @@ class Product(models.Model):
     name = models.CharField(null=False, blank=False, max_length=255)
     # Step 1: Life Cycle Stage (multiselect options) Many to Many relationship with LifeCycleStage table
     stages = models.ManyToManyField('LifeCycleStage')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     # Step 2: Process - is actually a child of lc_stage
     # process = models.ForeignKey('Process', on_delete=models.CASCADE)
     # Step 3: resource/release (dropdown with static options) - is actually a child of lc_stage

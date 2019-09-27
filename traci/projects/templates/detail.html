@@ -23,8 +23,8 @@
 
 {% block scripts %}
 <script>
-    function addProduct(btn) {
-        if ($(btn).attr('disabled')) return;
+    function addProduct(id) {
+        window.location.href = '/products/create?project_id=' + id;
         console.log("TODO add product.");
     }
     function editProduct(btn) {
