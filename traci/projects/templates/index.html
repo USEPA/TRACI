@@ -1,0 +1,87 @@
+﻿{% extends "main/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Projects in TRACI</h2>
+        </div>
+        <div class="col-md-3">
+            <a href="/projects/create/" class="btn btn-md btn-info">Create New Project</a>
+        </div>
+        <div class="col-md-3">
+            <button id="viewEditButton" onclick="viewEditProject()" class="btn btn-md btn-info" disabled>
+                View/Edit Selected
+            </button>
+        </div>
+    </div>
+    <!--{#<div class="row">
+        <div class="col-md-12">
+            
+            <table id="table"
+                   data-toggle="table"
+                   data-sortable="true"
+                   data-url="/projects/get_projects/"
+                   class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th data-field="name" scope="col" data-sortable="true">Name</th>
+                        <th data-field="version" scope="col" data-sortable="true">Version</th>
+                        <th data-field="organization" scope="col" data-sortable="true">Organization</th>
+                        <th data-field="contact" scope="col" data-sortable="true">Point of Contact</th>
+                        <th data-field="scope" scope="col" data-sortable="true">Scope</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>#}-->
+    <div class="row">
+        <div class="col-md-12">
+            {% if projects_list %}
+            <table id="table" class="table table-bordered table-hover">
+                <caption>List of Projects</caption>
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Version</th>
+                        <th scope="col">Organization</th>
+                        <th scope="col">Point of Contact</th>
+                        <th scope="col">Scope</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for proj in projects_list %}
+                        <tr id="{{proj.id}}" onclick="rowClick('{{proj.id}}')">
+                            <th scope="row">{{proj.name}}</th>
+                            <td>{{proj.version}}</td>
+                            <td>{{proj.organization}}</td>
+                            <td>{{proj.contact}}</td>
+                            <td>{{proj.phone_num}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h4>There are no existing Projects.</h4>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function rowClick(id) {
+        $("tr").removeClass('table-active');
+        $("#" + id).addClass('table-active');
+        $("#viewEditButton").removeAttr('disabled');
+        $("#viewEditButton").val(id);
+    }
+
+    function viewEditProject() {
+        window.location.href = '/projects/edit/' + $("#viewEditButton").val() + '/';
+    }
+</script>
+{% endblock %}
