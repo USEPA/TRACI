@@ -11,7 +11,7 @@ import json
 import subprocess
 import requests
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse, HttpResponseServerError
+from django.http import HttpRequest, HttpResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator

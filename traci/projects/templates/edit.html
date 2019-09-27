@@ -1,0 +1,23 @@
+﻿{% extends "main/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post">
+                {{form}}
+                <button type="submit" value="Update" class="m-2 col-md-2 btn btn-md btn-success">Save</button>
+                <button type="reset" class="m-2 col-md-2 col-md-offset-1 btn btn-md btn-warning">Reset</button>
+                <a href="/projects/projects/" class="m-2 col-md-2 col-md-offset-1 btn btn-md btn-danger">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}
