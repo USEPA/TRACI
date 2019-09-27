@@ -15,8 +15,10 @@ from django.core import serializers
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.middleware.csrf import get_token
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, ListView, UpdateView, CreateView
+from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DetailView, \
+    DeleteView
 from projects.forms import ProjectForm
 from projects.models import Project
 
@@ -28,11 +30,12 @@ class ProjectListView(ListView):
     queryset = Project.objects.all()
     template_name = 'index.html'
 
-    #@method_decorator(login_required)
-    #def get(self, request, *args, **kwargs):
-    #    """Process the request and return either a view for a single Project, or a list of all Projects."""
-    #    projects = Project.objects.all()
-    #    return render(request, "index.html", {'projects': projects})
+
+class ProjectDetailView(DetailView):
+    """View for presenting project details."""
+    model = Project
+    template_name = 'detail.html'
+
 
 def get_projects(order):
     projects = list(Project.objects.values())
@@ -58,7 +61,7 @@ class ProjectCreateView(CreateView):
         form = ProjectForm(request.POST)
         if form.is_valid():
             form.save(commit=True)
-            return render(request, 'index.html', {})
+            return HttpResponseRedirect('/projects/projects/')
         return render(request, "create.html", {'form': form})
 
 
@@ -73,3 +76,10 @@ class ProjectEditView(UpdateView):
         self.object = form.save(commit=False)
         self.object.save()
         return HttpResponseRedirect('/projects/projects/')
+
+
+class ProjectDeleteView(DeleteView):
+    """View for deleting a project."""
+    model = Project
+    template_name = 'project_confirm_delete.html'
+    success_url = reverse_lazy('projects')
