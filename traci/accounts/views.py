@@ -410,7 +410,7 @@ class UserApprovalView(TemplateView):
     View for activating a user.
 
     This view can only be accessed by an administrator.  Typically accessed
-    from the registration request email sent to the gemm email address.
+    from the registration request email sent to the traci email address.
     """
 
     template_name = "registration/register_approved.html"
