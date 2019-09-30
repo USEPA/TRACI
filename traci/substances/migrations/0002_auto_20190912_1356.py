@@ -4,6 +4,7 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """Add class docstring."""
 
     dependencies = [
         ('substances', '0001_initial'),
