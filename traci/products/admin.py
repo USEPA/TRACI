@@ -17,6 +17,7 @@ from django.contrib import admin
 from products.models import Media, Location, ResourceReleaseOption, SubstanceEntry, \
     ResourceRelease, Process, LifeCycleStage, Product
 
+
 class MediaAdmin(admin.ModelAdmin):
     """Define options used to display and edit Media on the Django Admin page."""
 

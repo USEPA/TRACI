@@ -24,6 +24,8 @@ from products.models import Product
 from projects.models import Project
 
 # Create your views here.
+
+
 class ProductListView(ListView):
     """View for viewing, editing, and creating Products."""
     model = Product
@@ -77,7 +79,6 @@ class LifeCycleStageCreateView(CreateView):
         """Process the post request with a new Product form filled out."""
         product_id = request.GET.get('product_id', )
         form = LifeCycleStageForm(request.POST)
-
 
 
 class ProductEditView(UpdateView):
