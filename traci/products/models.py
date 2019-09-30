@@ -45,8 +45,8 @@ class ResourceReleaseOption(models.Model):
 
 
 class SubstanceEntry(models.Model):
-    """Instance of substance with quanity, unit, and media."""
-    substance = models.ForeignKey(Substance, on_delete=models.CASCADE)
+    """Instance of substance with quantity, unit, and media."""
+    substance = models.ForeignKey(substance, on_delete=models.CASCADE)
     quantity = models.FloatField(blank=True, null=True, default=0)
     unit = models.CharField(blank=True, null=True, default='', max_length=15)
     media = models.ForeignKey('Media', on_delete=models.CASCADE)
@@ -70,7 +70,6 @@ class ResourceRelease(models.Model):
 #     Printing, Recycling, Transportation, Washing. However, these are likely configurable.
 #     """
 #     name = models.CharField(null=False, blank=False, max_length=255)
-
 
 
 # TODO: In the desktop application, this is a dropdown. Should we make it simply a name field in Process?
@@ -104,5 +103,3 @@ class Product(models.Model):
     # process = models.ForeignKey('Process', on_delete=models.CASCADE)
     # Step 3: resource/release (dropdown with static options) - is actually a child of lc_stage
     # resource_release = models.ForeignKey('ResourceRelease', on_delete=models.CASCADE)
-
-
