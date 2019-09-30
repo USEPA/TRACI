@@ -46,7 +46,7 @@ class ResourceReleaseOption(models.Model):
 
 class SubstanceEntry(models.Model):
     """Instance of substance with quantity, unit, and media."""
-    substance = models.ForeignKey(substance, on_delete=models.CASCADE)
+    substance = models.ForeignKey(Substance, on_delete=models.CASCADE)
     quantity = models.FloatField(blank=True, null=True, default=0)
     unit = models.CharField(blank=True, null=True, default='', max_length=15)
     media = models.ForeignKey('Media', on_delete=models.CASCADE)
