@@ -69,5 +69,5 @@ class ProjectForm(ModelForm):
         """Meta data for Project form."""
 
         model = Project
-        fields = ('name', 'version', 'organization', 'org_unit','contact',
+        fields = ('name', 'version', 'organization', 'org_unit', 'contact',
                   'phone_num', 'scope', 'description', 'functional_unit')

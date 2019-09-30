@@ -5,6 +5,7 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+    """Add class docstring."""
 
     dependencies = [
         ('projects', '0001_initial'),
