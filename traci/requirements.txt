@@ -20,7 +20,7 @@ chardet==3.0.4                  # Universal encoding detector for Python 2 and 3
 colorama==0.4.1                 # Cross-platform colored terminal text.
 coverage==4.5.4                 # Measures code coverage, typically during test execution.
 django-session-security==2.6.5  # Provides a mechanism to logout inactive authenticated users.
-Django==2.2.5                   # Python Modules.
+Django==2.2.6                   # Python Modules.
 djangorestframework==3.10.3     # Powerful and flexible toolkit for building Web APIs.
 entrypoints==0.3                # Python packages to advertise objects with some common interface.
 et-xmlfile==1.0.1               # An implementation of lxml.xmlfile for the standard library.
