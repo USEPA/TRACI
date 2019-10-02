@@ -27,4 +27,4 @@ class ListTextWidget(forms.TextInput):
             data_list += '<option value="%s">' % item
         data_list += '</datalist>'
 
-        return (text_html + data_list)
+        return text_html + data_list

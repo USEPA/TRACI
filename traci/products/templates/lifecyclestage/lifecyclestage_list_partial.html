@@ -16,7 +16,7 @@
         {% for stage in stages_list %}
             <tr id="{{stage.id}}" onclick="rowClick('{{stage.id}}')">
                 <th scope="row">{{stage.id}}</th>
-                <td scope="row">{{stage.lifecyclestage.name}}</td>
+                <td scope="row">{{stage.name.name}}</td>
             </tr>
         {% endfor %}
     </tbody>

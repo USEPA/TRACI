@@ -7,8 +7,8 @@
         <h3>Creating a new Life Cycle Stage for Product ID {{product_id}}</h3>
         <div class="col-md-12">
             <form action="/products/lifecyclestage/create?product_id={{product_id}}" method="post">
-                <label>{{form.lifecyclestage.label}}</label>
-                {{form.lifecyclestage}}
+                <label>{{form.name.label}}</label>
+                {{form.name}}
                 <label>{{form.product.label}}</label>
                 {{form.product}}
                 {% include 'next_reset_cancel_partial.html' %}

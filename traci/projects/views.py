@@ -5,16 +5,10 @@
 
 """Definition of Projects views."""
 
-from datetime import datetime
-from os.path import join
 import json
-import subprocess
-import requests
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.middleware.csrf import get_token
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DetailView, \

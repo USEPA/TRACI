@@ -19,7 +19,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DetailView, \
     DeleteView
-from products.forms import ProductForm, LifeCycleStageEntryForm, ProcessForm
+from products.forms import ProductForm, LifeCycleStageForm, ProcessForm
 from products.models import Product, LifeCycleStage, Process
 from projects.models import Project
 
@@ -99,14 +99,14 @@ class LifeCycleStageEntryCreateView(CreateView):
         """Return a view with an empty form for creating a new Product."""
         product_id = request.GET.get('product_id', )
         product = Product.objects.get(id=product_id)
-        form = LifeCycleStageEntryForm({'product': product})
+        form = LifeCycleStageForm({'product': product})
         ctx = {'form': form, 'product_id': product_id}
         return render(request, "lifecyclestage/lifecyclestage_create.html", ctx)
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         """Process the post request with a new LifeCycleStageName form filled out."""
-        form = LifeCycleStageEntryForm(request.POST)
+        form = LifeCycleStageForm(request.POST)
         if form.is_valid():
             lifecyclestage_obj = form.save(commit=True)
             return HttpResponseRedirect('/products/lifecyclestage/detail/' + str(lifecyclestage_obj.id))
@@ -116,7 +116,7 @@ class LifeCycleStageEntryCreateView(CreateView):
 class LifeCycleStageEntryEditView(UpdateView):
     """View for editing a life cycle stage entry for a LifeCycleStageName"""
     model = LifeCycleStage
-    form_class = LifeCycleStageEntryForm
+    form_class = LifeCycleStageForm
     template_name = 'lifecyclestage/lifecyclestage_edit.html'
 
 
@@ -145,11 +145,11 @@ class LifeCycleStageEntryDeleteView(DeleteView):
 class ProcessCreateView(CreateView):
     """View for creating a new Process for a life cycle stage."""
 
-    #@method_decorator(login_required)
-    #def get(self, request, *args, **kwargs):
-    #    """Return a view with an empty form for creating a new Product."""
-    #    product_id = request.GET.get('product_id', )
-    #    product = Product.objects.get(id=product_id)
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        """Return a view with an empty form for creating a new Process."""
+        stage_id = request.GET.get('lifecyclestage_id', )
+        lifecyclestage = LifeCycleStage.objects.get(id=stage_id)
     #    form = ProcessForm({'product': product})
     #    ctx = {'form': form, 'product_id': product_id}
     #    return render(request, "process/process_create.html", ctx)
