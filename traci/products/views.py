@@ -31,13 +31,18 @@ class ProductListView(ListView):
     model = Product
     context_object_name = 'products_list'
     queryset = Product.objects.all()
-    template_name = 'index.html'
+    template_name = 'product_index.html'
 
 
 class ProductDetailView(DetailView):
     """View for presenting product details."""
     model = Product
-    template_name = 'detail.html'
+    template_name = 'product_detail.html'
+
+    #def get_context_data(self, **kwargs):
+    #    context = super().get_context_data(**kwargs)
+    #    context['now'] = timezone.now()
+    #    return context
 
 
 # TODO update this based on the Createview found:
@@ -50,9 +55,10 @@ class ProductCreateView(CreateView):
         """Return a view with an empty form for creating a new Product."""
         # TODO find project_id passed in here.
         project_id = request.GET.get('project_id', )
-        form = ProductForm({'project_id': project_id})
+        project = Project.objects.get(id=project_id)
+        form = ProductForm({'project': project})
         ctx = {'form': form, 'project_id': project_id}
-        return render(request, "create.html", ctx)
+        return render(request, "product_create.html", ctx)
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
@@ -60,8 +66,8 @@ class ProductCreateView(CreateView):
         form = ProductForm(request.POST)
         if form.is_valid():
             product_obj = form.save(commit=True)
-            return HttpResponseRedirect('/products/create/lifecyclestage?product_id=' + product_obj.id)
-        return render(request, "create.html", {'form': form})
+            return HttpResponseRedirect('/products/detail/' + str(product_obj.id))
+        return render(request, "product_create.html", {'form': form})
 
 
 class LifeCycleStageCreateView(CreateView):
@@ -85,7 +91,7 @@ class ProductEditView(UpdateView):
     """View for editing or viewing an existing Product."""
     model = Product
     form_class = ProductForm
-    template_name = 'edit.html'
+    template_name = 'product_edit.html'
 
     def form_valid(self, form):
         """Product Edit Form validation."""
@@ -98,4 +104,8 @@ class ProductDeleteView(DeleteView):
     """View for deleting a product."""
     model = Product
     template_name = 'product_confirm_delete.html'
-    success_url = reverse_lazy('products')
+    #success_url = reverse_lazy('products')
+
+    def get_success_url(self):
+        project = self.object.project
+        return  reverse_lazy('detail_project', kwargs={'pk': project.id})

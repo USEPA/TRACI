@@ -19,6 +19,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DetailView, \
     DeleteView
+from products.models import Product
 from projects.forms import ProjectForm
 from projects.models import Project
 
@@ -28,13 +29,18 @@ class ProjectListView(ListView):
     model = Project
     context_object_name = 'projects_list'
     queryset = Project.objects.all()
-    template_name = 'index.html'
+    template_name = 'project_index.html'
 
 
 class ProjectDetailView(DetailView):
     """View for presenting project details."""
     model = Project
-    template_name = 'detail.html'
+    template_name = 'project_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['products_list'] = Product.objects.filter(project=context['object'])
+        return context
 
 
 def get_projects(order):
@@ -53,7 +59,7 @@ class ProjectCreateView(CreateView):
     def get(self, request, *args, **kwargs):
         """Return a view with an empty form for creating a new Project."""
         ctx = {'form': ProjectForm()}
-        return render(request, "create.html", ctx)
+        return render(request, "project_create.html", ctx)
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
@@ -62,14 +68,14 @@ class ProjectCreateView(CreateView):
         if form.is_valid():
             form.save(commit=True)
             return HttpResponseRedirect('/projects/projects/')
-        return render(request, "create.html", {'form': form})
+        return render(request, "project_create.html", {'form': form})
 
 
 class ProjectEditView(UpdateView):
     """View for editing or viewing an existing Project."""
     model = Project
     form_class = ProjectForm
-    template_name = 'edit.html'
+    template_name = 'project_edit.html'
 
     def form_valid(self, form):
         """Project Edit Form validation."""
