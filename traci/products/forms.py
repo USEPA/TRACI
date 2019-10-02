@@ -6,7 +6,7 @@
 
 """Definition of forms."""
 
-from django.forms import ModelForm, CharField, FloatField, TextInput, IntegerField, NumberInput, \
+from django.forms import ModelForm, CharField, TextInput, \
     ModelChoiceField, Select
 from django.utils.translation import ugettext_lazy as _
 from constants.widgets import ListTextWidget
@@ -35,7 +35,7 @@ class ProductForm(ModelForm):
         fields = ('name', 'project')
 
 
-class LifeCycleStageEntryForm(ModelForm):
+class LifeCycleStageForm(ModelForm):
     """
     Life Cycle Stages cross-reference with product, constitutes a single life cycle stage "entry" in a product.
     Each entry can have multiple instances of processes, manufacturing of a substance for example.
@@ -47,11 +47,11 @@ class LifeCycleStageEntryForm(ModelForm):
 
     product = ModelChoiceField(queryset=Product.objects.all(), initial=0, required=True,
                                widget=TextInput(attrs={'class': 'form-control mb-2', 'readonly':'readonly'}))
-    
+
     def __init__(self, *args, **kwargs):
         """This method is used to display a custom name, obj.name, instead of the stringified object view"""
-        super(LifeCycleStageEntryForm, self).__init__(*args, **kwargs)
-        self.fields['lifecyclestage'].label_from_instance = lambda obj: "%s" % obj.name
+        super(LifeCycleStageForm, self).__init__(*args, **kwargs)
+        self.fields['name'].label_from_instance = lambda obj: "%s" % obj.name
 
     class Meta:
         """Meta data for Life Cycle Stage (Entry) form."""
@@ -62,6 +62,7 @@ class LifeCycleStageEntryForm(ModelForm):
 
 class ProcessForm(ModelForm):
     """
+    TODO
     """
 
     name = CharField(required=True)
@@ -78,7 +79,7 @@ class ProcessForm(ModelForm):
         It's additionally used to allow the user to select a name from a dropdown, or optionally enter a new name.
         """
         _process_name_list = kwargs.pop('data_list', None)
-        super(LifeCycleStageEntryForm, self).__init__(*args, **kwargs)
+        super(LifeCycleStageForm, self).__init__(*args, **kwargs)
         self.fields['name'].label_from_instance = lambda obj: "%s" % obj.name
         self.fields['name'].widget = ListTextWidget(data_list=_process_name_list, name='process-name-list')
 

@@ -105,9 +105,7 @@ class ScenarioView(TemplateView):
     def post(self, request, *args, **kwargs):
         """Process the data from a Scenario and run calculations."""
         # TODO
-        ctx = {}
         substances = request.POST.get('substances', )
-        json_data_array = json.loads(substances)
         return HttpResponse("Success!!")
         #return render(request, "scenario.html", ctx)
 
