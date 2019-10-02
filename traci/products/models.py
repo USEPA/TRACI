@@ -115,4 +115,4 @@ class LifeCycleStageEntry(models.Model):
 
     def __str__(self):
         """Method stringify life cycle stage entry object, show the name"""
-        return lifecyclestage.name
+        return self.lifecyclestage.name

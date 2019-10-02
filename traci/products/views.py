@@ -20,7 +20,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DetailView, \
     DeleteView
 from products.forms import ProductForm, LifeCycleStageEntryForm
-from products.models import Product, LifeCycleStage
+from products.models import Product, LifeCycleStageEntry
 from projects.models import Project
 
 # Create your views here.
@@ -38,11 +38,11 @@ class ProductDetailView(DetailView):
     """View for presenting product details."""
     model = Product
     template_name = 'product/product_detail.html'
-
-    #def get_context_data(self, **kwargs):
-    #    context = super().get_context_data(**kwargs)
-    #    context['now'] = timezone.now()
-    #    return context
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['stages_list'] = LifeCycleStageEntry.objects.filter(product=context['object'])
+        return context
 
 
 # TODO update this based on the Createview found:
@@ -112,22 +112,12 @@ class LifeCycleStageEntryCreateView(CreateView):
         if form.is_valid():
             lifecyclestage_obj = form.save(commit=True)
             return HttpResponseRedirect('/products/lifecyclestage/detail/' + str(lifecyclestage_obj.id))
-        ## If the form isn't valid, it's possible the foreign references were passed as keys. If this is the case,
-        ## try manually creating a form with the provided IDs and validating/continuing with that.
-        #stage_id = request.POST.get('lifecyclestage')
-        #product_id = request.POST.get('product')
-        #stage = LifeCycleStage.objects.get(id=stage_id)
-        #product = Product.objects.get(id=product_id)
-        #form = LifeCycleStageEntryForm({'lifecyclestage': stage, 'product': product})
-        #if form.is_valid():
-        #    lifecyclestage_obj = form.save(commit=True)
-        #    return HttpResponseRedirect('/products/lifecyclestage/detail/' + str(lifecyclestage_obj.id))
         return render(request, "lifecyclestage/lifecyclestage_create.html", {'form': form})
 
 
 class LifeCycleStageEntryEditView(UpdateView):
     """View for editing a life cycle stage entry for a LifeCycleStage"""
-    model = LifeCycleStage
+    model = LifeCycleStageEntry
     form_class = LifeCycleStageEntryForm
     template_name = 'lifecyclestage/lifecyclestage_edit.html'
 
@@ -140,13 +130,18 @@ class LifeCycleStageEntryEditView(UpdateView):
 
 class LifeCycleStageEntryDetailView(DetailView):
     """View for viewing the details of a life cycle stage entry for a product"""
-    model = LifeCycleStage
+    model = LifeCycleStageEntry
     template_name = 'lifecyclestage/lifecyclestage_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #context['processes_list'] = Product.objects.filter(project=context['object'])
+        return context
 
 
 class LifeCycleStageEntryDeleteView(DeleteView):
     """View for removing a life cycle stage entry from a product"""
-    model = LifeCycleStage
+    model = LifeCycleStageEntry
     template_name = 'lifecyclestage/lifecyclestage_confirm_delete.html'
 
     def get_success_url(self):
