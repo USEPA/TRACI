@@ -1,0 +1,45 @@
+﻿{% extends "main/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="mb-3 row">
+        <div class="col-sm-9">{% include 'project_details_partial.html' %}</div>
+        <div class="col-sm-3 my-2">
+            <button onclick="window.location.href='/projects/projects/'"
+                    class="my-2 col-md-12 btn btn-md btn-info">Back to List</button>
+            <button onclick="window.location.href='/projects/edit/{{object.id}}/'"
+                    class="my-2 col-md-12 btn btn-md btn-warning">Edit Project Info</button>
+            <button onclick="window.location.href='/projects/delete/{{object.id}}/'"
+                    class="my-2 col-md-12 btn btn-md btn-danger">Delete Project</button>
+        </div>
+    </div>
+
+    <div class="mt-4 row">
+        <div class="col-sm-6">{% include 'product_list_partial.html' %}</div>
+        <div class="col-sm-6">{% include 'related_projects_partial.html' %}</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function addProduct(id) {
+        window.location.href = '/products/create?project_id=' + id;
+    }
+    function editProduct(btn) {
+        if ($(btn).attr('disabled')) return;
+        window.location.href = '/products/edit/' + $(btn).attr('id');
+    }
+    function removeProduct(btn) {
+        if ($(btn).attr('disabled')) return;
+        window.location.href = '/products/delete/' + $(btn).attr('id');
+    }
+    
+    function rowClick(id) {
+        $("tr").removeClass('table-active');
+        $("#" + id).addClass('table-active');
+        $("i").removeAttr('disabled');
+        $("i").attr('id', id);
+    }
+</script>
+{% endblock %}

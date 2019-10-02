@@ -13,15 +13,13 @@ Available functions:
 """
 
 from django.conf.urls import url
-from products.views import *
+from products.views import ProductCreateView, ProductEditView, ProductDetailView, ProductDeleteView
 
 urlpatterns = [
     url(r'^create/?$', ProductCreateView.as_view(), name='create_product'),
-    url(r'^create/lifecyclestage/?$', ProductCreateView.as_view(), name='create_lifecyclestage'),
+    #url(r'^create/lifecyclestage/?$', LifeCycelStageCreateView.as_view(), name='create_lifecyclestage'),
 
     url(r'^edit/(?P<pk>\d+)/?$', ProductEditView.as_view(), name='edit_product'),
-
     url(r'^detail/(?P<pk>\d+)/?$', ProductDetailView.as_view(), name='detail_product'),
-
     url(r'^delete/(?P<pk>\d+)/?$', ProductDeleteView.as_view(), name='delete_product'),
 ]
