@@ -31,11 +31,17 @@
     }
     function editLifeCycleStage(btn) {
         if ($(btn).attr('disabled')) return;
-        console.log("TODO edit product.");
+        window.location.href = '/products/lifecyclestage/detail/' + $(btn).attr('id');
     }
     function removeLifeCycleStage(btn) {
         if ($(btn).attr('disabled')) return;
-        console.log("TODO remove product.");
+        window.location.href = '/products/lifecyclestage/delete/' + $(btn).attr('id');
+    }
+    function rowClick(id) {
+        $("tr").removeClass('table-active');
+        $("#" + id).addClass('table-active');
+        $("i").removeAttr('disabled');
+        $("i").attr('id', id);
     }
 </script>
 {% endblock %}
