@@ -6,9 +6,10 @@
 
 """Definition of forms."""
 
-from django.forms import ModelForm, CharField, FloatField, TextInput, IntegerField, NumberInput, ModelChoiceField
+from django.forms import ModelForm, CharField, FloatField, TextInput, IntegerField, NumberInput, \
+    ModelChoiceField, Select
 from django.utils.translation import ugettext_lazy as _
-from products.models import Product
+from products.models import Product, LifeCycleStage, LifeCycleStageEntry
 from projects.models import Project
 
 
@@ -22,11 +23,9 @@ class ProductForm(ModelForm):
         max_length=255,
         widget=TextInput({'class': 'form-control mb-2', 'placeholder': 'Product Name'}),
         label=_("Product Name"), required=True)
-    project = ModelChoiceField(queryset=Project.objects.all(), initial=0, required=True,
+
+    project = ModelChoiceField(queryset=Project.objects.all(), initial=0, required=True, label=_("Project"),
                                widget=TextInput(attrs={'class': 'form-control mb-2', 'readonly':'readonly'}))
-    #project_id = IntegerField(
-    #    widget=NumberInput({'class': 'form-control mb-2', 'readonly': 'readonly'}),
-    #    required=True, label=_("Parent Project"))
 
     class Meta:
         """Meta data for Product form."""
@@ -35,12 +34,26 @@ class ProductForm(ModelForm):
         fields = ('name', 'project')
 
 
-class LifeCycleStageForm(ModelForm):
+class LifeCycleStageEntryForm(ModelForm):
     """
-    Life Cycle Stages, the database entries for this will not change.
-    There are six static options.
+    Life Cycle Stages cross-reference with product, constitutes a single life cycle stage "entry" in a product.
+    Each entry can have multiple instances of processes, manufacturing of a substance for example.
     """
-    name = CharField(
-        max_length=255,
-        widget=TextInput({'class': 'form-control mb-2', 'placeholder': 'Life Cycle Stage Name'}),
-        label=_("Life Cycle Stage Name"), required=True)
+
+    lifecyclestage = ModelChoiceField(queryset=LifeCycleStage.objects.all(), initial=0, required=True,
+                                      label=_("Life Cycle Stage Type"),
+                                      widget=Select(attrs={'class': 'form-control mb-2'}))
+
+    product = ModelChoiceField(queryset=Product.objects.all(), initial=0, required=True,
+                               widget=TextInput(attrs={'class': 'form-control mb-2', 'readonly':'readonly'}))
+    
+    def __init__(self, *args, **kwargs):
+        """This method is used to display a custom name, obj.name, instead of the stringified object view"""
+        super(LifeCycleStageEntryForm, self).__init__(*args, **kwargs)
+        self.fields['lifecyclestage'].label_from_instance = lambda obj: "%s" % obj.name
+
+    class Meta:
+        """Meta data for Life Cycle Stage (Entry) form."""
+
+        model = LifeCycleStageEntry
+        fields = ('lifecyclestage', 'product')

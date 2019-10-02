@@ -7,7 +7,6 @@
     <caption>List of Products</caption>
     <thead class="table-secondary">
         <tr>
-            <th scope="col">ID</th>
             <th scope="col">Name</th>
         </tr>
     </thead>
@@ -15,8 +14,7 @@
     <tbody>
         {% for prod in products_list %}
             <tr id="{{prod.id}}" onclick="rowClick('{{prod.id}}')">
-                <th scope="row">{{prod.id}}</th>
-                <td scope="row">{{prod.name}}</td>
+                <th scope="row">{{prod.name}}</th>
             </tr>
         {% endfor %}
     </tbody>

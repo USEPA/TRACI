@@ -89,17 +89,30 @@ class LifeCycleStage(models.Model):
     There are six static options.
     """
     name = models.CharField(null=False, blank=False, max_length=63)
-    # Step 2: Process
-    processes = models.ManyToManyField('Process')
 
 
 class Product(models.Model):
     """Product object containing LCI information for contained substances."""
     name = models.CharField(null=False, blank=False, max_length=255)
     # Step 1: Life Cycle Stage (multiselect options) Many to Many relationship with LifeCycleStage table
-    stages = models.ManyToManyField('LifeCycleStage')
+    #stages = models.ManyToManyField('LifeCycleStage')
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     # Step 2: Process - is actually a child of lc_stage
     # process = models.ForeignKey('Process', on_delete=models.CASCADE)
     # Step 3: resource/release (dropdown with static options) - is actually a child of lc_stage
     # resource_release = models.ForeignKey('ResourceRelease', on_delete=models.CASCADE)
+
+
+class LifeCycleStageEntry(models.Model):
+    """
+    Life Cycle Stage cross-reference with product, constitutes a single life cycle stage "entry" in a product.
+    Each entry can have multiple instances of processes, manufacturing of a substance for example.
+    """
+    lifecyclestage = models.ForeignKey(LifeCycleStage, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    # Step 2: Process TODO
+    #processes = models.ManyToManyField('Process')
+
+    def __str__(self):
+        """Method stringify life cycle stage entry object, show the name"""
+        return lifecyclestage.name
