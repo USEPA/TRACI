@@ -15,7 +15,7 @@ Available functions:
 
 from django.contrib import admin
 from products.models import Media, Location, ResourceReleaseOption, SubstanceEntry, \
-    ResourceRelease, Process, LifeCycleStage, Product
+    ResourceRelease, Process, LifeCycleStageName, Product
 
 
 class MediaAdmin(admin.ModelAdmin):
@@ -85,14 +85,14 @@ admin.site.register(Process, ProcessAdmin)
 
 
 class LifeCycleStageAdmin(admin.ModelAdmin):
-    """Define options used to display and edit LifeCycleStage on the Django Admin page."""
+    """Define options used to display and edit LifeCycleStageName on the Django Admin page."""
 
     list_display = ('name',)
     search_fields = ('name',)
     list_per_page = 25
 
 
-admin.site.register(LifeCycleStage, LifeCycleStageAdmin)
+admin.site.register(LifeCycleStageName, LifeCycleStageAdmin)
 
 
 class ProductAdmin(admin.ModelAdmin):

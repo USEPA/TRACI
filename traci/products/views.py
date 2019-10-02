@@ -19,8 +19,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DetailView, \
     DeleteView
-from products.forms import ProductForm, LifeCycleStageEntryForm
-from products.models import Product, LifeCycleStageEntry
+from products.forms import ProductForm, LifeCycleStageEntryForm, ProcessForm
+from products.models import Product, LifeCycleStage, Process
 from projects.models import Project
 
 # Create your views here.
@@ -41,12 +41,10 @@ class ProductDetailView(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['stages_list'] = LifeCycleStageEntry.objects.filter(product=context['object'])
+        context['stages_list'] = LifeCycleStage.objects.filter(product=context['object'])
         return context
 
 
-# TODO update this based on the Createview found:
-# https://docs.djangoproduct.com/en/2.2/ref/class-based-views/generic-editing/
 class ProductCreateView(CreateView):
     """View for creating a new Product."""
 
@@ -107,7 +105,7 @@ class LifeCycleStageEntryCreateView(CreateView):
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
-        """Process the post request with a new LifeCycleStage form filled out."""
+        """Process the post request with a new LifeCycleStageName form filled out."""
         form = LifeCycleStageEntryForm(request.POST)
         if form.is_valid():
             lifecyclestage_obj = form.save(commit=True)
@@ -116,21 +114,15 @@ class LifeCycleStageEntryCreateView(CreateView):
 
 
 class LifeCycleStageEntryEditView(UpdateView):
-    """View for editing a life cycle stage entry for a LifeCycleStage"""
-    model = LifeCycleStageEntry
+    """View for editing a life cycle stage entry for a LifeCycleStageName"""
+    model = LifeCycleStage
     form_class = LifeCycleStageEntryForm
     template_name = 'lifecyclestage/lifecyclestage_edit.html'
-
-    #def form_valid(self, form):
-    #    """LifeCycleStage Edit Form validation."""
-    #    self.object = form.save(commit=False)
-    #    self.object.save()
-    #    return HttpResponseRedirect('/products/products/')
 
 
 class LifeCycleStageEntryDetailView(DetailView):
     """View for viewing the details of a life cycle stage entry for a product"""
-    model = LifeCycleStageEntry
+    model = LifeCycleStage
     template_name = 'lifecyclestage/lifecyclestage_detail.html'
     
     def get_context_data(self, **kwargs):
@@ -141,8 +133,59 @@ class LifeCycleStageEntryDetailView(DetailView):
 
 class LifeCycleStageEntryDeleteView(DeleteView):
     """View for removing a life cycle stage entry from a product"""
-    model = LifeCycleStageEntry
+    model = LifeCycleStage
     template_name = 'lifecyclestage/lifecyclestage_confirm_delete.html'
+
+    def get_success_url(self):
+        product = self.object.product
+        return  reverse_lazy('detail_product', kwargs={'pk': product.id})
+
+
+# Process section
+class ProcessCreateView(CreateView):
+    """View for creating a new Process for a life cycle stage."""
+
+    #@method_decorator(login_required)
+    #def get(self, request, *args, **kwargs):
+    #    """Return a view with an empty form for creating a new Product."""
+    #    product_id = request.GET.get('product_id', )
+    #    product = Product.objects.get(id=product_id)
+    #    form = ProcessForm({'product': product})
+    #    ctx = {'form': form, 'product_id': product_id}
+    #    return render(request, "process/process_create.html", ctx)
+
+    #@method_decorator(login_required)
+    #def post(self, request, *args, **kwargs):
+    #    """Process the post request with a new Process form filled out."""
+    #    form = ProcessForm(request.POST)
+    #    if form.is_valid():
+    #        process_obj = form.save(commit=True)
+    #        return HttpResponseRedirect('/products/process/detail/' + str(process_obj.id))
+    #    return render(request, "rocess/process_create.html", {'form': form})
+
+
+class ProcessEditView(UpdateView):
+    """View for editing a process for a life cycle stage"""
+    model = Process
+    form_class = ProcessForm
+    template_name = 'process/process_edit.html'
+
+
+class ProcessDetailView(DetailView):
+    """View for viewing the details of a process for a life cycle stage"""
+    model = Process
+    template_name = 'process/process_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #context['processes_list'] = Product.objects.filter(project=context['object'])
+        return context
+
+
+class ProcessDeleteView(DeleteView):
+    """View for removing a process from a Life Cycle Stage Entry"""
+    model = Process
+    template_name = 'process/process_confirm_delete.html'
 
     def get_success_url(self):
         product = self.object.product

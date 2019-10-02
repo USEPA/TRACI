@@ -1,26 +1,26 @@
-﻿<div class="col-sm-4"><h4>Life Cycle Stages</h4></div>
-<div class="col-sm-1 mx-1"><i onclick="addLifeCycleStage({{object.id}})" class="fas fa-plus btn btn-sm btn-info"></i></div>
-<div class="col-sm-1 mx-1"><i onclick="editifeCycleStage(this)" class="fas fa-edit btn btn-sm btn-warning" disabled></i></div>
-<div class="col-sm-1 mx-1"><i onclick="removeifeCycleStage(this)" class="fas fa-minus btn btn-sm btn-danger" disabled></i></div>
+﻿<div class="col-sm-4"><h4>Processes</h4></div>
+<div class="col-sm-1 mx-1"><i onclick="addProcess({{object.id}})" class="fas fa-plus btn btn-sm btn-info"></i></div>
+<div class="col-sm-1 mx-1"><i onclick="editProcess(this)" class="fas fa-edit btn btn-sm btn-warning" disabled></i></div>
+<div class="col-sm-1 mx-1"><i onclick="removeProcess(this)" class="fas fa-minus btn btn-sm btn-danger" disabled></i></div>
             
 <table class="table table-bordered table-hover">
-    <caption>Life Cycle Stages</caption>
+    <caption>Life Cycle Processes</caption>
     <thead class="table-secondary">
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Name</th>
         </tr>
     </thead>
-    {% if stages_list %}
+    {% if processes_list %}
     <tbody>
-        {% for stage in stages_list %}
-            <tr id="{{stage.id}}" onclick="rowClick('{{stage.id}}')">
-                <th scope="row">{{stage.id}}</th>
-                <td scope="row">{{stage.name}}</td>
+        {% for proc in processes_list %}
+            <tr id="{{proc.id}}" onclick="rowClick('{{proc.id}}')">
+                <th scope="row">{{proc.id}}</th>
+                <td scope="row">{{proc.name}}</td>
             </tr>
         {% endfor %}
     </tbody>
     {% else %}
-    <tr><td>No Life Cycle Stages have been added!</td></tr>
+    <tr><td>Processes have been added!</td></tr>
     {% endif %}
 </table>

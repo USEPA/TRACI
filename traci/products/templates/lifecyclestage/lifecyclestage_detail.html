@@ -18,7 +18,7 @@
 
     <div class="mt-4 row">
         <div class="col-sm-6">{% include 'process/process_list_partial.html' %}</div>
-        <div class="col-sm-6" id="selectedProcessPreview"></div>
+        <div class="col-sm-6" id="processDetailPreview"></div>
     </div>
 </div>
 {% endblock %}
@@ -26,7 +26,7 @@
 {% block scripts %}
 <script>
     function addProcess(id) {
-        window.location.href = '/products/lifecyclestage/create?product_id=' + id;
+        window.location.href = '/products/process/create?lifecyclestage_id=' + id;
         console.log("TODO add Process.");
     }
     function editProcess(btn) {
