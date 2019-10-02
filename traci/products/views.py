@@ -19,8 +19,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DetailView, \
     DeleteView
-from products.forms import ProductForm, LifeCycleStageForm
-from products.models import Product
+from products.forms import ProductForm, LifeCycleStageEntryForm
+from products.models import Product, LifeCycleStage
 from projects.models import Project
 
 # Create your views here.
@@ -31,13 +31,13 @@ class ProductListView(ListView):
     model = Product
     context_object_name = 'products_list'
     queryset = Product.objects.all()
-    template_name = 'product_index.html'
+    template_name = 'product/product_index.html'
 
 
 class ProductDetailView(DetailView):
     """View for presenting product details."""
     model = Product
-    template_name = 'product_detail.html'
+    template_name = 'product/product_detail.html'
 
     #def get_context_data(self, **kwargs):
     #    context = super().get_context_data(**kwargs)
@@ -53,12 +53,11 @@ class ProductCreateView(CreateView):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         """Return a view with an empty form for creating a new Product."""
-        # TODO find project_id passed in here.
         project_id = request.GET.get('project_id', )
         project = Project.objects.get(id=project_id)
         form = ProductForm({'project': project})
         ctx = {'form': form, 'project_id': project_id}
-        return render(request, "product_create.html", ctx)
+        return render(request, "product/product_create.html", ctx)
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
@@ -67,31 +66,14 @@ class ProductCreateView(CreateView):
         if form.is_valid():
             product_obj = form.save(commit=True)
             return HttpResponseRedirect('/products/detail/' + str(product_obj.id))
-        return render(request, "product_create.html", {'form': form})
-
-
-class LifeCycleStageCreateView(CreateView):
-    """View for creating a new Life Cycle Stage."""
-
-    @method_decorator(login_required)
-    def get(self, request, *args, **kwargs):
-        """Return a view with an empty form for creating a new Product."""
-        product_id = request.GET.get('product_id', )
-        ctx = {'form': ProductForm(), 'product_id': product_id}
-        return render(request, "create_lifecyclestage.html", ctx)
-
-    @method_decorator(login_required)
-    def post(self, request, *args, **kwargs):
-        """Process the post request with a new Product form filled out."""
-        product_id = request.GET.get('product_id', )
-        form = LifeCycleStageForm(request.POST)
+        return render(request, "product/product_create.html", {'form': form})
 
 
 class ProductEditView(UpdateView):
     """View for editing or viewing an existing Product."""
     model = Product
     form_class = ProductForm
-    template_name = 'product_edit.html'
+    template_name = 'product/product_edit.html'
 
     def form_valid(self, form):
         """Product Edit Form validation."""
@@ -103,9 +85,70 @@ class ProductEditView(UpdateView):
 class ProductDeleteView(DeleteView):
     """View for deleting a product."""
     model = Product
-    template_name = 'product_confirm_delete.html'
-    #success_url = reverse_lazy('products')
+    template_name = 'product/product_confirm_delete.html'
 
     def get_success_url(self):
         project = self.object.project
         return  reverse_lazy('detail_project', kwargs={'pk': project.id})
+
+
+# Life Cycle Stage section
+class LifeCycleStageEntryCreateView(CreateView):
+    """View for creating a new Life Cycle Stage."""
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        """Return a view with an empty form for creating a new Product."""
+        product_id = request.GET.get('product_id', )
+        product = Product.objects.get(id=product_id)
+        form = LifeCycleStageEntryForm({'product': product})
+        ctx = {'form': form, 'product_id': product_id}
+        return render(request, "lifecyclestage/lifecyclestage_create.html", ctx)
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        """Process the post request with a new LifeCycleStage form filled out."""
+        form = LifeCycleStageEntryForm(request.POST)
+        if form.is_valid():
+            lifecyclestage_obj = form.save(commit=True)
+            return HttpResponseRedirect('/products/lifecyclestage/detail/' + str(lifecyclestage_obj.id))
+        ## If the form isn't valid, it's possible the foreign references were passed as keys. If this is the case,
+        ## try manually creating a form with the provided IDs and validating/continuing with that.
+        #stage_id = request.POST.get('lifecyclestage')
+        #product_id = request.POST.get('product')
+        #stage = LifeCycleStage.objects.get(id=stage_id)
+        #product = Product.objects.get(id=product_id)
+        #form = LifeCycleStageEntryForm({'lifecyclestage': stage, 'product': product})
+        #if form.is_valid():
+        #    lifecyclestage_obj = form.save(commit=True)
+        #    return HttpResponseRedirect('/products/lifecyclestage/detail/' + str(lifecyclestage_obj.id))
+        return render(request, "lifecyclestage/lifecyclestage_create.html", {'form': form})
+
+
+class LifeCycleStageEntryEditView(UpdateView):
+    """View for editing a life cycle stage entry for a LifeCycleStage"""
+    model = LifeCycleStage
+    form_class = LifeCycleStageEntryForm
+    template_name = 'lifecyclestage/lifecyclestage_edit.html'
+
+    #def form_valid(self, form):
+    #    """LifeCycleStage Edit Form validation."""
+    #    self.object = form.save(commit=False)
+    #    self.object.save()
+    #    return HttpResponseRedirect('/products/products/')
+
+
+class LifeCycleStageEntryDetailView(DetailView):
+    """View for viewing the details of a life cycle stage entry for a product"""
+    model = LifeCycleStage
+    template_name = 'lifecyclestage/lifecyclestage_detail.html'
+
+
+class LifeCycleStageEntryDeleteView(DeleteView):
+    """View for removing a life cycle stage entry from a product"""
+    model = LifeCycleStage
+    template_name = 'lifecyclestage/lifecyclestage_confirm_delete.html'
+
+    def get_success_url(self):
+        product = self.object.product
+        return  reverse_lazy('detail_product', kwargs={'pk': product.id})

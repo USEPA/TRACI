@@ -13,13 +13,20 @@ Available functions:
 """
 
 from django.conf.urls import url
-from products.views import ProductCreateView, ProductEditView, ProductDetailView, ProductDeleteView
+from products.views import ProductCreateView, ProductEditView, ProductDetailView, ProductDeleteView, \
+    LifeCycleStageEntryCreateView, LifeCycleStageEntryEditView, LifeCycleStageEntryDetailView, \
+    LifeCycleStageEntryDeleteView
 
 urlpatterns = [
+    # URLs for Product CRUD operations.
     url(r'^create/?$', ProductCreateView.as_view(), name='create_product'),
-    #url(r'^create/lifecyclestage/?$', LifeCycelStageCreateView.as_view(), name='create_lifecyclestage'),
-
     url(r'^edit/(?P<pk>\d+)/?$', ProductEditView.as_view(), name='edit_product'),
     url(r'^detail/(?P<pk>\d+)/?$', ProductDetailView.as_view(), name='detail_product'),
     url(r'^delete/(?P<pk>\d+)/?$', ProductDeleteView.as_view(), name='delete_product'),
+
+    # URLs for LifeCycleStage CRUD operations.
+    url(r'^lifecyclestage/create/?$', LifeCycleStageEntryCreateView.as_view(), name='lifecyclestage_create'),
+    url(r'^lifecyclestage/edit/(?P<pk>\d+)/?$', LifeCycleStageEntryEditView.as_view(), name='edit_lifecyclestage'),
+    url(r'^lifecyclestage/detail/(?P<pk>\d+)/?$', LifeCycleStageEntryDetailView.as_view(), name='detail_lifecyclestage'),
+    url(r'^lifecyclestage/delete/(?P<pk>\d+)/?$', LifeCycleStageEntryDeleteView.as_view(), name='delete_lifecyclestage'),
 ]

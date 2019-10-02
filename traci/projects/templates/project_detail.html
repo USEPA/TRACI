@@ -15,7 +15,7 @@
     </div>
 
     <div class="mt-4 row">
-        <div class="col-sm-6">{% include 'product_list_partial.html' %}</div>
+        <div class="col-sm-6">{% include 'product/product_list_partial.html' %}</div>
         <div class="col-sm-6">{% include 'related_projects_partial.html' %}</div>
     </div>
 </div>
@@ -28,7 +28,7 @@
     }
     function editProduct(btn) {
         if ($(btn).attr('disabled')) return;
-        window.location.href = '/products/edit/' + $(btn).attr('id');
+        window.location.href = '/products/detail/' + $(btn).attr('id');
     }
     function removeProduct(btn) {
         if ($(btn).attr('disabled')) return;
