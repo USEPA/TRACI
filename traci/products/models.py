@@ -17,7 +17,7 @@ Available models:
 
 from django.db import models
 from projects.models import Project
-from substances.models import Substance
+from substances.models import Substance, Unit
 
 
 class Product(models.Model):
@@ -107,6 +107,6 @@ class ResourceRelease(models.Model):
     # Substance/chemical
     substance = models.ForeignKey(Substance, on_delete=models.CASCADE)
     quantity = models.FloatField(blank=True, null=True, default=0)
-    unit = models.CharField(blank=True, null=True, default='', max_length=15)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
     # Media through which the Releases are output, null if Resource/Input.
     media = models.ForeignKey('Media', on_delete=models.SET_NULL, blank=True, null=True)
