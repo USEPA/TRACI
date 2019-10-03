@@ -83,7 +83,7 @@ class ProductDeleteView(DeleteView):
 
 
 # Life Cycle Stage section
-class LifeCycleStageEntryCreateView(CreateView):
+class LifeCycleStageCreateView(CreateView):
     """View for creating a new Life Cycle Stage."""
 
     @method_decorator(login_required)
@@ -93,7 +93,7 @@ class LifeCycleStageEntryCreateView(CreateView):
         product = Product.objects.get(id=product_id)
         form = LifeCycleStageForm({'product': product})
         ctx = {'form': form, 'product_id': product_id}
-        return render(request, "lifecyclestage/lifecyclestage_create.html", ctx)
+        return render(request, "lifecyclestage/create_lifecyclestage.html", ctx)
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
@@ -102,28 +102,28 @@ class LifeCycleStageEntryCreateView(CreateView):
         if form.is_valid():
             lifecyclestage_obj = form.save(commit=True)
             return HttpResponseRedirect('/products/lifecyclestage/detail/' + str(lifecyclestage_obj.id))
-        return render(request, "lifecyclestage/lifecyclestage_create.html", {'form': form})
+        return render(request, "lifecyclestage/create_lifecyclestage.html", {'form': form})
 
 
-class LifeCycleStageEntryEditView(UpdateView):
+class LifeCycleStageEditView(UpdateView):
     """View for editing a life cycle stage entry for a LifeCycleStageName"""
     model = LifeCycleStage
     form_class = LifeCycleStageForm
     template_name = 'lifecyclestage/lifecyclestage_edit.html'
 
 
-class LifeCycleStageEntryDetailView(DetailView):
+class LifeCycleStageDetailView(DetailView):
     """View for viewing the details of a life cycle stage entry for a product"""
     model = LifeCycleStage
     template_name = 'lifecyclestage/lifecyclestage_detail.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context['processes_list'] = Product.objects.filter(project=context['object'])
+        context['process_list'] = Process.objects.filter(lifecyclestage=context['object'])
         return context
 
 
-class LifeCycleStageEntryDeleteView(DeleteView):
+class LifeCycleStageDeleteView(DeleteView):
     """View for removing a life cycle stage entry from a product"""
     model = LifeCycleStage
     template_name = 'lifecyclestage/lifecyclestage_confirm_delete.html'
@@ -195,5 +195,5 @@ class ProcessDeleteView(DeleteView):
     template_name = 'process/process_confirm_delete.html'
 
     def get_success_url(self):
-        product = self.object.product
-        return  reverse_lazy('detail_product', kwargs={'pk': product.id})
+        stage = self.object.lifecyclestage
+        return  reverse_lazy('detail_lifecyclestage', kwargs={'pk': stage.id})

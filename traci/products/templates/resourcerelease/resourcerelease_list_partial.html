@@ -1,0 +1,26 @@
+﻿<div class="col-sm-4"><h4>Chemical Resources/Releases</h4></div>
+<div class="col-sm-1 mx-1"><i onclick="addResourcerelease({{object.id}})" class="fas fa-plus btn btn-sm btn-info"></i></div>
+<div class="col-sm-1 mx-1"><i onclick="editResourcerelease(this)" class="fas fa-edit btn btn-sm btn-warning" disabled></i></div>
+<div class="col-sm-1 mx-1"><i onclick="removeResourcerelease(this)" class="fas fa-minus btn btn-sm btn-danger" disabled></i></div>
+            
+<table class="table table-bordered table-hover">
+    <caption>Chemical Resources/Releases</caption>
+    <thead class="table-secondary">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+        </tr>
+    </thead>
+    {% if resourcerelease_list %}
+    <tbody>
+        {% for chem in resourcerelease_list %}
+            <tr id="{{chem.id}}" onclick="rowClick('{{chem.id}}')">
+                <th scope="row">{{chem.id}}</th>
+                <td scope="row">{{chem.name}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    {% else %}
+    <tr><td>No Chemical Resources/Releases have been added!</td></tr>
+    {% endif %}
+</table>

@@ -27,15 +27,20 @@
 <script>
     function addProcess(id) {
         window.location.href = '/products/process/create?lifecyclestage_id=' + id;
-        console.log("TODO add Process.");
     }
     function editProcess(btn) {
         if ($(btn).attr('disabled')) return;
-        console.log("TODO edit Process.");
+        window.location.href = '/products/process/detail/' + $(btn).attr('id');
     }
     function removeProcess(btn) {
         if ($(btn).attr('disabled')) return;
-        console.log("TODO remove Process.");
+        window.location.href = '/products/process/delete/' + $(btn).attr('id');
+    }
+    function rowClick(id) {
+        $("tr").removeClass('table-active');
+        $("#" + id).addClass('table-active');
+        $("i").removeAttr('disabled');
+        $("i").attr('id', id);
     }
 </script>
 {% endblock %}

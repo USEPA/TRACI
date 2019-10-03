@@ -1,0 +1,72 @@
+﻿{% extends "main/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h3>Creating a new Process for Life Cycle Stage {{lifecyclestage_id}}</h3>
+        <div class="col-md-12">
+            <form action="/products/process/create?lifecyclestage_id={{lifecyclestage_id}}" method="post">
+                <label>{{form.name.label}}</label>
+                <div class="text-danger">{{form.name.errors.as_text}}</div>
+                {{form.name}}
+                <div class="col-md-12">
+                    Don't see a fitting Process name? Click
+                    <a class="btn btn-sm" data-toggle="modal" data-target="#processNameModal"> HERE </a>
+                    to create a new Process Name.
+                </div>
+                <div class="col-md-6">
+                    <label>{{form.location.label}}</label>
+                    {{form.location}}
+                </div>
+                <div class="col-md-6">
+                    <label>{{form.child_location.label}}</label>
+                    {{form.child_location}}
+                </div>
+                <label>{{form.lifecyclestage.label}}</label>
+                {{form.lifecyclestage}}
+                {% include 'next_reset_cancel_partial.html' %}
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="processNameModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create a new Process Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>New Process Name:</label>
+                <input id="customProcessNameId" type="text" class="form-control col-md-12" />
+                <div class="text-danger" style="display: none;">Cannot save an empty name!</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="col-md-6 btn btn-info" onclick="customProcessName()">Save changes</button>
+                <button type="button" class="col-md-6 btn btn-warning" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function customProcessName() {
+        var processName = $("#customProcessNameId").val();
+        if (!processName || processName.length == 0) {
+            $(".text-danger").show();
+            return;
+        }
+        $(".text-danger").hide();
+        var opt = "<option selected>" + processName + "</option>";
+        $("#id_name").append(opt);
+        $(".close").click();
+    }
+</script>
+{% endblock %}

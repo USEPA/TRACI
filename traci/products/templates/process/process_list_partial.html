@@ -11,12 +11,12 @@
             <th scope="col">Name</th>
         </tr>
     </thead>
-    {% if processes_list %}
+    {% if process_list %}
     <tbody>
-        {% for proc in processes_list %}
+        {% for proc in process_list %}
             <tr id="{{proc.id}}" onclick="rowClick('{{proc.id}}')">
                 <th scope="row">{{proc.id}}</th>
-                <td scope="row">{{proc.name}}</td>
+                <td scope="row">{{proc.name.name}}</td>
             </tr>
         {% endfor %}
     </tbody>

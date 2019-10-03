@@ -9,7 +9,6 @@
 from django.forms import ModelForm, CharField, TextInput, \
     ModelChoiceField, Select
 from django.utils.translation import ugettext_lazy as _
-#from constants.widgets import ListTextWidget
 from products.models import Product, LifeCycleStageName, LifeCycleStage, Process, Location, ProcessName
 from projects.models import Project
 
@@ -78,7 +77,7 @@ class ProcessForm(ModelForm):
                                 label=_("Process Location (Child - Optional)"),
                                 widget=Select(attrs={'class': 'form-control mb-2'}))
     lifecyclestage = ModelChoiceField(queryset=LifeCycleStage.objects.all(),
-                                      initial=0, required=True, label=_("Life Cycle Stage ID"),
+                                      initial=0, required=True, label=_("Life Cycle Stage"),
                                       widget=TextInput(attrs={'class': 'form-control mb-2',
                                                               'readonly':'readonly'}))
 
@@ -95,4 +94,4 @@ class ProcessForm(ModelForm):
         """Meta data for Life Cycle Stage (Entry) form."""
 
         model = Process
-        fields = ('name', 'location')
+        fields = ('name', 'location', 'lifecyclestage')
