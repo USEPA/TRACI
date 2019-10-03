@@ -69,8 +69,13 @@ class ProcessForm(ModelForm):
     name = ModelChoiceField(queryset=ProcessName.objects.all(), initial=0, required=True,
                             label=_("Process Name"),
                             widget=Select(attrs={'class': 'form-control mb-2'}))
-    location = ModelChoiceField(queryset=Location.objects.all(), initial=0, required=True,
-                                label=_("Process Location"),
+    # Hard coded to return all codes for states or regions.
+    location = ModelChoiceField(queryset=Location.objects.filter(parent_id__in=[60,61]).order_by('geogid'),
+                                initial=0, required=True, label=_("Process Location (Parent - Required)"),
+                                widget=Select(attrs={'class': 'form-control mb-2'}))
+    # The child location will be used to narrow down past states or regions, if desired.
+    child_location = ModelChoiceField(queryset=Location.objects.none(), initial=0, required=False,
+                                label=_("Process Location (Child - Optional)"),
                                 widget=Select(attrs={'class': 'form-control mb-2'}))
     lifecyclestage = ModelChoiceField(queryset=LifeCycleStage.objects.all(),
                                       initial=0, required=True, label=_("Life Cycle Stage ID"),
@@ -82,10 +87,9 @@ class ProcessForm(ModelForm):
         This method is used to display a custom name, obj.name, instead of the stringified object view.
         It's additionally used to allow the user to select a name from a dropdown, or optionally enter a new name.
         """
-        #_process_name_list = kwargs.pop('data_list', None)
         super(ProcessForm, self).__init__(*args, **kwargs)
         self.fields['name'].label_from_instance = lambda obj: "%s" % obj.name
-        #self.fields['name'].widget = ListTextWidget(data_list=_process_name_list, name='process-name-list')
+        self.fields['location'].label_from_instance = lambda obj: "%s" % obj.name
 
     class Meta:
         """Meta data for Life Cycle Stage (Entry) form."""

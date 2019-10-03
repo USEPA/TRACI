@@ -152,6 +152,18 @@ class ProcessCreateView(CreateView):
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         """Process the post request with a new Process form filled out."""
+        p_name = request.POST.get('name')
+        if p_name and not ProcessName.objects.filter(name=p_name).exists():
+            # Some way to denote if the name is user defined? Check to see if the name passed is an id
+            # If it is an id, then it's not user defined, it's already existing.
+            try:
+                name_id = int(p_name)
+            except ValueError:
+                process_name = ProcessName.objects.create(name=p_name)
+                # Reassign the name in POST so it reflects the new name ID instead of the name name
+                request.POST = request.POST.copy()
+                request.POST['name'] = process_name.id
+
         form = ProcessForm(request.POST)
         if form.is_valid():
             process_obj = form.save(commit=True)
