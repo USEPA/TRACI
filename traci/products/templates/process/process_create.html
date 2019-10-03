@@ -8,15 +8,21 @@
         <div class="col-md-12">
             <form action="/products/process/create?lifecyclestage_id={{lifecyclestage_id}}" method="post">
                 <label>{{form.name.label}}</label>
+                <div class="text-danger">{{form.name.errors.as_text}}</div>
                 {{form.name}}
                 <div class="col-md-12">
                     Don't see a fitting Process name? Click
-                    {#<a class="btn btn-sm" href="#processNameModal" rel="modal:open"> HERE </a>#}
                     <a class="btn btn-sm" data-toggle="modal" data-target="#processNameModal"> HERE </a>
                     to create a new Process Name.
                 </div>
-                <label>{{form.location.label}}</label>
-                {{form.location}}
+                <div class="col-md-6">
+                    <label>{{form.location.label}}</label>
+                    {{form.location}}
+                </div>
+                <div class="col-md-6">
+                    <label>{{form.child_location.label}}</label>
+                    {{form.child_location}}
+                </div>
                 <label>{{form.lifecyclestage.label}}</label>
                 {{form.lifecyclestage}}
                 {% include 'next_reset_cancel_partial.html' %}

@@ -22,13 +22,13 @@ def load_locations(_apps, _schema_editor):
 
 def load_fixture(_apps, _schema_editor, filename):
     """Load data from a fixture when running migrations"""
-    fixture_file = os.path.join(fixture_dir, fixture_filename)
+    fixture_file = os.path.join(fixture_dir, filename)
     fixture = open(fixture_file, 'rb')
     objects = serializers.deserialize('json', fixture, ignorenonexistent=True)
     for obj in objects:
         try:
             with transaction.atomic():
-                obj.save()filename
+                obj.save()
         except IntegrityError:
             pass    # Ignore if duplicate obj already exists in db
     fixture.close()

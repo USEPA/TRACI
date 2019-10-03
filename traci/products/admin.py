@@ -14,8 +14,7 @@ Available functions:
 """
 
 from django.contrib import admin
-from products.models import Media, Location, ResourceReleaseOption, SubstanceEntry, \
-    ResourceRelease, Process, LifeCycleStageName, Product
+from products.models import Media, Location, ResourceRelease, Process, LifeCycleStageName, Product
 
 
 class MediaAdmin(admin.ModelAdmin):
@@ -40,44 +39,33 @@ admin.site.register(Media, MediaAdmin)
 #admin.site.register(Location, LocationAdmin)
 
 
-class ResourceReleaseOptionAdmin(admin.ModelAdmin):
-    """Define options used to display and edit ResourceReleaseOption on the Django Admin page."""
+#class ResourceReleaseOptionAdmin(admin.ModelAdmin):
+#    """Define options used to display and edit ResourceReleaseOption on the Django Admin page."""
 
-    list_display = ('name',)
-    search_fields = ('name',)
-    list_per_page = 25
-
-
-admin.site.register(ResourceReleaseOption, ResourceReleaseOptionAdmin)
+#    list_display = ('name',)
+#    search_fields = ('name',)
+#    list_per_page = 25
 
 
-class SubstanceEntryAdmin(admin.ModelAdmin):
-    """Define options used to display and edit SubstanceEntry on the Django Admin page."""
-
-    list_display = ('substance', 'quantity', 'unit', 'media')
-    search_fields = ('substance', 'unit', 'media')
-    list_per_page = 25
+#admin.site.register(ResourceReleaseOption, ResourceReleaseOptionAdmin)
 
 
-admin.site.register(SubstanceEntry, SubstanceEntryAdmin)
+#class ResourceReleaseAdmin(admin.ModelAdmin):
+#    """Define options used to display and edit ResourceRelease on the Django Admin page."""
+
+#    list_display = ('name',)
+#    search_fields = ('name',)
+#    list_per_page = 25
 
 
-class ResourceReleaseAdmin(admin.ModelAdmin):
-    """Define options used to display and edit ResourceRelease on the Django Admin page."""
-
-    list_display = ('name',)
-    search_fields = ('name',)
-    list_per_page = 25
-
-
-admin.site.register(ResourceRelease, ResourceReleaseAdmin)
+#admin.site.register(ResourceRelease, ResourceReleaseAdmin)
 
 
 class ProcessAdmin(admin.ModelAdmin):
     """Define options used to display and edit Process on the Django Admin page."""
 
-    list_display = ('name', 'location', 'resource_release')
-    search_fields = ('name', 'location', 'resource_release')
+    list_display = ('name', 'location')
+    search_fields = ('name', 'location')
     list_per_page = 25
 
 
