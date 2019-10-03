@@ -1,0 +1,41 @@
+﻿{% extends "main/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h3>Product Step 2: Define Processes</h3>
+    <div class="mb-3 row">
+        {# TODO Replace all products with lifecyclestage, generally update this template #}
+        <div class="col-sm-9">{% include 'lifecyclestage/lifecyclestage_details_partial.html' %}</div>
+        <div class="col-sm-3 my-2">
+            <button onclick="window.location.href='/products/detail/{{object.product.id}}'"
+                    class="my-2 col-md-12 btn btn-md btn-info">Back to Product Details</button>
+            <button onclick="window.location.href='/products/lifecyclestage/edit/{{object.id}}/'"
+                    class="my-2 col-md-12 btn btn-md btn-warning">Edit Life Cycle Stage Info</button>
+            <button onclick="window.location.href='/products/lifecyclestage/delete/{{object.id}}/'"
+                    class="my-2 col-md-12 btn btn-md btn-danger">Delete Life Cycle Stage</button>
+        </div>
+    </div>
+
+    <div class="mt-4 row">
+        <div class="col-sm-6">{% include 'process/process_list_partial.html' %}</div>
+        <div class="col-sm-6" id="processDetailPreview"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function addProcess(id) {
+        window.location.href = '/products/process/create?lifecyclestage_id=' + id;
+        console.log("TODO add Process.");
+    }
+    function editProcess(btn) {
+        if ($(btn).attr('disabled')) return;
+        console.log("TODO edit Process.");
+    }
+    function removeProcess(btn) {
+        if ($(btn).attr('disabled')) return;
+        console.log("TODO remove Process.");
+    }
+</script>
+{% endblock %}
