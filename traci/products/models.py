@@ -20,11 +20,39 @@ from projects.models import Project
 from substances.models import Substance
 
 
-class Media(models.Model):
-    """What medium is the substance in, Air, Water, etc."""
-    name = models.CharField(null=False, blank=False, max_length=31)
+class Product(models.Model):
+    """Product object containing LCI information for contained substances."""
+    name = models.CharField(null=False, blank=False, max_length=255)
+    # Parent project
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    # Step 1: Life Cycle Stage (multiselect options) Many to Many relationship with LifeCycleStageName table
+    # Step 2: Processes
+    # Step 3: resource/releases
 
 
+class LifeCycleStageName(models.Model):
+    """
+    Life Cycle Stages, the database entries for this will not change.
+    There are six static options.
+    """
+    name = models.CharField(null=False, blank=False, max_length=63)
+
+
+class LifeCycleStage(models.Model):
+    """
+    Life Cycle Stage cross-reference with product, constitutes a single life cycle stage "entry" in a product.
+    Each entry can have multiple instances of processes, manufacturing of a substance for example.
+    """
+    # One of some pre-approved stage names
+    name = models.ForeignKey(LifeCycleStageName, on_delete=models.CASCADE)
+    # Parent product
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        """Method stringify life cycle stage entry object, show the name"""
+        return self.name.name
+
+    
 class Location(models.Model):
     """Location information for LCI."""
     geogid = models.IntegerField(primary_key=True, null=False, blank=False)
@@ -37,6 +65,27 @@ class Location(models.Model):
     # Parent can be either United States (in the case of East of Mississippi)
     # or a State name (in the case of City/County).
     parent = models.ForeignKey('Location', on_delete=models.SET_NULL, null=True, blank=True)
+
+
+class ProcessName(models.Model):
+    """Process information for LCI, Name options."""
+    name = models.CharField(null=False, blank=False, max_length=63)
+
+
+class Process(models.Model):
+    """Process information for LCI, instance of a process at a location."""
+    # Parent life cycle stage
+    lifecyclestage = models.ForeignKey(LifeCycleStage, on_delete=models.CASCADE)
+    name = models.ForeignKey('ProcessName', on_delete=models.CASCADE)
+    # Location will be a one to many with the Location table, foreign key ref
+    location = models.ForeignKey('Location', on_delete=models.CASCADE)
+    # Step 3: resource/release (dropdown with static options) - is actually a child of lc_stage
+
+
+
+class Media(models.Model):
+    """What medium is the substance in, Air, Water, etc."""
+    name = models.CharField(null=False, blank=False, max_length=31)
 
 
 class ResourceReleaseType(models.Model):
@@ -61,49 +110,3 @@ class ResourceRelease(models.Model):
     unit = models.CharField(blank=True, null=True, default='', max_length=15)
     # Media through which the Releases are output, null if Resource/Input.
     media = models.ForeignKey('Media', on_delete=models.SET_NULL, blank=True, null=True)
-
-
-class ProcessName(models.Model):
-    """Process information for LCI, Name options."""
-    name = models.CharField(null=False, blank=False, max_length=63)
-
-
-class Process(models.Model):
-    """Process information for LCI, instance of a process at a location."""
-    name = models.ForeignKey('ProcessName', on_delete=models.CASCADE)
-    # Location will be a one to many with the Location table, foreign key ref
-    location = models.ForeignKey('Location', on_delete=models.CASCADE)
-    # Step 3: resource/release (dropdown with static options) - is actually a child of lc_stage
-
-
-class LifeCycleStageName(models.Model):
-    """
-    Life Cycle Stages, the database entries for this will not change.
-    There are six static options.
-    """
-    name = models.CharField(null=False, blank=False, max_length=63)
-
-
-class Product(models.Model):
-    """Product object containing LCI information for contained substances."""
-    name = models.CharField(null=False, blank=False, max_length=255)
-    # Parent project
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    # Step 1: Life Cycle Stage (multiselect options) Many to Many relationship with LifeCycleStageName table
-    # Step 2: Processes
-    # Step 3: resource/releases
-
-
-class LifeCycleStage(models.Model):
-    """
-    Life Cycle Stage cross-reference with product, constitutes a single life cycle stage "entry" in a product.
-    Each entry can have multiple instances of processes, manufacturing of a substance for example.
-    """
-    # One of some pre-approved stage names
-    name = models.ForeignKey(LifeCycleStageName, on_delete=models.CASCADE)
-    # Parent product
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
-    def __str__(self):
-        """Method stringify life cycle stage entry object, show the name"""
-        return self.name.name

@@ -17,7 +17,7 @@
     </div>
 
     <div class="mt-4 row">
-        <div class="col-sm-6">{% include 'resourcerelease/resourcerelease_list_partial.html' %}</div>
+        {#<div class="col-sm-6">{% include 'resourcerelease/resourcerelease_list_partial.html' %}</div>#}
         <div class="col-sm-6" id="resourcereleaseDetailPreview"></div>
     </div>
 </div>
@@ -36,9 +36,6 @@
     function removeResourcerelease(btn) {
         if ($(btn).attr('disabled')) return;
         console.log("TODO remove Resourcerelease.");
-    }
-    function rowClick(id) {
-
     }
 </script>
 {% endblock %}
