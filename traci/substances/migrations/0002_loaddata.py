@@ -7,9 +7,18 @@ from django.db import migrations, transaction
 from django.db.utils import IntegrityError
 
 fixture_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../fixtures'))
-fixture_filename = 'substances_initial_data.json'
+fixture_substances = 'substances_initial_data.json'
+fixture_units = 'unit.json'
 
-def load_fixture(_apps, _schema_editor):
+def load_fixture_substances(_apps, _schema_editor):
+    """Load data from a fixture when running migrations"""
+    load_fixture(_apps, _schema_editor, fixture_substances)
+
+def load_fixture_units(_apps, _schema_editor):
+    """Load data from a fixture when running migrations"""
+    load_fixture(_apps, _schema_editor, fixture_units)
+
+def load_fixture(_apps, _schema_editor, fixture_filename):
     """Load data from a fixture when running migrations"""
     fixture_file = os.path.join(fixture_dir, fixture_filename)
     fixture = open(fixture_file, 'rb')
@@ -30,5 +39,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(load_fixture),
+        migrations.RunPython(load_fixture_substances),
+        migrations.RunPython(load_fixture_units),
     ]
