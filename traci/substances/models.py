@@ -17,6 +17,13 @@ from django.db import models
 from constants.models import TRACI_FLAG_OPTIONS, DEFAULT_TRACI_FLAG
 
 
+class Unit(models.Model):
+    """Available units for measuring substances"""
+
+    name = models.CharField(blank=False, null=False, max_length=63)
+    description = models.CharField(blank=True, null=True, max_length=255)
+
+
 class Ecotox(models.Model):
     """Information related to a chemical's ecotoxicity potential."""
 

@@ -6,11 +6,12 @@
 
 """Definition of forms."""
 
-from django.forms import ModelForm, CharField, TextInput, \
-    ModelChoiceField, Select
+from django.forms import ModelForm, CharField, TextInput, ModelChoiceField, Select, FloatField, NumberInput
 from django.utils.translation import ugettext_lazy as _
-from products.models import Product, LifeCycleStageName, LifeCycleStage, Process, Location, ProcessName
+from products.models import Product, LifeCycleStageName, LifeCycleStage, Process, Location, \
+    ProcessName, ResourceReleaseType, Media, ResourceRelease
 from projects.models import Project
+from substances.models import Substance, Unit
 
 
 # New Product Form
@@ -21,11 +22,14 @@ class ProductForm(ModelForm):
     # Product Name
     name = CharField(
         max_length=255,
-        widget=TextInput({'class': 'form-control mb-2', 'placeholder': 'Product Name'}),
+        widget=TextInput({'class': 'form-control mb-2',
+                          'placeholder': 'Product Name'}),
         label=_("Product Name"), required=True)
 
-    project = ModelChoiceField(queryset=Project.objects.all(), initial=0, required=True, label=_("Project"),
-                               widget=TextInput(attrs={'class': 'form-control mb-2', 'readonly':'readonly'}))
+    project = ModelChoiceField(queryset=Project.objects.all(), initial=0,
+                               required=True, label=_("Parent Project"),
+                               widget=TextInput(attrs={'class': 'form-control mb-2',
+                                                       'readonly':'readonly'}))
 
     class Meta:
         """Meta data for Product form."""
@@ -40,12 +44,14 @@ class LifeCycleStageForm(ModelForm):
     Each entry can have multiple instances of processes, manufacturing of a substance for example.
     """
 
-    name = ModelChoiceField(queryset=LifeCycleStageName.objects.all(), initial=0, required=True,
+    name = ModelChoiceField(queryset=LifeCycleStageName.objects.all(),
+                            initial=0, required=True,
                             label=_("Life Cycle Stage Type"),
                             widget=Select(attrs={'class': 'form-control mb-2'}))
 
     product = ModelChoiceField(queryset=Product.objects.all(), initial=0, required=True,
-                               widget=TextInput(attrs={'class': 'form-control mb-2', 'readonly':'readonly'}))
+                               widget=TextInput(attrs={'class': 'form-control mb-2',
+                                                       'readonly':'readonly'}))
 
     def __init__(self, *args, **kwargs):
         """This method is used to display a custom name, obj.name, instead of the stringified object view"""
@@ -77,14 +83,13 @@ class ProcessForm(ModelForm):
                                 label=_("Process Location (Child - Optional)"),
                                 widget=Select(attrs={'class': 'form-control mb-2'}))
     lifecyclestage = ModelChoiceField(queryset=LifeCycleStage.objects.all(),
-                                      initial=0, required=True, label=_("Life Cycle Stage"),
+                                      initial=0, required=True, label=_("Parent Life Cycle Stage"),
                                       widget=TextInput(attrs={'class': 'form-control mb-2',
                                                               'readonly':'readonly'}))
 
     def __init__(self, *args, **kwargs):
         """
         This method is used to display a custom name, obj.name, instead of the stringified object view.
-        It's additionally used to allow the user to select a name from a dropdown, or optionally enter a new name.
         """
         super(ProcessForm, self).__init__(*args, **kwargs)
         self.fields['name'].label_from_instance = lambda obj: "%s" % obj.name
@@ -95,3 +100,51 @@ class ProcessForm(ModelForm):
 
         model = Process
         fields = ('name', 'location', 'lifecyclestage')
+
+
+class ResourceReleaseForm(ModelForm):
+    """
+    Chemical Resources/Releases store the quantity and unit information pertaining to certain chemicals that
+    are either required inputs for a process, or the outputs of a process.
+    """
+
+    # ResourceReleaseType, Chemical Release, Land Use, Fossil Fuel, or Water Use
+    type = ModelChoiceField(queryset=ResourceReleaseType.objects.all(), initial=0, required=True,
+                            label=_("Resource/Release Type"),
+                            widget=Select(attrs={'class': 'form-control mb-2'}))
+    # Substance/chemical
+    substance = ModelChoiceField(queryset=Substance.objects.all(), initial=0, required=True,
+                                 label=_("Substance"),
+                                 widget=Select(attrs={'class': 'form-control mb-2'}))
+    # Media through which the Releases are output, null if Resource/Input.
+    media = ModelChoiceField(queryset=Media.objects.all(), initial=0, required=True,
+                             label=_("Medium"),
+                             widget=Select(attrs={'class': 'form-control mb-2'}))
+    # Parent process reference, readonly
+    process = ModelChoiceField(queryset=Process.objects.all(),
+                               initial=0, required=True, label=_("Parent Process"),
+                               widget=TextInput(attrs={'class': 'form-control mb-2',
+                                                       'readonly':'readonly'}))
+    quantity = FloatField(label=_("Quantity"),
+                          widget=NumberInput(attrs={'class': 'form-control mb-2'}),
+                          required=True, initial=0)
+    unit = ModelChoiceField(queryset=Unit.objects.all(),
+                            initial=0, required=True, label=_("Units of Measurement"),
+                            widget=Select(attrs={'class': 'form-control mb-2'}))
+
+    def __init__(self, *args, **kwargs):
+        """
+        This method is used to display a custom name, obj.name, instead of the stringified object view.
+        """
+        super(ResourceReleaseForm, self).__init__(*args, **kwargs)
+        self.fields['type'].label_from_instance = lambda obj: "%s (%s)" % (obj.name, obj.type)
+        self.fields['substance'].label_from_instance = lambda obj: "%s" % obj.name
+        self.fields['media'].label_from_instance = lambda obj: "%s" % obj.name
+        #self.fields['process'].label_from_instance = lambda obj: "%s" % obj.name
+        self.fields['unit'].label_from_instance = lambda obj: "%s" % obj.name
+
+    class Meta:
+        """Meta data for Chemical Resource/Release form."""
+
+        model = ResourceRelease
+        fields = ('type', 'substance', 'media', 'process', 'quantity', 'unit')

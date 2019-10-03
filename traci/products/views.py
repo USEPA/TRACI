@@ -11,8 +11,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
-from products.forms import ProductForm, LifeCycleStageForm, ProcessForm
-from products.models import Product, LifeCycleStage, Process, ProcessName
+from products.forms import ProductForm, LifeCycleStageForm, ProcessForm, ResourceReleaseForm
+from products.models import Product, LifeCycleStage, Process, ProcessName, ResourceRelease
 from projects.models import Project
 
 # Create your views here.
@@ -197,3 +197,66 @@ class ProcessDeleteView(DeleteView):
     def get_success_url(self):
         stage = self.object.lifecyclestage
         return  reverse_lazy('detail_lifecyclestage', kwargs={'pk': stage.id})
+
+
+# ResourceRelease section
+class ResourceReleaseCreateView(CreateView):
+    """View for creating a new ResourceRelease for a life cycle stage."""
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        """Return a view with an empty form for creating a new ResourceRelease."""
+        process_id = request.GET.get('process_id', )
+        process = Process.objects.get(id=process_id)
+        form = ResourceReleaseForm({'process': process})
+        ctx = {'form': form, 'process_id': process_id}
+        return render(request, "resourcerelease/resourcerelease_create.html", ctx)
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        """Process the post request with a new ResourceRelease form filled out."""
+        p_name = request.POST.get('name')
+        if p_name and not ProcessName.objects.filter(name=p_name).exists():
+            # Some way to denote if the name is user defined? Check to see if the name passed is an id
+            # If it is an id, then it's not user defined, it's already existing.
+            try:
+                name_id = int(p_name)
+            except ValueError:
+                process_name = ProcessName.objects.create(name=p_name)
+                # Reassign the name in POST so it reflects the new name ID instead of the name name
+                request.POST = request.POST.copy()
+                request.POST['name'] = process_name.id
+
+        form = ProcessForm(request.POST)
+        if form.is_valid():
+            process_obj = form.save(commit=True)
+            return HttpResponseRedirect('/products/resourcerelease/detail/' + str(process_obj.id))
+        return render(request, "resourcerelease/resourcerelease_create.html", {'form': form})
+
+
+class ResourceReleaseEditView(UpdateView):
+    """View for editing a ResourceRelease for a life cycle stage"""
+    #model = ResourceRelease
+    #form_class = ResourceReleaseForm
+    #template_name = 'process/process_edit.html'
+
+
+class ResourceReleaseDetailView(DetailView):
+    """View for viewing the details of a process for a life cycle stage"""
+    #model = ResourceRelease
+    #template_name = 'process/process_detail.html'
+
+    #def get_context_data(self, **kwargs):
+    #    context = super().get_context_data(**kwargs)
+    #    #context['processes_list'] = Product.objects.filter(project=context['object'])
+    #    return context
+
+
+class ResourceReleaseDeleteView(DeleteView):
+    """View for removing a process from a Life Cycle Stage Entry"""
+    #model = ResourceRelease
+    #template_name = 'process/process_confirm_delete.html'
+
+    #def get_success_url(self):
+    #    stage = self.object.lifecyclestage
+    #    return  reverse_lazy('detail_lifecyclestage', kwargs={'pk': stage.id})
