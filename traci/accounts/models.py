@@ -49,6 +49,7 @@ class Country(models.Model):
         """
         :return:
         """
+        # NOTE: DON'T REMOVE THE PARENTHESES, IT BREAKS MIGRATIONS
         return (self.country,)
 
     def __str__(self):
@@ -78,6 +79,7 @@ class Sector(models.Model):
         """
         :return:
         """
+        # NOTE: DON'T REMOVE THE PARENTHESES, IT BREAKS MIGRATIONS
         return (self.sector,)
 
     def __str__(self):
@@ -94,6 +96,7 @@ class Role(models.Model):
         """
         :return:
         """
+        # NOTE: DON'T REMOVE THE PARENTHESES, IT BREAKS MIGRATIONS
         return (self.role,)
 
     def __str__(self):

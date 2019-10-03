@@ -1,4 +1,9 @@
-.fontawesome-icon{
+#processNameModal {
+    height: auto;
+    overflow: initial;
+}
+
+.fontawesome-icon {
     font-size: 2em;
 }
 

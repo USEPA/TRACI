@@ -1,0 +1,65 @@
+﻿{% extends "main/base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+<div class="container">
+    <div class="row">
+        <h3>Creating a new Process for Life Cycle Stage {{lifecyclestage_id}}</h3>
+        <div class="col-md-12">
+            <form action="/products/process/create?lifecyclestage_id={{lifecyclestage_id}}" method="post">
+                <label>{{form.name.label}}</label>
+                {{form.name}}
+                <div class="col-md-12">
+                    Don't see a fitting Process name? Click
+                    <a class="btn btn-sm" href="#processNameModal" rel="modal:open"> HERE </a>
+                    to create a new Process Name.
+                </div>
+                <label>{{form.location.label}}</label>
+                {{form.location}}
+                <label>{{form.lifecyclestage.label}}</label>
+                {{form.lifecyclestage}}
+                {% include 'next_reset_cancel_partial.html' %}
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="processNameModal" style="display:none;">
+    <div class="row">
+        <label>New Process Name:</label>
+        <input id="customProcessNameId" type="text" class="form-control col-md-12" />
+    </div>
+    <div class="row mt-2">
+        <button class="col-md-6 btn btn-md btn-info" onclick="customProcessName()">Create Process</button>
+        <a id="modelClose" class="col-md-6 btn btn-md btn-warning" href="#" rel="modal:close">Cancel</a>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-simulate/1.0.1/jquery.simulate.min.js"></script>
+<script>
+    function showCustomProcessName() {
+        //console.log("Custom process name onclick");
+        $("#customProcessNameId").modal();
+        //eval($("#modelClose").attr('href'));
+        //window.location = document.getElementById("modelClose").href;
+        //$("#processNameModal").close();
+        //$(".modal").close();
+        //$.modal.close();
+    }
+    function customProcessName() {
+        console.log("Custom process name onclick");
+        //$("#customProcessNameId")
+        //eval($("#modelClose").attr('href'));
+        //window.location = document.getElementById("modelClose").href;
+        //$("#processNameModal").close();
+        //$(".modal").close();
+        $.modal.close();
+    }
+</script>
+{% endblock %}

@@ -5,22 +5,14 @@
 
 """Definition of Products views."""
 
-from datetime import datetime
-from os.path import join
-import json
-import subprocess
-import requests
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.middleware.csrf import get_token
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DetailView, \
-    DeleteView
+from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
 from products.forms import ProductForm, LifeCycleStageForm, ProcessForm
-from products.models import Product, LifeCycleStage, Process
+from products.models import Product, LifeCycleStage, Process, ProcessName
 from projects.models import Project
 
 # Create your views here.
@@ -38,7 +30,7 @@ class ProductDetailView(DetailView):
     """View for presenting product details."""
     model = Product
     template_name = 'product/product_detail.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['stages_list'] = LifeCycleStage.objects.filter(product=context['object'])
@@ -150,18 +142,21 @@ class ProcessCreateView(CreateView):
         """Return a view with an empty form for creating a new Process."""
         stage_id = request.GET.get('lifecyclestage_id', )
         lifecyclestage = LifeCycleStage.objects.get(id=stage_id)
-    #    form = ProcessForm({'product': product})
-    #    ctx = {'form': form, 'product_id': product_id}
-    #    return render(request, "process/process_create.html", ctx)
+        # TODO pass in the existing list of process names as data_list
+        #process_names = list(ProcessName.objects.values_list('name', flat=True))
+        #form = ProcessForm({'data_list': process_names, 'lifecyclestage': lifecyclestage})
+        form = ProcessForm({'lifecyclestage': lifecyclestage})
+        ctx = {'form': form, 'lifecyclestage_id': stage_id}
+        return render(request, "process/process_create.html", ctx)
 
-    #@method_decorator(login_required)
-    #def post(self, request, *args, **kwargs):
-    #    """Process the post request with a new Process form filled out."""
-    #    form = ProcessForm(request.POST)
-    #    if form.is_valid():
-    #        process_obj = form.save(commit=True)
-    #        return HttpResponseRedirect('/products/process/detail/' + str(process_obj.id))
-    #    return render(request, "rocess/process_create.html", {'form': form})
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        """Process the post request with a new Process form filled out."""
+        form = ProcessForm(request.POST)
+        if form.is_valid():
+            process_obj = form.save(commit=True)
+            return HttpResponseRedirect('/products/process/detail/' + str(process_obj.id))
+        return render(request, "process/process_create.html", {'form': form})
 
 
 class ProcessEditView(UpdateView):
@@ -175,7 +170,7 @@ class ProcessDetailView(DetailView):
     """View for viewing the details of a process for a life cycle stage"""
     model = Process
     template_name = 'process/process_detail.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         #context['processes_list'] = Product.objects.filter(project=context['object'])

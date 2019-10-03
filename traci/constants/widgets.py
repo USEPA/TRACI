@@ -14,6 +14,7 @@ from django import forms
 
 # https://stackoverflow.com/questions/24783275/django-form-with-choices-but-also-with-freetext-option
 class ListTextWidget(forms.TextInput):
+    """Custom widget to allow a user to select a dropdown option, or type in a custom option."""
     def __init__(self, data_list, name, *args, **kwargs):
         super(ListTextWidget, self).__init__(*args, **kwargs)
         self._name = name
