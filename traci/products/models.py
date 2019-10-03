@@ -29,11 +29,16 @@ class Media(models.Model):
 
 class Location(models.Model):
     """Location information for LCI."""
+    geogid = models.IntegerField(primary_key=True, null=False, blank=False)
     # Name can be something like East of Mississippi or a City/County name.
-    name = models.CharField(null=False, blank=False, max_length=63)
+    name = models.CharField(null=True, blank=True, max_length=63)
+    abbreviation = models.CharField(null=True, blank=True, max_length=63)
+    ewid = models.IntegerField(null=True, blank=True)
+    region_id = models.IntegerField(null=True, blank=True)
+    geo_level_id = models.IntegerField(null=True, blank=True)
     # Parent can be either United States (in the case of East of Mississippi)
     # or a State name (in the case of City/County).
-    parent = models.CharField(null=False, blank=False, max_length=63)
+    parent_id = models.ForeignKey('Location', on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class ResourceReleaseOption(models.Model):

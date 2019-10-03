@@ -29,15 +29,15 @@ class MediaAdmin(admin.ModelAdmin):
 admin.site.register(Media, MediaAdmin)
 
 
-class LocationAdmin(admin.ModelAdmin):
-    """Define options used to display and edit Location on the Django Admin page."""
+#class LocationAdmin(admin.ModelAdmin):
+#    """Define options used to display and edit Location on the Django Admin page."""
 
-    list_display = ('name', 'parent')
-    search_fields = ('name', 'parent')
-    list_per_page = 50
+#    list_display = ('name', 'parent')
+#    search_fields = ('name', 'parent')
+#    list_per_page = 50
 
 
-admin.site.register(Location, LocationAdmin)
+#admin.site.register(Location, LocationAdmin)
 
 
 class ResourceReleaseOptionAdmin(admin.ModelAdmin):
