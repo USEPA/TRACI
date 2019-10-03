@@ -7,9 +7,20 @@ from django.db import migrations, transaction
 from django.db.utils import IntegrityError
 
 fixture_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../fixtures'))
-fixture_filename = 'lifecyclestagename.json'
+fixture_lifecyclestagename = 'lifecyclestagename.json'
+fixture_location = 'location.json'
 
-def load_fixture(_apps, _schema_editor):
+def load_lifecyclestagenames(_apps, _schema_editor):
+    """Load data from lifecyclestagenames fixture when running migrations"""
+    load_fixture(_apps, _schema_editor, fixture_lifecyclestagename)
+
+
+def load_locations(_apps, _schema_editor):
+    """Load data from locations fixture when running migrations"""
+    load_fixture(_apps, _schema_editor, fixture_location)
+
+
+def load_fixture(_apps, _schema_editor, filename):
     """Load data from a fixture when running migrations"""
     fixture_file = os.path.join(fixture_dir, fixture_filename)
     fixture = open(fixture_file, 'rb')
@@ -17,7 +28,7 @@ def load_fixture(_apps, _schema_editor):
     for obj in objects:
         try:
             with transaction.atomic():
-                obj.save()
+                obj.save()filename
         except IntegrityError:
             pass    # Ignore if duplicate obj already exists in db
     fixture.close()
@@ -30,5 +41,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(load_fixture),
+        migrations.RunPython(load_lifecyclestagenames),
+        migrations.RunPython(load_locations),
     ]

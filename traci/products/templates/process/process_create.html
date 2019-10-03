@@ -2,8 +2,6 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-
 <div class="container">
     <div class="row">
         <h3>Creating a new Process for Life Cycle Stage {{lifecyclestage_id}}</h3>
@@ -13,7 +11,8 @@
                 {{form.name}}
                 <div class="col-md-12">
                     Don't see a fitting Process name? Click
-                    <a class="btn btn-sm" href="#processNameModal" rel="modal:open"> HERE </a>
+                    {#<a class="btn btn-sm" href="#processNameModal" rel="modal:open"> HERE </a>#}
+                    <a class="btn btn-sm" data-toggle="modal" data-target="#processNameModal"> HERE </a>
                     to create a new Process Name.
                 </div>
                 <label>{{form.location.label}}</label>
@@ -26,40 +25,42 @@
     </div>
 </div>
 
-<div id="processNameModal" style="display:none;">
-    <div class="row">
-        <label>New Process Name:</label>
-        <input id="customProcessNameId" type="text" class="form-control col-md-12" />
-    </div>
-    <div class="row mt-2">
-        <button class="col-md-6 btn btn-md btn-info" onclick="customProcessName()">Create Process</button>
-        <a id="modelClose" class="col-md-6 btn btn-md btn-warning" href="#" rel="modal:close">Cancel</a>
+<div id="processNameModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create a new Process Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>New Process Name:</label>
+                <input id="customProcessNameId" type="text" class="form-control col-md-12" />
+                <div class="text-danger" style="display: none;">Cannot save an empty name!</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="col-md-6 btn btn-info" onclick="customProcessName()">Save changes</button>
+                <button type="button" class="col-md-6 btn btn-warning" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-simulate/1.0.1/jquery.simulate.min.js"></script>
 <script>
-    function showCustomProcessName() {
-        //console.log("Custom process name onclick");
-        $("#customProcessNameId").modal();
-        //eval($("#modelClose").attr('href'));
-        //window.location = document.getElementById("modelClose").href;
-        //$("#processNameModal").close();
-        //$(".modal").close();
-        //$.modal.close();
-    }
     function customProcessName() {
-        console.log("Custom process name onclick");
-        //$("#customProcessNameId")
-        //eval($("#modelClose").attr('href'));
-        //window.location = document.getElementById("modelClose").href;
-        //$("#processNameModal").close();
-        //$(".modal").close();
-        $.modal.close();
+        var processName = $("#customProcessNameId").val();
+        if (!processName || processName.length == 0) {
+            $(".text-danger").show();
+            return;
+        }
+        $(".text-danger").hide();
+        var opt = "<option selected>" + processName + "</option>";
+        $("#id_name").append(opt);
+        $(".close").click();
     }
 </script>
 {% endblock %}
