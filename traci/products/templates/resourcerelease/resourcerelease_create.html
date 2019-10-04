@@ -49,10 +49,34 @@
 
 {% block scripts %}
 <script>
+    function updateUnits(data) {
+        console.log(data);
+    }
+
+    $("#id_type").on('change', function (e) {
+        var sel = e.target.selectedOptions[0];
+        var typeId = $(sel).val();
+        var typeName = $(sel).text();
+        console.log(typeId + ': ' + typeName);
+        // GET Units of Measurement for the selected
+        $.ajax({
+            url: '/substances/api/units_for_type/',
+            data: {
+                'type_id': typeId
+            },
+            cache: false,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data) updateUnits(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+            }
+        });
+    });
+
     const SUBSTANCES_SOURCE = '/substances/api/substance_list/';
-
-    var selected = [];
-
     $(function () {
         $("#id_substance").autocomplete({
             source: function (request, response) {
@@ -72,15 +96,6 @@
                     }
                 })
             },
-            //select: function (event, ui) {
-            //    selected.push(ui.item.value);
-            //    // Replace all instances of string !SUB! with the substance name
-            //    // Remove the selected substance from the dropdown.
-            //    $("#ui-id-1 li:contains('" + ui.item.value + "')")[0].remove();
-            //    // If we cleanly return from this function, then the dropdown will disappear.
-            //    // This throw is a dirty workaround to keep the dropdown open after selecting a substance.
-            //    throw 'Expected error...';
-            //},
             minLength: 2,
         });
     });

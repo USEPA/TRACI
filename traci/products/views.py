@@ -67,15 +67,10 @@ class ProductEditView(UpdateView):
     template_name = 'product/product_edit.html'
 
     def form_valid(self, form):
-        """Product Edit Form validation."""
+        """Product Edit Form validation and redirect."""
         self.object = form.save(commit=False)
         self.object.save()
-        return HttpResponseRedirect('/products/products/')
-
-    #def get_context_data(self, **kwargs):
-    #    context = super().get_context_data(**kwargs)
-    #    context['project_id'] = Product.objects.filter(process=context['object'])
-    #    return context
+        return HttpResponseRedirect('/products/detail/' + str(self.object.id))
 
 
 class ProductDeleteView(DeleteView):
@@ -99,7 +94,7 @@ class LifeCycleStageCreateView(CreateView):
         product = Product.objects.get(id=product_id)
         form = LifeCycleStageForm({'product': product})
         ctx = {'form': form, 'product_id': product_id}
-        return render(request, "lifecyclestage/create_lifecyclestage.html", ctx)
+        return render(request, "lifecyclestage/lifecyclestage_create.html", ctx)
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
@@ -108,7 +103,7 @@ class LifeCycleStageCreateView(CreateView):
         if form.is_valid():
             lifecyclestage_obj = form.save(commit=True)
             return HttpResponseRedirect('/products/lifecyclestage/detail/' + str(lifecyclestage_obj.id))
-        return render(request, "lifecyclestage/create_lifecyclestage.html", {'form': form})
+        return render(request, "lifecyclestage/lifecyclestage_create.html", {'form': form})
 
 
 class LifeCycleStageEditView(UpdateView):
@@ -116,6 +111,12 @@ class LifeCycleStageEditView(UpdateView):
     model = LifeCycleStage
     form_class = LifeCycleStageForm
     template_name = 'lifecyclestage/lifecyclestage_edit.html'
+
+    def form_valid(self, form):
+        """LifeCycleStage Edit Form validation and redirect."""
+        self.object = form.save(commit=False)
+        self.object.save()
+        return HttpResponseRedirect('/products/lifecyclestage/detail/' + str(self.object.id))
 
 
 class LifeCycleStageDetailView(DetailView):
@@ -183,6 +184,12 @@ class ProcessEditView(UpdateView):
     form_class = ProcessForm
     template_name = 'process/process_edit.html'
 
+    def form_valid(self, form):
+        """Process Edit Form validation and redirect."""
+        self.object = form.save(commit=False)
+        self.object.save()
+        return HttpResponseRedirect('/products/process/detail/' + str(self.object.id))
+
 
 class ProcessDetailView(DetailView):
     """View for viewing the details of a process for a life cycle stage"""
@@ -248,6 +255,12 @@ class ResourceReleaseEditView(UpdateView):
     model = ResourceRelease
     form_class = ResourceReleaseForm
     template_name = 'resourcerelease/resourcerelease_edit.html'
+
+    def form_valid(self, form):
+        """ResourceRelease Edit Form validation and redirect."""
+        self.object = form.save(commit=False)
+        self.object.save()
+        return HttpResponseRedirect('/products/process/detail/' + str(self.object.process.id))
 
 
 class ResourceReleaseDetailView(DetailView):

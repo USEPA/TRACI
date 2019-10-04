@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <h3>Product Step 1: Life Cycle Stage</h3>
+    <h3>Product Step 1: Add/Edit/View Life Cycle Stages</h3>
     <div class="mb-3 row">
         {# TODO Replace all projects with products, generally update this template #}
         <div class="col-sm-9">{% include 'product/product_details_partial.html' %}</div>
@@ -27,7 +27,6 @@
 <script>
     function addLifeCycleStage(id) {
         window.location.href = '/products/lifecyclestage/create?product_id=' + id;
-        console.log("TODO add product.");
     }
     function editLifeCycleStage(btn) {
         if ($(btn).attr('disabled')) return;

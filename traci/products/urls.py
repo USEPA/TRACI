@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^delete/(?P<pk>\d+)/?$', ProductDeleteView.as_view(), name='delete_product'),
 
     # URLs for LifeCycleStageName CRUD operations.
-    url(r'^lifecyclestage/create/?$', LifeCycleStageCreateView.as_view(), name='create_lifecyclestage'),
+    url(r'^lifecyclestage/create/?$', LifeCycleStageCreateView.as_view(), name='lifecyclestage_create'),
     url(r'^lifecyclestage/edit/(?P<pk>\d+)/?$', LifeCycleStageEditView.as_view(), name='edit_lifecyclestage'),
     url(r'^lifecyclestage/detail/(?P<pk>\d+)/?$', LifeCycleStageDetailView.as_view(), name='detail_lifecyclestage'),
     url(r'^lifecyclestage/delete/(?P<pk>\d+)/?$', LifeCycleStageDeleteView.as_view(), name='delete_lifecyclestage'),

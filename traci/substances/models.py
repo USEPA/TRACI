@@ -18,10 +18,14 @@ from constants.models import TRACI_FLAG_OPTIONS, DEFAULT_TRACI_FLAG
 
 
 class Unit(models.Model):
-    """Available units for measuring substances"""
+    """Available units for measuring resources and releases (inputs and outputs)"""
 
     name = models.CharField(blank=False, null=False, max_length=63)
     description = models.CharField(blank=True, null=True, max_length=255)
+    chemical = models.BooleanField(blank=False, null=False, default=False)
+    land_use = models.BooleanField(blank=False, null=False, default=False)
+    water_use = models.BooleanField(blank=False, null=False, default=False)
+    fossil_fuel = models.BooleanField(blank=False, null=False, default=False)
 
 
 class Ecotox(models.Model):

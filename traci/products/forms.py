@@ -75,7 +75,8 @@ class ProcessForm(ModelForm):
                             label=_("Process Name"),
                             widget=Select(attrs={'class': 'form-control mb-2'}))
     # Hard coded to return all codes for states or regions.
-    location = ModelChoiceField(queryset=Location.objects.filter(parent_id__in=[60,61]).order_by('geogid'),
+    # TODO do geogid < 62 or <=61 instead of parent_id__in[60,61]
+    location = ModelChoiceField(queryset=Location.objects.filter(geogid__lte=61).order_by('geogid'),
                                 initial=0, required=True, label=_("Process Location (Parent - Required)"),
                                 widget=Select(attrs={'class': 'form-control mb-2'}))
     # The child location will be used to narrow down past states or regions, if desired.
@@ -136,7 +137,8 @@ class ResourceReleaseForm(ModelForm):
     quantity = FloatField(label=_("Quantity"),
                           widget=NumberInput(attrs={'class': 'form-control mb-2'}),
                           required=True, initial=0)
-    unit = ModelChoiceField(queryset=Unit.objects.all(),
+    # Only pull chemical units first, then if the user selects an input type, then get the appropriate unit options
+    unit = ModelChoiceField(queryset=Unit.objects.filter(chemical_unit=True),
                             initial=0, required=True, label=_("Units of Measurement"),
                             widget=Select(attrs={'class': 'form-control mb-2'}))
 
