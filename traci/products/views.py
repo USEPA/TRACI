@@ -229,28 +229,40 @@ class ResourceReleaseCreateView(CreateView):
                'release_form': release_form, 'process_id': process_id}
         return render(request, "resourcerelease/resourcerelease_create.html", ctx)
 
-#    @method_decorator(login_required)
-#    def post(self, request, *args, **kwargs):
-#        """Process the post request with a new ResourceRelease form filled out."""
-#        # To support the model select form integrating with our custom chemical search box,
-#        # we have to do some dirty code. Otherwise, the form won't validate
-#        chemical_name = request.POST.get('chemical');
-#        # Retrieve a queryset that contains the selected chemical
-#        queryset = Chemical.objects.filter(name=chemical_name)
-#        chemical = queryset.first()
-#        # Overwrite the POST data so the susbtance reflects its ID instead of name
-#        request.POST = request.POST.copy()
-#        request.POST['chemical'] = chemical.id
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        """Process the post request with a new ResourceRelease form filled out."""
+        # This post could contain either a Release or a Resource form.
+        # Figure out which was passed in based on the presence of substance_type vs chemical
 
-#        form = ResourceReleaseForm(request.POST)
-#        # Overwrite the form chemical choices with our queryset from above
-#        form.fields['chemical'].choices.queryset = queryset
+        form = SubstanceTypeForm(request.POST)
+        if form.is_valid():
+            # To support the model select form integrating with our custom chemical search box,
+            # we have to do some dirty code. Otherwise, the form won't validate
+            chemical_name = request.POST.get('chemical', '');
 
-#        if form.is_valid():
-#            resourcerelease_obj = form.save(commit=True)
-#            return HttpResponseRedirect('/products/process/detail/' + str(resourcerelease_obj.process.id))
+            if chemical_name:
+                # Retrieve a queryset that contains the selected chemical
+                queryset = Chemical.objects.filter(name=chemical_name)
+                chemical = queryset.first()
+                # Overwrite the POST data so the susbtance reflects its ID instead of name
+                request.POST = request.POST.copy()
+                request.POST['chemical'] = chemical.id
+
+                release_form = ReleaseForm(request.POST)
+                # Overwrite the form chemical choices with our queryset from above
+                release_form.fields['chemical'].choices.queryset = queryset
+
+                if release_form.is_valid():
+                    release_obj = release_form.save(commit=True)
+                    return HttpResponseRedirect('/products/process/detail/' + str(release_obj.process.id))
+
+            resource_form = ResourceForm(request.POST)
+            if resource_form.is_valid():
+                resource_obj = resource_form.save(commit=True)
+                return HttpResponseRedirect('/products/process/detail/' + str(resource_obj.process.id))
         
-#        return render(request, "resourcerelease/resourcerelease_create.html", {'form': form})
+        return render(request, "resourcerelease/resourcerelease_create.html", {'form': form})
 
 
 #class ResourceReleaseEditView(UpdateView):

@@ -20,16 +20,16 @@
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <label>{{release_form.media.label}}</label>
-                        {{release_form.media}}
+                        <label>{{release_form.release_media.label}}</label>
+                        {{release_form.release_media}}
                     </div>
                     <div class="col-lg-2">
-                        <label>{{release_form.quantity.label}}</label>
-                        {{release_form.quantity}}
+                        <label>{{release_form.release_quantity.label}}</label>
+                        {{release_form.release_quantity}}
                     </div>
                     <div class="col-lg-3">
-                        <label>{{release_form.unit.label}}</label>
-                        {{release_form.unit}}
+                        <label>{{release_form.release_unit.label}}</label>
+                        {{release_form.release_unit}}
                     </div>
                     <div class="col-lg-3">
                         <label>{{release_form.process.label}}</label>
@@ -40,18 +40,17 @@
 
                 <div id="resourceForm" style="display:none;">
                     <div class="col-lg-3">
-                        <label>{{resource_form.media.label}}</label>
-                        {{resource_form.media}}
+                        <label>{{resource_form.resource_media.label}}</label>
+                        {{resource_form.resource_media}}
                     </div>
                     <div class="col-lg-2">
-                        <label>{{resource_form.quantity.label}}</label>
-                        {{resource_form.quantity}}
+                        <label>{{resource_form.resource_quantity.label}}</label>
+                        {{resource_form.resource_quantity}}
                     </div>
                     <div class="col-lg-3">
-                        <label>{{resource_form.unit.label}}</label>
-                        {{resource_form.unit}}
+                        <label>{{resource_form.resource_unit.label}}</label>
+                        {{resource_form.resource_unit}}
                     </div>
-                    
                     <div class="col-lg-3">
                         <label>{{resource_form.process.label}}</label>
                         {{resource_form.process}}
@@ -71,17 +70,33 @@
         console.log(data);
     }
 
+    $(document).ready(function () {
+        $("#resourceForm").find('input, textarea, select').each(function (i) {
+            $(this).attr('disabled', 'disabled');
+        });
+    });
+
     $("#id_substance_type").on('change', function (e) {
         var sel = e.target.selectedOptions[0];
-        var typeId = $(sel).val();
         var typeName = $(sel).text();
-        console.log(typeId + ': ' + typeName);
         if (typeName.toLowerCase() === 'chemical release') {
             $("#resourceForm").hide();
+            $("#resourceForm").find('input, textarea, select').each(function (i) {
+                $(this).attr('disabled', 'disabled');
+            });
             $("#releaseForm").show();
+            $("#releaseForm").find('input, textarea, select').each(function (i) {
+                $(this).removeAttr('disabled');
+            });
         } else {
             $("#releaseForm").hide();
+            $("#releaseForm").find('input, textarea, select').each(function (i) {
+                $(this).attr('disabled', 'disabled');
+            });
             $("#resourceForm").show();
+            $("#resourceForm").find('input, textarea, select').each(function (i) {
+                $(this).removeAttr('disabled');
+            });
         }
     });
 

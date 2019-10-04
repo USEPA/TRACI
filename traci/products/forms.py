@@ -130,13 +130,13 @@ class ResourceForm(ModelForm):
     substance_type = ModelChoiceField(queryset=SubstanceType.objects.all(), initial=0, required=True,
                                       label=_("Name"),
                                       widget=Select(attrs={'class': 'form-control mb-2'}))
-    media = ModelChoiceField(queryset=Media.objects.filter(name='No Media'), initial=0, required=True,
+    resource_media = ModelChoiceField(queryset=Media.objects.filter(name='No Media'), initial=0, required=True,
                              label=_("Media"),
                              widget=Select(attrs={'class': 'form-control mb-2'}))
-    quantity = FloatField(label=_("Quantity"),
+    resource_quantity = FloatField(label=_("Quantity"),
                           widget=NumberInput(attrs={'class': 'form-control mb-2'}),
                           required=True, initial=0)
-    unit = ModelChoiceField(queryset=Unit.objects.filter(chemical=False),
+    resource_unit = ModelChoiceField(queryset=Unit.objects.filter(chemical=False),
                             initial=0, required=True, label=_("Units of Measurement"),
                             widget=Select(attrs={'class': 'form-control mb-2'}))
     # Parent process reference, readonly
@@ -151,28 +151,28 @@ class ResourceForm(ModelForm):
         """
         super(ResourceForm, self).__init__(*args, **kwargs)
         self.fields['substance_type'].label_from_instance = lambda obj: "%s" % obj.name
-        self.fields['media'].label_from_instance = lambda obj: "%s" % obj.name
-        self.fields['unit'].label_from_instance = lambda obj: "%s" % obj.name
+        self.fields['resource_media'].label_from_instance = lambda obj: "%s" % obj.name
+        self.fields['resource_unit'].label_from_instance = lambda obj: "%s" % obj.name
 
     class Meta:
         """Meta data for Resource form."""
 
         model = Resource
-        fields = ('substance_type', 'media', 'quantity', 'unit', 'process')
+        fields = ('substance_type', 'resource_media', 'resource_quantity', 'resource_unit', 'process')
 
 
 
 class ReleaseForm(ModelForm):
-    chemical = ModelChoiceField(queryset=Chemical.objects.none(), initial=0,
+    chemical = ModelChoiceField(queryset=Chemical.objects.all(), initial=0,
                                 required=True, label=_("Chemical Name"),
                                 widget=TextInput(attrs={'class': 'form-control mb-2'}))
-    media = ModelChoiceField(queryset=Media.objects.all().exclude(name='No Media'),
+    release_media = ModelChoiceField(queryset=Media.objects.all().exclude(name='No Media'),
                              initial=0, required=True, label=_("Media"),
                              widget=Select(attrs={'class': 'form-control mb-2'}))
-    quantity = FloatField(label=_("Quantity"),
+    release_quantity = FloatField(label=_("Quantity"),
                           widget=NumberInput(attrs={'class': 'form-control mb-2'}),
                           required=True, initial=0)
-    unit = ModelChoiceField(queryset=Unit.objects.filter(chemical=True),
+    release_unit = ModelChoiceField(queryset=Unit.objects.filter(chemical=True),
                             initial=0, required=True, label=_("Units of Measurement"),
                             widget=Select(attrs={'class': 'form-control mb-2'}))
     # Parent process reference, readonly
@@ -187,14 +187,14 @@ class ReleaseForm(ModelForm):
         """
         super(ReleaseForm, self).__init__(*args, **kwargs)
         self.fields['chemical'].label_from_instance = lambda obj: "%s" % obj.name
-        self.fields['media'].label_from_instance = lambda obj: "%s" % obj.name
-        self.fields['unit'].label_from_instance = lambda obj: "%s" % obj.name
+        self.fields['release_media'].label_from_instance = lambda obj: "%s" % obj.name
+        self.fields['release_unit'].label_from_instance = lambda obj: "%s" % obj.name
 
     class Meta:
         """Meta data for ReleaseForm form."""
 
         model = Release
-        fields = ('chemical', 'media', 'quantity', 'unit', 'process')
+        fields = ('chemical', 'release_media', 'release_quantity', 'release_unit', 'process')
 
 
 #class ResourceReleaseForm(ModelForm):
