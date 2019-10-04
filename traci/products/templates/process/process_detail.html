@@ -17,8 +17,8 @@
     </div>
 
     <div class="mt-4 row">
-        <div class="col-sm-6">{% include 'resourcerelease/resourcerelease_list_partial.html' %}</div>
-        <div class="col-sm-6" id="resourcereleaseDetailPreview"></div>
+        <div class="col-sm-12">{% include 'resourcerelease/resourcerelease_list_partial.html' %}</div>
+        {#<div class="col-sm-6" id="resourcereleaseDetailPreview"></div>#}
     </div>
 </div>
 {% endblock %}
@@ -27,18 +27,20 @@
 <script>
     function addResourcerelease(id) {
         window.location.href = '/products/resourcerelease/create?process_id=' + id;
-        console.log("TODO add Resourcerelease.");
     }
     function editResourcerelease(btn) {
         if ($(btn).attr('disabled')) return;
-        console.log("TODO edit Resourcerelease.");
+        window.location.href = '/products/resourcerelease/edit/' + $(btn).attr('id');
     }
     function removeResourcerelease(btn) {
         if ($(btn).attr('disabled')) return;
-        console.log("TODO remove Resourcerelease.");
+        window.location.href = '/products/resourcerelease/delete/' + $(btn).attr('id');
     }
     function rowClick(id) {
-
+        $("tr").removeClass('table-active');
+        $("#" + id).addClass('table-active');
+        $("i").removeAttr('disabled');
+        $("i").attr('id', id);
     }
 </script>
 {% endblock %}
