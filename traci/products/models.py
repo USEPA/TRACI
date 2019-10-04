@@ -124,19 +124,3 @@ class Release(models.Model):
     release_media = models.ForeignKey('Media', on_delete=models.SET_NULL, blank=True, null=True)
     # Parent process reference
     process = models.ForeignKey('Process', on_delete=models.CASCADE)
-
-
-#class ResourceRelease(models.Model):
-#    """
-#    Information for a Resource (input) or Chemical Release (output).
-#    """
-#    # Parent process reference
-#    process = models.ForeignKey('Process', on_delete=models.CASCADE)
-#    # Substance, Chemical Release, Land Use, Fossil Fuel, or Water Use
-#    type = models.ForeignKey('Substance', on_delete=models.CASCADE)
-#    # Chemical/chemical
-#    chemical = models.ForeignKey(Chemical, on_delete=models.CASCADE)
-#    quantity = models.FloatField(blank=True, null=True, default=0)
-#    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
-#    # Media through which the Releases are output, null if Resource/Input.
-#    media = models.ForeignKey('Media', on_delete=models.SET_NULL, blank=True, null=True)

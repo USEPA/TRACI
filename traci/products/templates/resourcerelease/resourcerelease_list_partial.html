@@ -7,22 +7,28 @@
     <caption>Chemical Releases and Resources</caption>
     <thead class="table-secondary">
         <tr>
-            <th scope="col">Type</th>
             <th scope="col">Name</th>
             <th scope="col">Media</th>
             <th scope="col">Quantity</th>
             <th scope="col">Unit</th>
         </tr>
     </thead>
-    {% if resourcerelease_list %}
+    {% if release_list or resource_list %}
     <tbody>
-        {% for chem in resourcerelease_list %}
+        {% for chem in release_list %}
             <tr id="{{chem.id}}" onclick="rowClick('{{chem.id}}')">
-                <th scope="row">{{chem.type.name}}</th>
-                <td scope="row">{{chem.chemical.name}}</td>
-                <td scope="row">{{chem.media.name}}</td>
-                <td scope="row">{{chem.quantity}}</td>
-                <td scope="row">{{chem.unit.name}}</td>
+                <th scope="row">{{chem.chemical.name}}</th>
+                <td scope="row">{{chem.release_media.name}}</td>
+                <td scope="row">{{chem.release_quantity}}</td>
+                <td scope="row">{{chem.release_unit.name}}</td>
+            </tr>
+        {% endfor %}
+        {% for resource in resource_list %}
+            <tr id="{{resource.id}}" onclick="rowClick('{{resource.id}}')">
+                <th scope="row">{{resource.substance_type.name}}</th>
+                <td scope="row">{{resource.resource_media.name}}</td>
+                <td scope="row">{{resource.resource_quantity}}</td>
+                <td scope="row">{{resource.resource_unit.name}}</td>
             </tr>
         {% endfor %}
     </tbody>
