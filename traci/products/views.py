@@ -11,8 +11,9 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
-from products.forms import ProductForm, LifeCycleStageForm, ProcessForm, ResourceReleaseForm
-from products.models import Product, LifeCycleStage, Process, ProcessName, ResourceRelease
+from products.forms import ProductForm, LifeCycleStageForm, ProcessForm, SubstanceTypeForm, \
+    ResourceForm, ReleaseForm
+from products.models import Product, LifeCycleStage, Process, ProcessName
 from projects.models import Project
 from chemicals.models import Chemical
 
@@ -198,7 +199,7 @@ class ProcessDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['resourcerelease_list'] = ResourceRelease.objects.filter(process=context['object'])
+        #context['resourcerelease_list'] = ResourceRelease.objects.filter(process=context['object'])
         return context
 
 
@@ -221,59 +222,61 @@ class ResourceReleaseCreateView(CreateView):
         """Return a view with an empty form for creating a new ResourceRelease."""
         process_id = request.GET.get('process_id', )
         process = Process.objects.get(id=process_id)
-        form = ResourceReleaseForm({'process': process})
-        subst_choices = list(form.fields['chemical'].choices)
-        ctx = {'form': form, 'process_id': process_id}
+        form = SubstanceTypeForm()
+        resource_form = ResourceForm({'process': process})
+        release_form = ReleaseForm({'process': process})
+        ctx = {'form': form, 'resource_form': resource_form,
+               'release_form': release_form, 'process_id': process_id}
         return render(request, "resourcerelease/resourcerelease_create.html", ctx)
 
-    @method_decorator(login_required)
-    def post(self, request, *args, **kwargs):
-        """Process the post request with a new ResourceRelease form filled out."""
-        # To support the model select form integrating with our custom chemical search box,
-        # we have to do some dirty code. Otherwise, the form won't validate
-        chemical_name = request.POST.get('chemical');
-        # Retrieve a queryset that contains the selected chemical
-        queryset = Chemical.objects.filter(name=chemical_name)
-        chemical = queryset.first()
-        # Overwrite the POST data so the susbtance reflects its ID instead of name
-        request.POST = request.POST.copy()
-        request.POST['chemical'] = chemical.id
+#    @method_decorator(login_required)
+#    def post(self, request, *args, **kwargs):
+#        """Process the post request with a new ResourceRelease form filled out."""
+#        # To support the model select form integrating with our custom chemical search box,
+#        # we have to do some dirty code. Otherwise, the form won't validate
+#        chemical_name = request.POST.get('chemical');
+#        # Retrieve a queryset that contains the selected chemical
+#        queryset = Chemical.objects.filter(name=chemical_name)
+#        chemical = queryset.first()
+#        # Overwrite the POST data so the susbtance reflects its ID instead of name
+#        request.POST = request.POST.copy()
+#        request.POST['chemical'] = chemical.id
 
-        form = ResourceReleaseForm(request.POST)
-        # Overwrite the form chemical choices with our queryset from above
-        form.fields['chemical'].choices.queryset = queryset
+#        form = ResourceReleaseForm(request.POST)
+#        # Overwrite the form chemical choices with our queryset from above
+#        form.fields['chemical'].choices.queryset = queryset
 
-        if form.is_valid():
-            resourcerelease_obj = form.save(commit=True)
-            return HttpResponseRedirect('/products/process/detail/' + str(resourcerelease_obj.process.id))
+#        if form.is_valid():
+#            resourcerelease_obj = form.save(commit=True)
+#            return HttpResponseRedirect('/products/process/detail/' + str(resourcerelease_obj.process.id))
         
-        return render(request, "resourcerelease/resourcerelease_create.html", {'form': form})
+#        return render(request, "resourcerelease/resourcerelease_create.html", {'form': form})
 
 
-class ResourceReleaseEditView(UpdateView):
-    """View for editing a ResourceRelease for a life cycle stage"""
-    model = ResourceRelease
-    form_class = ResourceReleaseForm
-    template_name = 'resourcerelease/resourcerelease_edit.html'
+#class ResourceReleaseEditView(UpdateView):
+#    """View for editing a ResourceRelease for a life cycle stage"""
+#    model = ResourceRelease
+#    form_class = ResourceReleaseForm
+#    template_name = 'resourcerelease/resourcerelease_edit.html'
 
-    def form_valid(self, form):
-        """ResourceRelease Edit Form validation and redirect."""
-        self.object = form.save(commit=False)
-        self.object.save()
-        return HttpResponseRedirect('/products/process/detail/' + str(self.object.process.id))
-
-
-class ResourceReleaseDetailView(DetailView):
-    """View for viewing the details of a process for a life cycle stage"""
-    model = ResourceRelease
-    template_name = 'resourcerelease/resourcerelease_detail.html'
+#    def form_valid(self, form):
+#        """ResourceRelease Edit Form validation and redirect."""
+#        self.object = form.save(commit=False)
+#        self.object.save()
+#        return HttpResponseRedirect('/products/process/detail/' + str(self.object.process.id))
 
 
-class ResourceReleaseDeleteView(DeleteView):
-    """View for removing a process from a Life Cycle Stage Entry"""
-    model = ResourceRelease
-    template_name = 'resourcerelease/resourcerelease_confirm_delete.html'
+#class ResourceReleaseDetailView(DetailView):
+#    """View for viewing the details of a process for a life cycle stage"""
+#    model = ResourceRelease
+#    template_name = 'resourcerelease/resourcerelease_detail.html'
 
-    def get_success_url(self):
-        process = self.object.process
-        return  reverse_lazy('detail_process', kwargs={'pk': process.id})
+
+#class ResourceReleaseDeleteView(DeleteView):
+#    """View for removing a process from a Life Cycle Stage Entry"""
+#    model = ResourceRelease
+#    template_name = 'resourcerelease/resourcerelease_confirm_delete.html'
+
+#    def get_success_url(self):
+#        process = self.object.process
+#        return  reverse_lazy('detail_process', kwargs={'pk': process.id})

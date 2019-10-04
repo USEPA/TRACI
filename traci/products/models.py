@@ -9,7 +9,6 @@ Models for Products (LCI Products).
 Available models:
 - Media option for an instance of a chemical such as Water, Air, etc.
 - Location option for a Process.
-- ResourceRelease a collection of resource/release (chemicals) for a Process.
 - Process is a part of the parent life cycle stage, can contain one or more resource/release chemicals.
 - LifeCycleStageName is a stage of the product's life cycle with one or more processes
 - Product is an end product
@@ -85,7 +84,7 @@ class Media(models.Model):
     name = models.CharField(null=False, blank=False, max_length=31)
 
 
-class ResourceReleaseType(models.Model):
+class SubstanceType(models.Model):
     """Fixed options for Resource/Release"""
     # Name will be Chemical Release, Land Use, Fossil Fuel, or Water Use
     name = models.CharField(null=False, blank=False, max_length=63)
@@ -93,51 +92,36 @@ class ResourceReleaseType(models.Model):
     type = models.CharField(null=False, blank=False, max_length=63)
 
 
+class SubstanceTypeUnit(models.Model):
+    """
+    Cross reference for substances and units,
+    allows specification of which units can belong to which substances.
+    """
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
+    substance = models.ForeignKey(SubstanceType, on_delete=models.CASCADE)
+
+
+# All other substance types, land use, water use, fossil fuels
+class Resource(models.Model):
+    """Information for resources (inputs)."""
+    substance_type = models.ForeignKey(SubstanceType, on_delete=models.CASCADE)
+    media = models.ForeignKey('Media', on_delete=models.SET_NULL, blank=True, null=True)
+    quantity = models.FloatField(blank=True, null=True, default=0)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
+
+
+
+# Substance type "Chemical Release"
 class Release(models.Model):
     """Information for a Chemical Release (output)."""
-    # Parent process reference
-    process = models.ForeignKey('Process', on_delete=models.CASCADE)
     # Chemical/chemical
     chemical = models.ForeignKey(Chemical, on_delete=models.CASCADE)
     quantity = models.FloatField(blank=True, null=True, default=0)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
     # Media through which the Releases are output, null if Resource/Input.
     media = models.ForeignKey('Media', on_delete=models.SET_NULL, blank=True, null=True)
-
-
-class LandUse(models.Model):
-    """Information for a Land Use Resource (input)."""
     # Parent process reference
     process = models.ForeignKey('Process', on_delete=models.CASCADE)
-    quantity = models.FloatField(blank=True, null=True, default=0)
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
-    # Media will always be "No Media", so excluding here.
-
-
-class WaterUse(models.Model):
-    """Information for a Land Use Resource (input)."""
-    # Parent process reference
-    process = models.ForeignKey('Process', on_delete=models.CASCADE)
-    quantity = models.FloatField(blank=True, null=True, default=0)
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
-    # Media will always be "No Media", so excluding here.
-
-
-class FossilFuel(models.Model):
-    """List of available fossil fuels."""
-    name = models.CharField(null=False, blank=False, max_length=63)
-
-
-
-class FossilFuelResource(models.Model):
-    """Information for a Fossil Fuel resource(input)."""
-    # Parent process reference
-    process = models.ForeignKey('Process', on_delete=models.CASCADE)
-    # Fossil Fuel Type
-    fuel = models.ForeignKey(Chemical, on_delete=models.CASCADE)
-    quantity = models.FloatField(blank=True, null=True, default=0)
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
-    # Media will always be "No Media", so excluding here.
 
 
 #class ResourceRelease(models.Model):
@@ -146,8 +130,8 @@ class FossilFuelResource(models.Model):
 #    """
 #    # Parent process reference
 #    process = models.ForeignKey('Process', on_delete=models.CASCADE)
-#    # ResourceReleaseType, Chemical Release, Land Use, Fossil Fuel, or Water Use
-#    type = models.ForeignKey('ResourceReleaseType', on_delete=models.CASCADE)
+#    # Substance, Chemical Release, Land Use, Fossil Fuel, or Water Use
+#    type = models.ForeignKey('Substance', on_delete=models.CASCADE)
 #    # Chemical/chemical
 #    chemical = models.ForeignKey(Chemical, on_delete=models.CASCADE)
 #    quantity = models.FloatField(blank=True, null=True, default=0)
