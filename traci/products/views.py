@@ -14,7 +14,7 @@ from django.views.generic import ListView, UpdateView, CreateView, DetailView, D
 from products.forms import ProductForm, LifeCycleStageForm, ProcessForm, ResourceReleaseForm
 from products.models import Product, LifeCycleStage, Process, ProcessName, ResourceRelease
 from projects.models import Project
-from substances.models import Substance
+from chemicals.models import Chemical
 
 # Create your views here.
 
@@ -222,26 +222,26 @@ class ResourceReleaseCreateView(CreateView):
         process_id = request.GET.get('process_id', )
         process = Process.objects.get(id=process_id)
         form = ResourceReleaseForm({'process': process})
-        subst_choices = list(form.fields['substance'].choices)
+        subst_choices = list(form.fields['chemical'].choices)
         ctx = {'form': form, 'process_id': process_id}
         return render(request, "resourcerelease/resourcerelease_create.html", ctx)
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         """Process the post request with a new ResourceRelease form filled out."""
-        # To support the model select form integrating with our custom substance search box,
+        # To support the model select form integrating with our custom chemical search box,
         # we have to do some dirty code. Otherwise, the form won't validate
-        substance_name = request.POST.get('substance');
-        # Retrieve a queryset that contains the selected substance
-        queryset = Substance.objects.filter(name=substance_name)
-        substance = queryset.first()
+        chemical_name = request.POST.get('chemical');
+        # Retrieve a queryset that contains the selected chemical
+        queryset = Chemical.objects.filter(name=chemical_name)
+        chemical = queryset.first()
         # Overwrite the POST data so the susbtance reflects its ID instead of name
         request.POST = request.POST.copy()
-        request.POST['substance'] = substance.id
+        request.POST['chemical'] = chemical.id
 
         form = ResourceReleaseForm(request.POST)
-        # Overwrite the form substance choices with our queryset from above
-        form.fields['substance'].choices.queryset = queryset
+        # Overwrite the form chemical choices with our queryset from above
+        form.fields['chemical'].choices.queryset = queryset
 
         if form.is_valid():
             resourcerelease_obj = form.save(commit=True)

@@ -7,21 +7,21 @@
 Models for Products (LCI Products).
 
 Available models:
-- Media option for an instance of a substance such as Water, Air, etc.
+- Media option for an instance of a chemical such as Water, Air, etc.
 - Location option for a Process.
-- ResourceRelease a collection of resource/release (substances) for a Process.
-- Process is a part of the parent life cycle stage, can contain one or more resource/release substances.
+- ResourceRelease a collection of resource/release (chemicals) for a Process.
+- Process is a part of the parent life cycle stage, can contain one or more resource/release chemicals.
 - LifeCycleStageName is a stage of the product's life cycle with one or more processes
 - Product is an end product
 """
 
 from django.db import models
 from projects.models import Project
-from substances.models import Substance, Unit
+from chemicals.models import Chemical, Unit
 
 
 class Product(models.Model):
-    """Product object containing LCI information for contained substances."""
+    """Product object containing LCI information for contained chemicals."""
     name = models.CharField(null=False, blank=False, max_length=255)
     # Parent project
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -38,7 +38,7 @@ class LifeCycleStageName(models.Model):
 class LifeCycleStage(models.Model):
     """
     Life Cycle Stage cross-reference with product, constitutes a single life cycle stage "entry" in a product.
-    Each entry can have multiple instances of processes, manufacturing of a substance for example.
+    Each entry can have multiple instances of processes, manufacturing of a chemical for example.
     """
     # One of some pre-approved stage names
     name = models.ForeignKey(LifeCycleStageName, on_delete=models.CASCADE)
@@ -81,7 +81,7 @@ class Process(models.Model):
 
 
 class Media(models.Model):
-    """What medium is the substance in, Air, Water, etc."""
+    """What medium is the chemical in, Air, Water, etc."""
     name = models.CharField(null=False, blank=False, max_length=31)
 
 
@@ -97,8 +97,8 @@ class Release(models.Model):
     """Information for a Chemical Release (output)."""
     # Parent process reference
     process = models.ForeignKey('Process', on_delete=models.CASCADE)
-    # Substance/chemical
-    substance = models.ForeignKey(Substance, on_delete=models.CASCADE)
+    # Chemical/chemical
+    chemical = models.ForeignKey(Chemical, on_delete=models.CASCADE)
     quantity = models.FloatField(blank=True, null=True, default=0)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
     # Media through which the Releases are output, null if Resource/Input.
@@ -134,7 +134,7 @@ class FossilFuelResource(models.Model):
     # Parent process reference
     process = models.ForeignKey('Process', on_delete=models.CASCADE)
     # Fossil Fuel Type
-    fuel = models.ForeignKey(Substance, on_delete=models.CASCADE)
+    fuel = models.ForeignKey(Chemical, on_delete=models.CASCADE)
     quantity = models.FloatField(blank=True, null=True, default=0)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
     # Media will always be "No Media", so excluding here.
@@ -148,8 +148,8 @@ class FossilFuelResource(models.Model):
 #    process = models.ForeignKey('Process', on_delete=models.CASCADE)
 #    # ResourceReleaseType, Chemical Release, Land Use, Fossil Fuel, or Water Use
 #    type = models.ForeignKey('ResourceReleaseType', on_delete=models.CASCADE)
-#    # Substance/chemical
-#    substance = models.ForeignKey(Substance, on_delete=models.CASCADE)
+#    # Chemical/chemical
+#    chemical = models.ForeignKey(Chemical, on_delete=models.CASCADE)
 #    quantity = models.FloatField(blank=True, null=True, default=0)
 #    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
 #    # Media through which the Releases are output, null if Resource/Input.

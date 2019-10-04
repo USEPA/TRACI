@@ -19,7 +19,7 @@
         {% for chem in resourcerelease_list %}
             <tr id="{{chem.id}}" onclick="rowClick('{{chem.id}}')">
                 <th scope="row">{{chem.type.name}}</th>
-                <td scope="row">{{chem.substance.name}}</td>
+                <td scope="row">{{chem.chemical.name}}</td>
                 <td scope="row">{{chem.media.name}}</td>
                 <td scope="row">{{chem.quantity}}</td>
                 <td scope="row">{{chem.unit.name}}</td>

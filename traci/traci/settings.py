@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'accounts',
     'products',
     'projects',
-    'substances',
+    'chemicals',
     'support',
     'teams',
     'rest_framework',

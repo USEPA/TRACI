@@ -7,20 +7,20 @@
 <div class="row">
     <div class="col-sm-5">
         <div class="ui-widget">
-            <label for="substances">Substance Search: </label>
-            <input id="substances" class="form-control" />
+            <label for="chemicals">Chemical Search: </label>
+            <input id="chemicals" class="form-control" />
         </div>
     </div>
     <div class="col-sm-7">
-        <label for="selectedSubstances">Selected Substances: </label>
-        <ul id="selectedSubstances" class="list-group"></ul>
+        <label for="selectedChemicals">Selected Chemicals: </label>
+        <ul id="selectedChemicals" class="list-group"></ul>
     </div>
 </div>
 
 <div class="row my-1">
     <div class="col-sm-12 text-center">
         <button class="btn btn-sm btn-info mx-1" onclick="runCalculation()">Run Calculation</button>
-        <button class="btn btn-sm btn-warning mx-1" onclick="clearSubstances()">Clear Substances</button>
+        <button class="btn btn-sm btn-warning mx-1" onclick="clearChemicals()">Clear Chemicals</button>
     </div>
 </div>
 
@@ -30,21 +30,21 @@
 <script>
     const LI = [
         '<li class="list-group-item">', '!SUB!',
-        '<button class= "float-right btn-sm mb-0" onclick="removeSelectedSubstance(this, \'!SUB!\')">',
+        '<button class= "float-right btn-sm mb-0" onclick="removeSelectedChemical(this, \'!SUB!\')">',
         'Remove',
         '</button></li> '
     ].join('');
-    const SUBSTANCES_SOURCE = '/substances/api/substance_list/';
+    const CHEMICALS_SOURCE = '/chemicals/api/chemical_list/';
 
     var selected = [];
 
     $(function () {
-        $("#substances").autocomplete({
+        $("#chemicals").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: SUBSTANCES_SOURCE,
+                    url: CHEMICALS_SOURCE,
                     data: {
-                        'term': $('#substances').val(),
+                        'term': $('#chemicals').val(),
                         'except': JSON.stringify(selected)
                     },
                     cache: false,
@@ -60,35 +60,35 @@
             },
             select: function (event, ui) {
                 selected.push(ui.item.value);
-                // Replace all instances of string !SUB! with the substance name
-                $("#selectedSubstances").append(LI.replace(/!SUB!/g, ui.item.value));
-                // Remove the selected substance from the dropdown.
+                // Replace all instances of string !SUB! with the chemical name
+                $("#selectedChemicals").append(LI.replace(/!SUB!/g, ui.item.value));
+                // Remove the selected chemical from the dropdown.
                 $("#ui-id-1 li:contains('" + ui.item.value + "')")[0].remove();
                 // If we cleanly return from this function, then the dropdown will disappear.
-                // This throw is a dirty workaround to keep the dropdown open after selecting a substance.
+                // This throw is a dirty workaround to keep the dropdown open after selecting a chemical.
                 throw 'Expected error...';
             },
             minLength: 2,
         });
     });
     
-    function removeSelectedSubstance(el, sub) {
+    function removeSelectedChemical(el, sub) {
         $(el).closest('li').remove();
         selected.splice($.inArray(sub, selected), 1);
         //updateSource();
     }
 
-    function clearSubstances() {
+    function clearChemicals() {
         // Clear the selected array.
         selected.length = 0;
         // Empty the list
-        $("#selectedSubstances").empty();
+        $("#selectedChemicals").empty();
     }
 
     function runCalculation() {
         if (selected.length === 0) return;
         console.log("TODO run calculation");
-        $.post("/scenario/", { 'substances': JSON.stringify(selected) }, function (result) {
+        $.post("/scenario/", { 'chemicals': JSON.stringify(selected) }, function (result) {
             console.log(result);
         });
     }

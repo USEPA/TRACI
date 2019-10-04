@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from products.models import Product, LifeCycleStageName, LifeCycleStage, Process, Location, \
     ProcessName, ResourceReleaseType, Media, ResourceRelease
 from projects.models import Project
-from substances.models import Substance, Unit
+from chemicals.models import Chemical, Unit
 
 
 # New Product Form
@@ -42,7 +42,7 @@ class ProductForm(ModelForm):
 class LifeCycleStageForm(ModelForm):
     """
     Life Cycle Stages cross-reference with product, constitutes a single life cycle stage "entry" in a product.
-    Each entry can have multiple instances of processes, manufacturing of a substance for example.
+    Each entry can have multiple instances of processes, manufacturing of a chemical for example.
     """
 
     name = ModelChoiceField(queryset=LifeCycleStageName.objects.all(),
@@ -113,16 +113,16 @@ class ResourceReleaseForm(ModelForm):
     type = ModelChoiceField(queryset=ResourceReleaseType.objects.all(), initial=0, required=True,
                             label=_("Resource/Release Type"),
                             widget=Select(attrs={'class': 'form-control mb-2'}))
-    # Substance/chemical
-    #substance = IntegerField(required=True, label=_("Substance"),
+    # Chemical/chemical
+    #chemical = IntegerField(required=True, label=_("Chemical"),
     #                         widget=TextInput(attrs={'class': 'form-control mb-2'}))
-    #substance = CharField(required=True, label=_("Substance"),
+    #chemical = CharField(required=True, label=_("Chemical"),
     #                      widget=TextInput(attrs={'class': 'form-control mb-2'}))
-    substance = ModelChoiceField(queryset=Substance.objects.all(), initial=0,
-                                 required=True, label=_("Substance"),
+    chemical = ModelChoiceField(queryset=Chemical.objects.all(), initial=0,
+                                 required=True, label=_("Chemical"),
                                  widget=TextInput(attrs={'class': 'form-control mb-2'}))
-    #substance = ModelChoiceField(queryset=Substance.objects.all(), initial=0,
-    #                             required=True, label=_("Substance"),
+    #chemical = ModelChoiceField(queryset=Chemical.objects.all(), initial=0,
+    #                             required=True, label=_("Chemical"),
     #                             widget=Select(attrs={'class': 'form-control mb-2'}))
 
     # Media through which the Releases are output, null if Resource/Input.
@@ -148,7 +148,7 @@ class ResourceReleaseForm(ModelForm):
         """
         super(ResourceReleaseForm, self).__init__(*args, **kwargs)
         self.fields['type'].label_from_instance = lambda obj: "%s (%s)" % (obj.name, obj.type)
-        #self.fields['substance'].label_from_instance = lambda obj: "%s" % obj.name
+        #self.fields['chemical'].label_from_instance = lambda obj: "%s" % obj.name
         self.fields['media'].label_from_instance = lambda obj: "%s" % obj.name
         #self.fields['process'].label_from_instance = lambda obj: "%s" % obj.name
         self.fields['unit'].label_from_instance = lambda obj: "%s" % obj.name
@@ -157,4 +157,4 @@ class ResourceReleaseForm(ModelForm):
         """Meta data for Chemical Resource/Release form."""
 
         model = ResourceRelease
-        fields = ('type', 'substance', 'media', 'process', 'quantity', 'unit')
+        fields = ('type', 'chemical', 'media', 'process', 'quantity', 'unit')
