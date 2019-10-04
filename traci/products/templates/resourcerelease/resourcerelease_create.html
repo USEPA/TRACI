@@ -7,7 +7,14 @@
         <h3>Creating a new Chemical Resource / Release for Process {{process_id}}</h3>
         <div class="col-md-12">
             <form action="/products/resourcerelease/create?process_id={{process_id}}" method="post">
-                <label>{{form.substance.label}}</label>
+                <div class="col-lg-12">
+                    <div class="ui-widget">
+                        <!--<label for="substances">Substance Search: </label>-->
+                        <label>{{form.substance.label}}</label>
+                        {{form.substance}}
+                        <!--<input id="substances" class="form-control" />-->
+                    </div>
+                </div>
                 {#{{form.substance}}#}
 
                 <div class="col-lg-4">
@@ -42,6 +49,40 @@
 
 {% block scripts %}
 <script>
+    const SUBSTANCES_SOURCE = '/substances/api/substance_list/';
 
+    var selected = [];
+
+    $(function () {
+        $("#id_substance").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: SUBSTANCES_SOURCE,
+                    data: {
+                        'term': $('#id_substance').val()
+                    },
+                    cache: false,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data) response(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus);
+                    }
+                })
+            },
+            //select: function (event, ui) {
+            //    selected.push(ui.item.value);
+            //    // Replace all instances of string !SUB! with the substance name
+            //    // Remove the selected substance from the dropdown.
+            //    $("#ui-id-1 li:contains('" + ui.item.value + "')")[0].remove();
+            //    // If we cleanly return from this function, then the dropdown will disappear.
+            //    // This throw is a dirty workaround to keep the dropdown open after selecting a substance.
+            //    throw 'Expected error...';
+            //},
+            minLength: 2,
+        });
+    });
 </script>
 {% endblock %}
