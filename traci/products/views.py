@@ -13,7 +13,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
 from products.forms import ProductForm, LifeCycleStageForm, ProcessForm, SubstanceTypeForm, \
     ResourceForm, ReleaseForm
-from products.models import Product, LifeCycleStage, Process, ProcessName
+from products.models import Product, LifeCycleStage, Process, ProcessName, Release, Resource
 from projects.models import Project
 from chemicals.models import Chemical
 
@@ -199,7 +199,8 @@ class ProcessDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context['resourcerelease_list'] = ResourceRelease.objects.filter(process=context['object'])
+        context['release_list'] = Release.objects.filter(process=context['object'])
+        context['resource_list'] = Resource.objects.filter(process=context['object'])
         return context
 
 
@@ -240,7 +241,6 @@ class ResourceReleaseCreateView(CreateView):
             # To support the model select form integrating with our custom chemical search box,
             # we have to do some dirty code. Otherwise, the form won't validate
             chemical_name = request.POST.get('chemical', '');
-
             if chemical_name:
                 # Retrieve a queryset that contains the selected chemical
                 queryset = Chemical.objects.filter(name=chemical_name)
