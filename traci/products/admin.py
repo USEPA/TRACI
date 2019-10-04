@@ -14,7 +14,7 @@ Available functions:
 """
 
 from django.contrib import admin
-from products.models import Media, Location, ResourceRelease, Process, LifeCycleStageName, Product
+from products.models import Media, Location, Process, LifeCycleStageName, Product
 
 
 class MediaAdmin(admin.ModelAdmin):

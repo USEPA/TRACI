@@ -10,7 +10,7 @@ from django.forms import ModelForm, CharField, TextInput, ModelChoiceField, Sele
     NumberInput, IntegerField
 from django.utils.translation import ugettext_lazy as _
 from products.models import Product, LifeCycleStageName, LifeCycleStage, Process, Location, \
-    ProcessName, ResourceReleaseType, Media, ResourceRelease
+    ProcessName, Media, SubstanceType, Resource, Release
 from projects.models import Project
 from chemicals.models import Chemical, Unit
 
@@ -103,58 +103,152 @@ class ProcessForm(ModelForm):
         fields = ('name', 'location', 'lifecyclestage')
 
 
-class ResourceReleaseForm(ModelForm):
+class SubstanceTypeForm(ModelForm):
     """
-    Chemical Resources/Releases store the quantity and unit information pertaining to certain chemicals that
-    are either required inputs for a process, or the outputs of a process.
+    This form will let the user choose a substance type, which will decide
+    whether to use a ResourceForm or ReleaseForm for the rest of the flow.
     """
-
-    # ResourceReleaseType, Chemical Release, Land Use, Fossil Fuel, or Water Use
-    type = ModelChoiceField(queryset=ResourceReleaseType.objects.all(), initial=0, required=True,
-                            label=_("Resource/Release Type"),
-                            widget=Select(attrs={'class': 'form-control mb-2'}))
-    # Chemical/chemical
-    #chemical = IntegerField(required=True, label=_("Chemical"),
-    #                         widget=TextInput(attrs={'class': 'form-control mb-2'}))
-    #chemical = CharField(required=True, label=_("Chemical"),
-    #                      widget=TextInput(attrs={'class': 'form-control mb-2'}))
-    chemical = ModelChoiceField(queryset=Chemical.objects.all(), initial=0,
-                                 required=True, label=_("Chemical"),
-                                 widget=TextInput(attrs={'class': 'form-control mb-2'}))
-    #chemical = ModelChoiceField(queryset=Chemical.objects.all(), initial=0,
-    #                             required=True, label=_("Chemical"),
-    #                             widget=Select(attrs={'class': 'form-control mb-2'}))
-
-    # Media through which the Releases are output, null if Resource/Input.
-    media = ModelChoiceField(queryset=Media.objects.all(), initial=0, required=True,
-                             label=_("Medium"),
-                             widget=Select(attrs={'class': 'form-control mb-2'}))
-    # Parent process reference, readonly
-    process = ModelChoiceField(queryset=Process.objects.all(),
-                               initial=0, required=True, label=_("Parent Process"),
-                               widget=TextInput(attrs={'class': 'form-control mb-2',
-                                                       'readonly':'readonly'}))
-    quantity = FloatField(label=_("Quantity"),
-                          widget=NumberInput(attrs={'class': 'form-control mb-2'}),
-                          required=True, initial=0)
-    # Only pull chemical units first, then if the user selects an input type, then get the appropriate unit options
-    unit = ModelChoiceField(queryset=Unit.objects.filter(chemical_unit=True),
-                            initial=0, required=True, label=_("Units of Measurement"),
-                            widget=Select(attrs={'class': 'form-control mb-2'}))
+    substance_type = ModelChoiceField(queryset=SubstanceType.objects.all(), initial=0, required=True,
+                                      label=_("Substance Type"),
+                                      widget=Select(attrs={'class': 'form-control mb-2'}))
 
     def __init__(self, *args, **kwargs):
         """
         This method is used to display a custom name, obj.name, instead of the stringified object view.
         """
-        super(ResourceReleaseForm, self).__init__(*args, **kwargs)
-        self.fields['type'].label_from_instance = lambda obj: "%s (%s)" % (obj.name, obj.type)
-        #self.fields['chemical'].label_from_instance = lambda obj: "%s" % obj.name
+        super(SubstanceTypeForm, self).__init__(*args, **kwargs)
+        self.fields['substance_type'].label_from_instance = lambda obj: "%s" % obj.name
+
+    class Meta:
+        """Meta data for SubstanceType form."""
+
+        model = SubstanceType
+        fields = ('substance_type',)
+
+
+class ResourceForm(ModelForm):
+    substance_type = ModelChoiceField(queryset=SubstanceType.objects.all(), initial=0, required=True,
+                                      label=_("Name"),
+                                      widget=Select(attrs={'class': 'form-control mb-2'}))
+    media = ModelChoiceField(queryset=Media.objects.filter(name='No Media'), initial=0, required=True,
+                             label=_("Media"),
+                             widget=Select(attrs={'class': 'form-control mb-2'}))
+    quantity = FloatField(label=_("Quantity"),
+                          widget=NumberInput(attrs={'class': 'form-control mb-2'}),
+                          required=True, initial=0)
+    unit = ModelChoiceField(queryset=Unit.objects.filter(chemical=False),
+                            initial=0, required=True, label=_("Units of Measurement"),
+                            widget=Select(attrs={'class': 'form-control mb-2'}))
+    # Parent process reference, readonly
+    process = ModelChoiceField(queryset=Process.objects.all(),
+                               initial=0, required=True, label=_("Parent Process"),
+                               widget=TextInput(attrs={'class': 'form-control mb-2',
+                                                       'readonly':'readonly'}))
+
+    def __init__(self, *args, **kwargs):
+        """
+        This method is used to display a custom name, obj.name, instead of the stringified object view.
+        """
+        super(ResourceForm, self).__init__(*args, **kwargs)
+        self.fields['substance_type'].label_from_instance = lambda obj: "%s" % obj.name
         self.fields['media'].label_from_instance = lambda obj: "%s" % obj.name
-        #self.fields['process'].label_from_instance = lambda obj: "%s" % obj.name
         self.fields['unit'].label_from_instance = lambda obj: "%s" % obj.name
 
     class Meta:
-        """Meta data for Chemical Resource/Release form."""
+        """Meta data for Resource form."""
 
-        model = ResourceRelease
-        fields = ('type', 'chemical', 'media', 'process', 'quantity', 'unit')
+        model = Resource
+        fields = ('substance_type', 'media', 'quantity', 'unit', 'process')
+
+
+
+class ReleaseForm(ModelForm):
+    chemical = ModelChoiceField(queryset=Chemical.objects.none(), initial=0,
+                                required=True, label=_("Chemical Name"),
+                                widget=TextInput(attrs={'class': 'form-control mb-2'}))
+    media = ModelChoiceField(queryset=Media.objects.all().exclude(name='No Media'),
+                             initial=0, required=True, label=_("Media"),
+                             widget=Select(attrs={'class': 'form-control mb-2'}))
+    quantity = FloatField(label=_("Quantity"),
+                          widget=NumberInput(attrs={'class': 'form-control mb-2'}),
+                          required=True, initial=0)
+    unit = ModelChoiceField(queryset=Unit.objects.filter(chemical=True),
+                            initial=0, required=True, label=_("Units of Measurement"),
+                            widget=Select(attrs={'class': 'form-control mb-2'}))
+    # Parent process reference, readonly
+    process = ModelChoiceField(queryset=Process.objects.all(),
+                               initial=0, required=True, label=_("Parent Process"),
+                               widget=TextInput(attrs={'class': 'form-control mb-2',
+                                                       'readonly':'readonly'}))
+
+    def __init__(self, *args, **kwargs):
+        """
+        This method is used to display a custom name, obj.name, instead of the stringified object view.
+        """
+        super(ReleaseForm, self).__init__(*args, **kwargs)
+        self.fields['chemical'].label_from_instance = lambda obj: "%s" % obj.name
+        self.fields['media'].label_from_instance = lambda obj: "%s" % obj.name
+        self.fields['unit'].label_from_instance = lambda obj: "%s" % obj.name
+
+    class Meta:
+        """Meta data for ReleaseForm form."""
+
+        model = Release
+        fields = ('chemical', 'media', 'quantity', 'unit', 'process')
+
+
+#class ResourceReleaseForm(ModelForm):
+#    """
+#    Chemical Resources/Releases store the quantity and unit information pertaining to certain chemicals that
+#    are either required inputs for a process, or the outputs of a process.
+#    """
+
+#    # Substance, Chemical Release, Land Use, Fossil Fuel, or Water Use
+#    type = ModelChoiceField(queryset=Substance.objects.all(), initial=0, required=True,
+#                            label=_("Resource/Release Type"),
+#                            widget=Select(attrs={'class': 'form-control mb-2'}))
+#    # Chemical/chemical
+#    #chemical = IntegerField(required=True, label=_("Chemical"),
+#    #                         widget=TextInput(attrs={'class': 'form-control mb-2'}))
+#    #chemical = CharField(required=True, label=_("Chemical"),
+#    #                      widget=TextInput(attrs={'class': 'form-control mb-2'}))
+#    chemical = ModelChoiceField(queryset=Chemical.objects.all(), initial=0,
+#                                 required=True, label=_("Chemical"),
+#                                 widget=TextInput(attrs={'class': 'form-control mb-2'}))
+#    #chemical = ModelChoiceField(queryset=Chemical.objects.all(), initial=0,
+#    #                             required=True, label=_("Chemical"),
+#    #                             widget=Select(attrs={'class': 'form-control mb-2'}))
+
+#    # Media through which the Releases are output, null if Resource/Input.
+#    media = ModelChoiceField(queryset=Media.objects.all(), initial=0, required=True,
+#                             label=_("Medium"),
+#                             widget=Select(attrs={'class': 'form-control mb-2'}))
+#    # Parent process reference, readonly
+#    process = ModelChoiceField(queryset=Process.objects.all(),
+#                               initial=0, required=True, label=_("Parent Process"),
+#                               widget=TextInput(attrs={'class': 'form-control mb-2',
+#                                                       'readonly':'readonly'}))
+#    quantity = FloatField(label=_("Quantity"),
+#                          widget=NumberInput(attrs={'class': 'form-control mb-2'}),
+#                          required=True, initial=0)
+#    # Only pull chemical units first, then if the user selects an input type, then get the appropriate unit options
+#    unit = ModelChoiceField(queryset=Unit.objects.filter(chemical_unit=True),
+#                            initial=0, required=True, label=_("Units of Measurement"),
+#                            widget=Select(attrs={'class': 'form-control mb-2'}))
+
+#    def __init__(self, *args, **kwargs):
+#        """
+#        This method is used to display a custom name, obj.name, instead of the stringified object view.
+#        """
+#        super(ResourceReleaseForm, self).__init__(*args, **kwargs)
+#        self.fields['type'].label_from_instance = lambda obj: "%s (%s)" % (obj.name, obj.type)
+#        #self.fields['chemical'].label_from_instance = lambda obj: "%s" % obj.name
+#        self.fields['media'].label_from_instance = lambda obj: "%s" % obj.name
+#        #self.fields['process'].label_from_instance = lambda obj: "%s" % obj.name
+#        self.fields['unit'].label_from_instance = lambda obj: "%s" % obj.name
+
+#    class Meta:
+#        """Meta data for Chemical Resource/Release form."""
+
+#        model = ResourceRelease
+#        fields = ('type', 'chemical', 'media', 'process', 'quantity', 'unit')

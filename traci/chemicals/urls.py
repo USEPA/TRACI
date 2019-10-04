@@ -15,7 +15,7 @@ Available functions:
 from django.conf.urls import url
 from chemicals.views import get_chemicals, get_units
 
-urlpatterns = [units_for_type
+urlpatterns = [
     url(r'^api/chemical_list/?$', get_chemicals, name='chemical_list'),
     url(r'^api/units_for_type/?$', get_units, name='units_for_type'),
 ]

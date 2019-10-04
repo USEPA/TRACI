@@ -8,37 +8,55 @@
         <div class="col-md-12">
             <form action="/products/resourcerelease/create?process_id={{process_id}}" method="post">
                 <div class="col-lg-12">
-                    <div class="ui-widget">
-                        <!--<label for="chemicals">Chemical Search: </label>-->
-                        <label>{{form.chemical.label}}</label>
-                        {{form.chemical}}
-                        <!--<input id="chemicals" class="form-control" />-->
+                    <label>{{form.substance_type.label}}</label>
+                    {{form.substance_type}}
+                </div>
+
+                <div id="releaseForm">
+                    <div class="col-lg-12">
+                        <div class="ui-widget">
+                            <label>{{release_form.chemical.label}}</label>
+                            {{release_form.chemical}}
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <label>{{release_form.media.label}}</label>
+                        {{release_form.media}}
+                    </div>
+                    <div class="col-lg-2">
+                        <label>{{release_form.quantity.label}}</label>
+                        {{release_form.quantity}}
+                    </div>
+                    <div class="col-lg-3">
+                        <label>{{release_form.unit.label}}</label>
+                        {{release_form.unit}}
+                    </div>
+                    <div class="col-lg-3">
+                        <label>{{release_form.process.label}}</label>
+                        {{release_form.process}}
                     </div>
                 </div>
-                {#{{form.chemical}}#}
+                
 
-                <div class="col-lg-4">
-                    <label>{{form.type.label}}</label>
-                    {{form.type}}
+                <div id="resourceForm" style="display:none;">
+                    <div class="col-lg-3">
+                        <label>{{resource_form.media.label}}</label>
+                        {{resource_form.media}}
+                    </div>
+                    <div class="col-lg-2">
+                        <label>{{resource_form.quantity.label}}</label>
+                        {{resource_form.quantity}}
+                    </div>
+                    <div class="col-lg-3">
+                        <label>{{resource_form.unit.label}}</label>
+                        {{resource_form.unit}}
+                    </div>
+                    
+                    <div class="col-lg-3">
+                        <label>{{resource_form.process.label}}</label>
+                        {{resource_form.process}}
+                    </div>
                 </div>
-                
-                <div class="col-lg-2">
-                    <label>{{form.media.label}}</label>
-                    {{form.media}}
-                </div>
-                
-                <div class="col-lg-3">
-                    <label>{{form.quantity.label}}</label>
-                    {{form.quantity}}
-                </div>
-                
-                <div class="col-lg-3">
-                    <label>{{form.unit.label}}</label>
-                    {{form.unit}}
-                </div>
-
-                <label>{{form.process.label}}</label>
-                {{form.process}}
 
                 {% include 'next_reset_cancel_partial.html' %}
             </form>
@@ -53,28 +71,42 @@
         console.log(data);
     }
 
-    $("#id_type").on('change', function (e) {
+    $("#id_substance_type").on('change', function (e) {
         var sel = e.target.selectedOptions[0];
         var typeId = $(sel).val();
         var typeName = $(sel).text();
         console.log(typeId + ': ' + typeName);
-        // GET Units of Measurement for the selected
-        $.ajax({
-            url: '/chemicals/api/units_for_type/',
-            data: {
-                'type_id': typeId
-            },
-            cache: false,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                if (data) updateUnits(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(textStatus);
-            }
-        });
+        if (typeName.toLowerCase() === 'chemical release') {
+            $("#resourceForm").hide();
+            $("#releaseForm").show();
+        } else {
+            $("#releaseForm").hide();
+            $("#resourceForm").show();
+        }
     });
+
+    //$("#id_type").on('change', function (e) {
+    //    var sel = e.target.selectedOptions[0];
+    //    var typeId = $(sel).val();
+    //    var typeName = $(sel).text();
+    //    console.log(typeId + ': ' + typeName);
+    //    // GET Units of Measurement for the selected
+    //    $.ajax({
+    //        url: '/chemicals/api/units_for_type/',
+    //        data: {
+    //            'type_id': typeId
+    //        },
+    //        cache: false,
+    //        type: 'GET',
+    //        dataType: 'json',
+    //        success: function (data) {
+    //            if (data) updateUnits(data);
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrown) {
+    //            console.log(textStatus);
+    //        }
+    //    });
+    //});
 
     const CHEMICALS_SOURCE = '/chemicals/api/chemical_list/';
     $(function () {
