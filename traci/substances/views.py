@@ -37,6 +37,12 @@ class APISubstanceListView(APIView):
         return Response(serializer.data)
 
 
+def get_units(request):
+    """Retrieve a list of units for the specified resource/release type"""
+    #if request.is_ajax():
+    #    type_id = request.GET.get('type_id', '')
+    #units = 
+
 def get_substances(request):
     """Retrieve a filtered list of substances."""
     if request.is_ajax():

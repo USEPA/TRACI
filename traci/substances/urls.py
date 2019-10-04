@@ -13,8 +13,9 @@ Available functions:
 """
 
 from django.conf.urls import url
-from substances.views import get_substances
+from substances.views import get_substances, get_units
 
-urlpatterns = [
+urlpatterns = [units_for_type
     url(r'^api/substance_list/?$', get_substances, name='substance_list'),
+    url(r'^api/units_for_type/?$', get_units, name='units_for_type'),
 ]

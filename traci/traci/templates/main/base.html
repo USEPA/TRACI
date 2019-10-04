@@ -98,11 +98,8 @@
 
                     <!-- navbar when user is logged in -->
                     {% if user.is_authenticated %}
-                    <li {% if request.path == scenario %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
-                        <a href="/scenario/" {% if request.path == scenario %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Scenario</a>
-                    </li>
                     <li {% if request.path == projects %} class="expanded active-trail menu-item" {% else %} class="menu-item" {% endif %} role="presentation">
-                        <a href="/projects/projects/" {% if request.path == projects %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Projects</a>
+                        <a href="/projects/projects/" {% if request.path == projects %} class="active-trail menu-link active" {% else %} class="menu-link" {% endif %} role="menuitem">Scenario</a>
                     </li>
 
                     <li {% if request.path == go_to_support %} class="dropdown expanded active-trail menu-item"
