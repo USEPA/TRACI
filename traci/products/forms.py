@@ -120,6 +120,9 @@ class ResourceReleaseForm(ModelForm):
     substance = ModelChoiceField(queryset=Substance.objects.all(), initial=0,
                                  required=True, label=_("Substance"),
                                  widget=TextInput(attrs={'class': 'form-control mb-2'}))
+    #substance = ModelChoiceField(queryset=Substance.objects.all(), initial=0,
+    #                             required=True, label=_("Substance"),
+    #                             widget=Select(attrs={'class': 'form-control mb-2'}))
 
     # Media through which the Releases are output, null if Resource/Input.
     media = ModelChoiceField(queryset=Media.objects.all(), initial=0, required=True,

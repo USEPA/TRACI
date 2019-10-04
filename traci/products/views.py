@@ -213,31 +213,29 @@ class ResourceReleaseCreateView(CreateView):
         subst_choices = list(form.fields['substance'].choices)
         ctx = {'form': form, 'process_id': process_id}
         return render(request, "resourcerelease/resourcerelease_create.html", ctx)
+    
+    #@method_decorator(login_required)
+    #def post(self, request, *args, **kwargs):
+    #    form = ResourceReleaseForm(request.POST)
+    #    subst_choices = form.fields['substance'].choices.queryset
+    #    if form.is_valid():
+    #        resourcerelease_obj = form.save(commit=True)
+    #        return HttpResponseRedirect('/products/process/detail/%s', str(resourcerelease_obj.process.id))
+    #    return render(request, "resourcerelease/resourcerelease_create.html", {'form': form})
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         """Process the post request with a new ResourceRelease form filled out."""
         substance_name = request.POST.get('substance');
-        substances = Substance.objects.filter(name=substance_name)
-        substance = substances.first()
-
-        #subst_tuple = (substance.id, str(substance))
+        queryset = Substance.objects.filter(name=substance_name)
+        substance = queryset.first()
 
         request.POST = request.POST.copy()
-        request.POST['substance'] = substance
+        request.POST['substance'] = substance.id
 
         form = ResourceReleaseForm(request.POST)
-        #form = ResourceReleaseForm({'type': request.POST.get('type'),
-        #                            'substance': substance,
-        #                            'media': request.POST.get('media'),
-        #                            'process': request.POST.get('process'), 
-        #                            'quantity': request.POST.get('quantity'),
-        #                            'unit': request.POST.get('unit')})
+        form.fields['substance'].choices.queryset = queryset
 
-        #form.data['substance'] = substance
-        # There seems to be an issue where the choices are truncating, so fix it manually here.
-        #form.fields['substance'].choices = [(substance.id, substance)]
-        form.fields['substance'].choices = substances
         if form.is_valid():
             resourcerelease_obj = form.save(commit=True)
             return HttpResponseRedirect('/products/process/detail/%s', str(resourcerelease_obj.process.id))
