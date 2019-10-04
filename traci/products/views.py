@@ -14,6 +14,7 @@ from django.views.generic import ListView, UpdateView, CreateView, DetailView, D
 from products.forms import ProductForm, LifeCycleStageForm, ProcessForm, ResourceReleaseForm
 from products.models import Product, LifeCycleStage, Process, ProcessName, ResourceRelease
 from projects.models import Project
+from substances.models import Substance
 
 # Create your views here.
 
@@ -209,28 +210,40 @@ class ResourceReleaseCreateView(CreateView):
         process_id = request.GET.get('process_id', )
         process = Process.objects.get(id=process_id)
         form = ResourceReleaseForm({'process': process})
+        subst_choices = list(form.fields['substance'].choices)
         ctx = {'form': form, 'process_id': process_id}
         return render(request, "resourcerelease/resourcerelease_create.html", ctx)
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         """Process the post request with a new ResourceRelease form filled out."""
-        p_name = request.POST.get('name')
-        if p_name and not ProcessName.objects.filter(name=p_name).exists():
-            # Some way to denote if the name is user defined? Check to see if the name passed is an id
-            # If it is an id, then it's not user defined, it's already existing.
-            try:
-                name_id = int(p_name)
-            except ValueError:
-                process_name = ProcessName.objects.create(name=p_name)
-                # Reassign the name in POST so it reflects the new name ID instead of the name name
-                request.POST = request.POST.copy()
-                request.POST['name'] = process_name.id
+        substance_name = request.POST.get('substance');
+        substances = Substance.objects.filter(name=substance_name)
+        substance = substances.first()
 
-        form = ProcessForm(request.POST)
+        #subst_tuple = (substance.id, str(substance))
+
+        request.POST = request.POST.copy()
+        request.POST['substance'] = substance
+
+        form = ResourceReleaseForm(request.POST)
+        #form = ResourceReleaseForm({'type': request.POST.get('type'),
+        #                            'substance': substance,
+        #                            'media': request.POST.get('media'),
+        #                            'process': request.POST.get('process'), 
+        #                            'quantity': request.POST.get('quantity'),
+        #                            'unit': request.POST.get('unit')})
+
+        #form.data['substance'] = substance
+        # There seems to be an issue where the choices are truncating, so fix it manually here.
+        #form.fields['substance'].choices = [(substance.id, substance)]
+        form.fields['substance'].choices = substances
         if form.is_valid():
-            process_obj = form.save(commit=True)
-            return HttpResponseRedirect('/products/resourcerelease/detail/' + str(process_obj.id))
+            resourcerelease_obj = form.save(commit=True)
+            return HttpResponseRedirect('/products/process/detail/%s', str(resourcerelease_obj.process.id))
+        
+        #return HttpResponseRedirect('/products/resourcerelease/create?process_id=%s', str(form.data[process]))
+        #return  reverse_lazy('create_resourcerelease', kwargs={'pk': form.data.process.id})
         return render(request, "resourcerelease/resourcerelease_create.html", {'form': form})
 
 

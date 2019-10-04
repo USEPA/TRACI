@@ -6,7 +6,8 @@
 
 """Definition of forms."""
 
-from django.forms import ModelForm, CharField, TextInput, ModelChoiceField, Select, FloatField, NumberInput
+from django.forms import ModelForm, CharField, TextInput, ModelChoiceField, Select, FloatField, \
+    NumberInput, IntegerField
 from django.utils.translation import ugettext_lazy as _
 from products.models import Product, LifeCycleStageName, LifeCycleStage, Process, Location, \
     ProcessName, ResourceReleaseType, Media, ResourceRelease
@@ -70,7 +71,6 @@ class ProcessForm(ModelForm):
     TODO
     """
 
-    #name = CharField(required=True)
     name = ModelChoiceField(queryset=ProcessName.objects.all(), initial=0, required=True,
                             label=_("Process Name"),
                             widget=Select(attrs={'class': 'form-control mb-2'}))
@@ -113,9 +113,14 @@ class ResourceReleaseForm(ModelForm):
                             label=_("Resource/Release Type"),
                             widget=Select(attrs={'class': 'form-control mb-2'}))
     # Substance/chemical
-    substance = ModelChoiceField(queryset=Substance.objects.all(), initial=0, required=True,
-                                 label=_("Substance"),
-                                 widget=Select(attrs={'class': 'form-control mb-2'}))
+    #substance = IntegerField(required=True, label=_("Substance"),
+    #                         widget=TextInput(attrs={'class': 'form-control mb-2'}))
+    #substance = CharField(required=True, label=_("Substance"),
+    #                      widget=TextInput(attrs={'class': 'form-control mb-2'}))
+    substance = ModelChoiceField(queryset=Substance.objects.all(), initial=0,
+                                 required=True, label=_("Substance"),
+                                 widget=TextInput(attrs={'class': 'form-control mb-2'}))
+
     # Media through which the Releases are output, null if Resource/Input.
     media = ModelChoiceField(queryset=Media.objects.all(), initial=0, required=True,
                              label=_("Medium"),
@@ -138,7 +143,7 @@ class ResourceReleaseForm(ModelForm):
         """
         super(ResourceReleaseForm, self).__init__(*args, **kwargs)
         self.fields['type'].label_from_instance = lambda obj: "%s (%s)" % (obj.name, obj.type)
-        self.fields['substance'].label_from_instance = lambda obj: "%s" % obj.name
+        #self.fields['substance'].label_from_instance = lambda obj: "%s" % obj.name
         self.fields['media'].label_from_instance = lambda obj: "%s" % obj.name
         #self.fields['process'].label_from_instance = lambda obj: "%s" % obj.name
         self.fields['unit'].label_from_instance = lambda obj: "%s" % obj.name
