@@ -9,13 +9,13 @@
             <form action="/products/resourcerelease/create?process_id={{process_id}}" method="post">
                 <div class="col-lg-12">
                     <div class="ui-widget">
-                        <!--<label for="substances">Substance Search: </label>-->
-                        <label>{{form.substance.label}}</label>
-                        {{form.substance}}
-                        <!--<input id="substances" class="form-control" />-->
+                        <!--<label for="chemicals">Chemical Search: </label>-->
+                        <label>{{form.chemical.label}}</label>
+                        {{form.chemical}}
+                        <!--<input id="chemicals" class="form-control" />-->
                     </div>
                 </div>
-                {#{{form.substance}}#}
+                {#{{form.chemical}}#}
 
                 <div class="col-lg-4">
                     <label>{{form.type.label}}</label>
@@ -60,7 +60,7 @@
         console.log(typeId + ': ' + typeName);
         // GET Units of Measurement for the selected
         $.ajax({
-            url: '/substances/api/units_for_type/',
+            url: '/chemicals/api/units_for_type/',
             data: {
                 'type_id': typeId
             },
@@ -76,14 +76,14 @@
         });
     });
 
-    const SUBSTANCES_SOURCE = '/substances/api/substance_list/';
+    const CHEMICALS_SOURCE = '/chemicals/api/chemical_list/';
     $(function () {
-        $("#id_substance").autocomplete({
+        $("#id_chemical").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: SUBSTANCES_SOURCE,
+                    url: CHEMICALS_SOURCE,
                     data: {
-                        'term': $('#id_substance').val()
+                        'term': $('#id_chemical').val()
                     },
                     cache: false,
                     type: 'GET',

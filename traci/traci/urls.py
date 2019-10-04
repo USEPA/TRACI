@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^scenario/?$', ScenarioView.as_view(), name='scenario'),
 
     url(r'^support/', include('support.urls')),
-    url(r'^substances/', include('substances.urls')),
+    url(r'^chemicals/', include('chemicals.urls')),
     url(r'^teams/', include('teams.urls')),
     url(r'^products/', include('products.urls')),
     url(r'^projects/', include('projects.urls')),
