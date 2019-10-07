@@ -265,23 +265,30 @@ class ResourceReleaseCreateView(CreateView):
         return render(request, "resourcerelease/resourcerelease_create.html", {'form': form})
 
 
-#class ResourceReleaseEditView(UpdateView):
-#    """View for editing a ResourceRelease for a life cycle stage"""
-#    model = ResourceRelease
-#    form_class = ResourceReleaseForm
-#    template_name = 'resourcerelease/resourcerelease_edit.html'
+class ReleaseEditView(UpdateView):
+    """View for editing a Release for a life cycle stage"""
+    model = Release
+    form_class = ReleaseForm
+    template_name = 'resourcerelease/resourcerelease_edit.html'
 
-#    def form_valid(self, form):
-#        """ResourceRelease Edit Form validation and redirect."""
-#        self.object = form.save(commit=False)
-#        self.object.save()
-#        return HttpResponseRedirect('/products/process/detail/' + str(self.object.process.id))
+    def form_valid(self, form):
+        """Release Edit Form validation and redirect."""
+        self.object = form.save(commit=False)
+        self.object.save()
+        return HttpResponseRedirect('/products/process/detail/' + str(self.object.process.id))
 
 
-#class ResourceReleaseDetailView(DetailView):
-#    """View for viewing the details of a process for a life cycle stage"""
-#    model = ResourceRelease
-#    template_name = 'resourcerelease/resourcerelease_detail.html'
+class ResourceEditView(UpdateView):
+    """View for editing a Resource for a life cycle stage"""
+    model = Resource
+    form_class = ResourceForm
+    template_name = 'resourcerelease/resourcerelease_edit.html'
+
+    def form_valid(self, form):
+        """Resource Edit Form validation and redirect."""
+        self.object = form.save(commit=False)
+        self.object.save()
+        return HttpResponseRedirect('/products/process/detail/' + str(self.object.process.id))
 
 
 #class ResourceReleaseDeleteView(DeleteView):
@@ -292,3 +299,23 @@ class ResourceReleaseCreateView(CreateView):
 #    def get_success_url(self):
 #        process = self.object.process
 #        return  reverse_lazy('detail_process', kwargs={'pk': process.id})
+
+
+class ReleaseDeleteView(DeleteView):
+    """View for removing a Release from a Life Cycle Stage Entry"""
+    model = Release
+    template_name = 'resourcerelease/resourcerelease_confirm_delete.html'
+
+    def get_success_url(self):
+        process = self.object.process
+        return  reverse_lazy('detail_process', kwargs={'pk': process.id})
+
+
+class ResourceDeleteView(DeleteView):
+    """View for removing a Resource from a Life Cycle Stage Entry"""
+    model = Resource
+    template_name = 'resourcerelease/resourcerelease_confirm_delete.html'
+
+    def get_success_url(self):
+        process = self.object.process
+        return  reverse_lazy('detail_process', kwargs={'pk': process.id})

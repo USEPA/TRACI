@@ -57,7 +57,11 @@
                     </div>
                 </div>
 
-                {% include 'next_reset_cancel_partial.html' %}
+                <div class="col-md-12">
+                    <button type="submit" value="Update" class="m-2 col-md-2 btn btn-md btn-success">Save</button>
+                    <button type="reset" class="m-2 col-md-2 col-md-offset-1 btn btn-md btn-warning">Reset</button>
+                    <button type="reset" onclick="releaseResourceCancel()" class="m-2 col-md-2 col-md-offset-1 btn btn-md btn-danger">Cancel</button>
+                </div>
             </form>
         </div>
     </div>
@@ -99,29 +103,6 @@
             });
         }
     });
-
-    //$("#id_type").on('change', function (e) {
-    //    var sel = e.target.selectedOptions[0];
-    //    var typeId = $(sel).val();
-    //    var typeName = $(sel).text();
-    //    console.log(typeId + ': ' + typeName);
-    //    // GET Units of Measurement for the selected
-    //    $.ajax({
-    //        url: '/chemicals/api/units_for_type/',
-    //        data: {
-    //            'type_id': typeId
-    //        },
-    //        cache: false,
-    //        type: 'GET',
-    //        dataType: 'json',
-    //        success: function (data) {
-    //            if (data) updateUnits(data);
-    //        },
-    //        error: function (jqXHR, textStatus, errorThrown) {
-    //            console.log(textStatus);
-    //        }
-    //    });
-    //});
 
     const CHEMICALS_SOURCE = '/chemicals/api/chemical_list/';
     $(function () {

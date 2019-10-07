@@ -16,7 +16,7 @@
     {% if release_list or resource_list %}
     <tbody>
         {% for chem in release_list %}
-            <tr id="{{chem.id}}" onclick="rowClick('{{chem.id}}')">
+            <tr id="release_{{chem.id}}" onclick="rowClick('release_{{chem.id}}')">
                 <th scope="row">{{chem.chemical.name}}</th>
                 <td scope="row">{{chem.release_media.name}}</td>
                 <td scope="row">{{chem.release_quantity}}</td>
@@ -24,7 +24,7 @@
             </tr>
         {% endfor %}
         {% for resource in resource_list %}
-            <tr id="{{resource.id}}" onclick="rowClick('{{resource.id}}')">
+            <tr id="resource_{{resource.id}}" onclick="rowClick('resource_{{resource.id}}')">
                 <th scope="row">{{resource.substance_type.name}}</th>
                 <td scope="row">{{resource.resource_media.name}}</td>
                 <td scope="row">{{resource.resource_quantity}}</td>

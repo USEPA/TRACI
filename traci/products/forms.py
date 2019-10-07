@@ -127,8 +127,8 @@ class SubstanceTypeForm(ModelForm):
 
 
 class ResourceForm(ModelForm):
-    substance_type = ModelChoiceField(queryset=SubstanceType.objects.all(), initial=0, required=True,
-                                      label=_("Name"),
+    substance_type = ModelChoiceField(queryset=SubstanceType.objects.all(),
+                                      initial=0, required=True, label=_("Name"),
                                       widget=Select(attrs={'class': 'form-control mb-2'}))
     resource_media = ModelChoiceField(queryset=Media.objects.filter(name='No Media'), initial=0, required=True,
                              label=_("Media"),
@@ -151,6 +151,8 @@ class ResourceForm(ModelForm):
         """
         super(ResourceForm, self).__init__(*args, **kwargs)
         self.fields['substance_type'].label_from_instance = lambda obj: "%s" % obj.name
+        #if self.instance.substance_type_id:
+        #    self.fields['substance_type'].widget.attrs['readonly'] = True
         self.fields['resource_media'].label_from_instance = lambda obj: "%s" % obj.name
         self.fields['resource_unit'].label_from_instance = lambda obj: "%s" % obj.name
 
@@ -187,6 +189,8 @@ class ReleaseForm(ModelForm):
         """
         super(ReleaseForm, self).__init__(*args, **kwargs)
         self.fields['chemical'].label_from_instance = lambda obj: "%s" % obj.name
+        if self.instance.chemical_id:
+            self.fields['chemical'].widget.attrs['readonly'] = True
         self.fields['release_media'].label_from_instance = lambda obj: "%s" % obj.name
         self.fields['release_unit'].label_from_instance = lambda obj: "%s" % obj.name
 

@@ -16,7 +16,7 @@ from django.conf.urls import url
 from products.views import ProductCreateView, ProductEditView, ProductDetailView, ProductDeleteView, \
     LifeCycleStageCreateView, LifeCycleStageEditView, LifeCycleStageDetailView, \
     LifeCycleStageDeleteView, ProcessCreateView, ProcessEditView, ProcessDetailView, ProcessDeleteView, \
-    ResourceReleaseCreateView#, ResourceReleaseEditView, ResourceReleaseDetailView, ResourceReleaseDeleteView
+    ResourceReleaseCreateView, ReleaseEditView, ResourceEditView, ReleaseDeleteView, ResourceDeleteView
 
 urlpatterns = [
     # URLs for Product CRUD operations.
@@ -39,7 +39,13 @@ urlpatterns = [
 
     # URLs for ResourceRelease CRUD operations.
     url(r'^resourcerelease/create/?$', ResourceReleaseCreateView.as_view(), name='create_resourcerelease'),
-    #url(r'^resourcerelease/edit/(?P<pk>\d+)/?$', ResourceReleaseEditView.as_view(), name='edit_resourcerelease'),
+    # URLs for Release
+    url(r'^release/edit/(?P<pk>\d+)/?$', ReleaseEditView.as_view(), name='edit_release'),
+    url(r'^release/delete/(?P<pk>\d+)/?$', ReleaseDeleteView.as_view(), name='delete_release'),
+    # URLs for Resource
+    url(r'^resource/edit/(?P<pk>\d+)/?$', ResourceEditView.as_view(), name='edit_resource'),
+    url(r'^resource/delete/(?P<pk>\d+)/?$', ResourceDeleteView.as_view(), name='delete_resource'),
+
     #url(r'^resourcerelease/detail/(?P<pk>\d+)/?$', ResourceReleaseDetailView.as_view(), name='detail_resourcerelease'),
     #url(r'^resourcerelease/delete/(?P<pk>\d+)/?$', ResourceReleaseDeleteView.as_view(), name='delete_resourcerelease'),
 ]
