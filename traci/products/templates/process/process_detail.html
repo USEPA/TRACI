@@ -16,9 +16,8 @@
         </div>
     </div>
 
-    <div class="mt-4 row">
+    <div class="row">
         <div class="col-sm-12">{% include 'resourcerelease/resourcerelease_list_partial.html' %}</div>
-        {#<div class="col-sm-6" id="resourcereleaseDetailPreview"></div>#}
     </div>
 </div>
 {% endblock %}
@@ -30,17 +29,27 @@
     }
     function editResourcerelease(btn) {
         if ($(btn).attr('disabled')) return;
-        window.location.href = '/products/resourcerelease/edit/' + $(btn).attr('id');
+        var typeIdSplit = $(btn).attr('id').split('_');
+        if (typeIdSplit[0].toLowerCase() === 'release')
+            window.location.href = '/products/release/edit/' + typeIdSplit[1];
+        else
+            window.location.href = '/products/resource/edit/' + typeIdSplit[1];
     }
     function removeResourcerelease(btn) {
         if ($(btn).attr('disabled')) return;
-        window.location.href = '/products/resourcerelease/delete/' + $(btn).attr('id');
+        var typeIdSplit = $(btn).attr('id').split('_');
+        if (typeIdSplit[0].toLowerCase() === 'release')
+            window.location.href = '/products/release/delete/' + typeIdSplit[1];
+        else
+            window.location.href = '/products/resource/delete/' + typeIdSplit[1];
     }
+
     function rowClick(id) {
         $("tr").removeClass('table-active');
         $("#" + id).addClass('table-active');
         $("i").removeAttr('disabled');
         $("i").attr('id', id);
     }
+
 </script>
 {% endblock %}
