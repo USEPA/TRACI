@@ -1,0 +1,29 @@
+#To customize proxy server settings for the users of your site edit this file below the
+# next line of "#######" as follows:
+#
+#1.) Replace everything in UPPERCASE_LETTERS_DESCRIBING_SOMETHING_TO_FILL_IN with a setting
+#that makes sense for your site.
+#
+#Example: you might replace "reg_sz:URL_TO_PROXY_SERVER" with "reg_sz:http://myproxy:80"
+#Example: you might replace "reg_sz:DEFAULT_INTERNET_EMAIL_NAME" with "reg_sz:anonymous@mycompany.com"
+#
+#(In both of these examples, you need to keep the "reg_sz:" to specify the type of value
+# -- in this case string)
+#
+#2.) Remove "#" at the beginning each line below the line of "######".  
+#But do not remove quotes
+#
+#3.) Select File/Save to save out changes.  
+#
+#######
+#
+#[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings]
+#"EmailName"="reg_sz:DEFAULT_INTERNET_EMAIL_NAME"
+#"ProxyServer"="reg_sz:URL_TO_PROXY_SERVER"
+#"ProxyOverride"="reg_sz:<local>"
+#"ProxyEnable"="REG_DWORD:0x01000000"
+#
+#[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\Main]
+#"Default_Page_URL"="reg_sz:http://www.microsoft.com/msoffice/"
+#"Default_Search_URL"="reg_sz:http://www.microsoft.com/search/"
+

@@ -1,0 +1,236 @@
+App Name	TRACI							
+App Version	2.0.usa							
+Frame Bitmap	"msodeusa.dll, 121, 122"							
+Frame Caption	TRACI Setup							
+Dialog Caption Base	TRACI							
+Usage String	"Usage: Setup or Setup /Q\nSetup /Q runs the Setup Program in Batch mode."							
+About Box String	TRACI							
+Check Modules	OMain,Microsoft Access,msaccess,Microsoft Access  ,MSGRMAIN,MS Graph							
+MSAPPS Mode	local							
+Suppress Copy Disincentive Dialogs								
+Suppress Serial Number Dialog								
+Inf File Name	SETUP.INF							
+Maximum Object ID	1825							
+Admin Mode Root Object ID								
+Floppy Mode Root Object ID	15:5 110 115							
+Network Mode Root Object ID	20:5 110 115							
+Maintenance Mode Root Object ID	25:5 110 115							
+Batch Mode Root Object ID	30:5 110 115							
+Setup Version	1.20.0.1305							
+	Maintenance Mode							
+ObjID	Install During Batch Mode	Title	Descr	Type	Data	BMP Id	Vital	Shared	Dir Chang	Dest Dir	Check Dir	Installed By Us								
+5				AppSearch	"C:\TRACI<C:\TRACI>,TRSUSTAI.MDE,,128,no,yes,"							
+"=== Install Types ==="
+10		""	""	Group	205 1705 305 605 805 905  90 1015				Yes	%5		
+15				AppMainDlg	40 45 50 : 1800  60				Yes	%5		
+20				AppMainDlg	40 45 50 55 : 1800  60				Yes	%5		
+25				CustomDlg	1700 300 600 800 900 1000  : 200 1800  1015 125  1815 60					%5		
+30				AppMainDlg	40 45 50 : 1800  60					%5		
+35
+40	yes	"&Typical"	"TRACI will be installed with the most commonly used options."	Group	200 1700 300 600 800 900 1000 1800  1015 125  1815	msodeusa.dll, 111						
+45	no	C&ustom	You can either install all of the TRACI program files, or just the ones you select.	CustomDlg	1700 300 600 800 900 1000  : 200 1800  1015 125  1815	msodeusa.dll, 112						
+50	no	"&Compact"	"TRACI will be installed with the minimum necessary options."	Group	200 1700 300 600 800 900 1000 1800  1015 125  1815	msodeusa.dll, 113						
+55	no	"&Workstation"	"TRACI will be installed to run from the server."	Group	95	msodeusa.dll, 114						
+"=== Office Bin Key Operations ==="
+60		""	""	Group	65 70 75					%d\Office		
+65				CustomAction	"msacccah.dll,GetPathFromReg,""HKEY_LOCAL_MACHINE,Software\Microsoft\Office\8.0\Common\InstallRoot,OfficeBin"""							
+70				CustomAction	"msacccah.dll,GetPathFromReg,""HKEY_LOCAL_MACHINE,Software\Microsoft\Shared Tools\Access Runtime\8.0,OfficeBin"""							
+75				CustomAction	"msacccah.dll,NeverRemoveGroup,80 500"							
+80				Depend	"65 ?  : 85"							
+85				AddRegData	"""LOCAL"",""Software\Microsoft\Office\8.0\Common\InstallRoot"",""OfficeBin"",""%70"","""""							
+"=== Admin Install Specifics ==="
+90		""	""	Group								
+"=== Workstation Install Specifics ==="
+95		""	""	Group	100 105							
+100		""	""	Group	 125 1815							
+105		""	""	Group	 200 1700 300 600 800 900 1000					%s		
+110		Microsoft Access		CustomAction	"msacccah.dll,AddAppSrch,""Not Required,Yes,c:\,msaccess.exe,8.00.0.0,HKEY_LOCAL_MACHINE,Software\Microsoft\Shared Tools\Microsoft Access Runtime,Path,120"""							
+115		Microsoft Access		CustomAction	"msacccah.dll,AddAppSrch,""Not Required,Yes,%110\,msaccess.exe,8.00.0.0,HKEY_CLASSES_ROOT,CLSID\{8CC49940-3146-11CF-97A1-00AA00424A9F}\LocalServer32,,120"""							
+120				SearchReg	"CLASSES,CLSID\{8CC49940-3146-11CF-97A1-00AA00424A9F}\LocalServer32"							
+
+125				AddRegData	"""HKEY_LOCAL_MACHINE"",""SOFTWARE\SAIC\TRACI\2.0\Jet\3.5\Engines"",""SystemDB"",""%1015\system.mdw"",""REG_SZ"""							
+"=== Components Begin Here ==="
+=== Begin Main Setup Component ===
+200	yes	"Setup"	""	Group	210		not vital			%d\setup		
+205		""	""	Group	215 260 250 270					%d\setup		
+210		""	""	Group	215 255 270							
+--- Copy Files for Setup ---
+215		""	""	Group	220 225 230 235 240 245 250 1105 1100 1200 1110							
+220				CopyFile	"Setup Files - Base,acmsetup_hlp"							
+225				CopyFile	"Setup Files - Base,setup_tdf"							
+230				CopyFile	"Setup Files - Base,setup_ini"							
+235				CopyFile	"Setup Files - Base,mssetup_dll"							
+240				CopyFile	"Setup Files - Base,msacccah_dll"							
+245				CopyFile	"Setup Files - Base,msode_dll"							
+250				CopyFile	"Setup Files - Renamed Setup,acmsetup_exe"							
+255				CopyFile	"Setup Files - Setup Inf,setup_inf"							
+260				CopyFile	"Setup Files - Admin Inf,admin_inf"							
+265				CopyFile	"Setup Files - Base,acmsetup_exe"							
+270				WriteTableFile	"setup.stf"							
+=== Begin Runtime Component ===
+300	yes	"Microsoft Access Run-Time Version"	""	Group	310		not vital			%65		
+305		""	""	Group	310 515					%65		
+--- Copy Files for Runtime Component ---
+310		""	""	Group	315 365 395 410 425							
+315		""	""	Group	320 325 445 330 335 345 350 355  360 455					%65		
+320				InstallShared	"Access Runtime Files,msaccess_exe,MSACCESS80,Office,1730 "							
+325				CompanionFile	"320 : Access Runtime Files,msacc8_olb"							
+330				CompanionFile	"320 : Access Runtime Files,msacnv30_exe"							
+335				CompanionFile	"320 : Access Runtime Files,msacnv30_dll"							
+340				CompanionFile	"320 : Access Runtime Files,msaexp30_dll"							
+345				CompanionFile	"320 : Access Runtime Files,msain800_dll"							
+350				CompanionFile	"320 : Access Runtime Files,soa800_dll"							
+355				CompanionFile	"320 : Access Runtime Files,utility_mda"							
+360				CompanionFile	"320 : Access Runtime Files,msaccess_srg"							
+365		""	""	Group	370 375 380 385 390 465   485							
+370				InstallSysFile	"Access Runtime Files,msjet35_dll"							
+375				InstallSysFile	"Access Runtime Files,msjter35_dll"							
+380				InstallSysFile	"Access Runtime Files,msjint35_dll"							
+385				InstallSysFile	"Access Runtime Files,msrd2x35_dll"							
+390				InstallSysFile	"Access Runtime Files,mswng300_dll"							
+395		""	""	Group	400 405 1500 475 1600 1430					%h\DAO		
+400				InstallShared	"Access Runtime Files,dao350_dll,DAO,DAO,320 1730 "					%h\DAO		
+405				CompanionFile	"400 : Access Runtime Files,dao2535_tlb"					%h\DAO		
+410		""	""	Group	415 420 1105 1115 505					%h\VBA		
+415				InstallShared	"Access Runtime Files,vba332_dll,VBA332.DLL,VBA,320 1730 "					%h\VBA		
+420				CompanionFile	"415 : Access Runtime Files,vba3en_dll"					%h\VBA		
+425		""	""	Group	435 430 440							
+430		""	""	Group	1400 1405 1450 1410 1415 1460 1420 1425 1470 1435 1440 1480 1445 1490							
+435		""	""	Group	1300 1120 1320 1325 1330 1340 1345 1335 1350							
+440				InstallSysFile	"Access Runtime Files,w95fiber_dll"							
+445				Depend	"320 ? 450"							
+450				CustomAction	"msacccah.dll,RegisterTypeLibrary,Access Runtime Files;msacc8_olb"					%325		
+455				Depend	"320 ? 460 495"							
+460				CustomAction	"msacccah.dll,RegFile,360"							
+465				Depend	"385 ? 470"							
+470		MSRD2x35.DLL		SelfReg	"""Access Runtime Files"",""msrd2x35_dll"","""","""",""20604"","					%385		
+475				Depend	"400 ? 480"							
+480		DAO350.DLL		SelfReg	"""Access Runtime Files"",""dao350_dll"",""DllRegisterServerEx"","""",""20604"",32autole.dll"					%400		
+485				Depend	"370 ? 490"							
+490		MSJET35.DLL		SelfReg	"""Access Runtime Files"",""msjet35_dll"",""DllRegisterServer"","""",""4096"","					%370		
+495				AddRegData	"""CLASSES"",""Licenses\8CC49940-3146-11CF-97A1-00AA00424A9F\Runtime"","""",""okpvasjwmvjfrcatkskctmtjahdnkccdgjds"","""""							
+500				AddRegData	"""CLASSES"",""Licenses\8CC49940-3146-11CF-97A1-00AA00424A9F\Runtime"","""",""okpvasjwmvjfrcatkskctmtjahdnkccdgjds"","""""							
+505				Depend	"415 ? 510"							
+510				CustomAction	"msacccah.dll,RegisterTypeLibrary,Access Runtime Files;vba332_dll"					%415		
+515				CopySection	"Access Runtime Files"					%205		
+=== Begin Graph8 Component ===
+600	yes	"Microsoft Graph 97 Run-Time Version"	""	Group	610		not vital			%65		
+605		""	""	Group	610 735					%65		
+--- Copy Files for Graph8 ---
+610		""	""	Group	615 620 660							
+615		""	""	Group	1300 1120 1320 1325 1330 1340 1345 1335 1350							
+620		""	""	Group	625 630 635  640 645 650 655  					%65		
+625				InstallShared	"MS Graph 8,graph8_exe,graph8.exe,graph8.exe,1730 "							
+630				InstallShared	"MS Graph 8,graph8rt_srg,graph8rt.srg,graph8rt.srg,1730 "					%65		
+635				InstallShared	"MS Graph 8,gr8409_dll,gr8409.dll,gr8409.dll,1730 "							
+640				InstallShared	"MS Graph 8,graph8_olb,graph8.olb,graph8.olb,1730 "							
+645				InstallShared	"MS Graph 8,scp32_dll,scp32.dll,scp32.dll,1730 "							
+650				InstallShared	"MS Graph 8,grintl32_dll,GRINTL32.DLL,GRINTL32.DLL,1730 "							
+655				InstallShared	"MS Graph 8,gr8galry_gra,gr8galry.gra,gr8galry.gra,1730 "							
+660				Depend	"625 ? 665"							
+665		""	""	Group	675							
+670				SearchReg	"msacccah.dll,CheckRegKey"							
+675				Depend	"670 ? 730 : 680 730"							
+680		""	""	Group	685 690 695 700 705 710 715 720 725							
+685				AddRegData	"""CLASSES"",""MSGraph.Chart"","""",""Microsoft Graph Chart"","""""							
+690				AddRegData	"""CLASSES"",""MSGraph.Chart\CLSID"","""",""{00020803-0000-0000-C000-000000000046}"","""""							
+695				AddRegData	"""CLASSES"",""MSGraph.Chart\CurVer"","""",""MSGraph.Chart.8"","""""							
+700				AddRegData	"""CLASSES"",""MSGraph.Application"","""",""Microsoft Graph Application"","""""							
+705				AddRegData	"""CLASSES"",""MSGraph.Application\CLSID"","""",""{00024502-0000-0000-C000-000000000046}"","""""							
+710				AddRegData	"""CLASSES"",""MSGraph.Application\CurVer"","""",""MSGraph.Application.8"","""""							
+715				AddRegData	"""CLASSES"",""MSGraph.Application.8\CLSID"","""",""{00024502-0000-0000-C000-000000000046}"","""""							
+720				AddRegData	"""CLASSES"",""CLSID\{00024502-0000-0000-C000-000000000046}\VersionIndependentProgID"","""",""MSGraph.Application"","""""							
+725				AddRegData	"""CLASSES"",""CLSID\{00020803-0000-0000-C000-000000000046}\VersionIndependentProgID"","""",""MSGraph.Chart"","""""							
+730				CustomAction	"msacccah.dll,RegFile,""630,,graph8.exe"""							
+735				CopySection	"MS Graph 8"					%205		
+=== Begin Excel IISam Component ===
+800	yes	"Microsoft Excel ISAM"	""	Group	810		not vital			%d		
+805		""	""	Group	810 830					%215		
+--- Copy Files for Excel IISam Component ---
+810		""	""	Group	815 820							
+815				InstallSysFile	"Excel IISam,dll"							
+820				CustomAction	"msacccah.dll,NeverRemoveGroup,825"							
+825		msexcl35.dll		SelfReg	"""Excel IISam"",""dll"","""","""",""1"","					%815		
+830				CopyFile	"Excel IISam,dll"							
+=== Begin Text IISam Component ===
+900	yes	"Text & HTML ISAM"	""	Group	910		not vital			%d		
+905		""	""	Group	910 930					%215		
+--- Copy Files for Text IISam Component ---
+910		""	""	Group	915 920							
+915				InstallSysFile	"Text IISam,dll"							
+920				CustomAction	"msacccah.dll,NeverRemoveGroup,925"							
+925		mstext35.dll		SelfReg	"""Text IISam"",""dll"","""","""",""1"","					%915		
+930				CopyFile	"Text IISam,dll"							
+=== Begin Workgroup Administrator ===
+1000	yes	"Workgroup Administrator"	""	Group	1005		not vital			%m		
+1005		""	""	Group	1010							
+--- Copy Files for Workgroup Administrator ---
+1010				InstallShared	"Workgroup Administrator Files,wrkgadm_exe,Wrkgadm80,wrkgadm.exe,1730 "							
+1015		""	""	Group	1020					%1010		
+1020				Depend	"1010 ? 1025"							
+1025				CustomAction	"msacccah.dll,SyncEXECalloutCAH,%s\wrkgadm.exe /noerr /sil ""%1730\system.mdw"""							
+1100				CustomAction	"msacccah.dll,BootstrapAdditionalFile,oleaut32 support file;""oleaut32_dll"";32autole.dll;Disk||;Please insert Disk"							
+1105				InstallSysFile	"oleaut32 support file,oleaut32_dll"							
+1110				CopyFile	"oleaut32 support file,32autole_dll"					%200		
+1115				InstallSysFile	"oleaut32 support file,stdole2_tlb"							
+1120				InstallSysFile	"oleaut32 support file,selfreg_dll"							
+1200				InstallSysFile	"msvcrt20 support file,msvcrt20_dll"							
+1300		""	""	Group	1305							
+1305				Depend	"65 ? 1310 : 1315"							
+1310				Depend	"70 ?  : 1315"							
+1315				AddRegData	"""LOCAL"",""Software\Microsoft\Shared Tools\Access Runtime\8.0"",""OfficeBin"",""%65"","""""							
+1320				InstallShared	"Shared Office Files,mso97_dll,MSO97RT,Office,1730 "					%h\VBA		
+1325				Depend	"1320 ? 1360"							
+1330				CompanionFile	"1320 : Shared Office Files,mso7_dll"					%h\VBA		
+1335				InstallSysFile	"Shared Office Files,comcat_dll"							
+1340				InstallTTFFile	"""Shared Office Files"",""tahoma_ttf"",""Tahoma (True Type)"""							
+1345				InstallTTFFile	"""Shared Office Files"",""tahomabd_ttf"",""Tahoma Bold (True Type)"""							
+1350				Depend	"1335 ? 1355"							
+1355		comcat.dll		SelfReg	"""Shared Office Files"",""comcat_dll"","""","""",""20604"","					%1335		
+1360				CustomAction	"msacccah.dll,RegMsoRT,""1033, 1320"""							
+1400				InstallSysFile	"Shared Internet Files,wininet_dll"							
+1405				InstallSysFile	"Shared Internet Files,msoffice_srg"							
+1410				InstallSysFile	"Shared Internet Files,urlmon_dll"							
+1415				InstallSysFile	"Shared Internet Files,misc_srg"							
+1420				InstallSysFile	"Shared Internet Files,winsspi_dll"							
+1425				InstallSysFile	"Shared Internet Files,misc2_srg"							
+1430				InstallSysFile	"Shared Internet Files,mfcans32_dll"							
+1435				InstallSysFile	"Shared Internet Files,hlink_srg"							
+1440				InstallSysFile	"Shared Internet Files,hlink_dll"							
+1445				InstallSysFile	"Shared Internet Files,hlinkprx_dll"							
+1450				Depend	"1400 ? 1455"							
+1455				CustomAction	"msacccah.dll,RegFile,1405"							
+1460				Depend	"1410 ? 1465"							
+1465				CustomAction	"msacccah.dll,RegFile,1415"							
+1470				Depend	"1420 ? 1475"							
+1475				CustomAction	"msacccah.dll,RegFile,1425"							
+1480				Depend	"1440 ? 1485"							
+1485				CustomAction	"msacccah.dll,RegFile,1435"							
+1490				Depend	"1445 ? 1495"							
+1495		HLINKPRX.DLL		SelfReg	"""Shared Internet Files"",""hlinkprx_dll"","""","""","""","					%1445		
+1500				InstallSysFile	"msvcrt40 support file,msvcrt40_dll"							
+1600				InstallSysFile	"ctl3d32 support file,ctl3d32_dll"							
+=== Begin Application ===
+1700	yes	"Application"	""	Group	1710  1740 		not vital					
+1705		""	""	Group	1710 1735							
+"=== Copy Files ==="
+1710		""	""	Group	1715  							
+1715		""	""	Group	1720							
+1720		""	""	Group	1725 1730							
+1725				CopyFile	"Application,D110TOOL.MDB"					%d		
+1730				CopyFile	"Application,TRSUSTAI.MDE"					%d		
+1735				CopySection	"Application"					%d\setup		
+"=== Add Registry Entries ==="
+"=== Add Shortcut Items ==="
+1740		""	""	Group	1745							
+1745		""	""	Group	1750							
+1750				AddProgmanItemQuiet	"TRACI<TRACI>,TRACI<TRACI>,""%1730\Trsustai.mde"",%s,,,"""",,,"					%1730		
+"=== Add Self Registering Items ==="
+=== Profile Lines ===
+1800		""	""	Group	1805 1810							
+1805				AddRegData	"""LOCAL"",""Software\Microsoft\Access Runtime\8.0\Profiles"",""TRACI"",""SOFTWARE\SAIC\TRACI\2.0"",""SZ"""							
+1810				AddRegData	"""LOCAL"",""Software\Microsoft\Office\8.0\Access\Profiles"",""TRACI"",""SOFTWARE\SAIC\TRACI\2.0"",""SZ"""							
+"=== Uninstall ==="
+1815		""	""	Group	1820 1825							
+1820				AddRegData	"""LOCAL"",""Software\Microsoft\Windows\CurrentVersion\Uninstall\TRACI"",""DisplayName"",""TRACI"",""SZ"""							
+1825				AddRegData	"""LOCAL"",""Software\Microsoft\Windows\CurrentVersion\Uninstall\TRACI"",""UninstallString"",""%215\setup.exe"",""SZ"""							
