@@ -83,3 +83,25 @@ class ProjectDeleteView(DeleteView):
     model = Project
     template_name = 'project_confirm_delete.html'
     success_url = reverse_lazy('projects')
+
+
+class ProjectCalculationsView(TemplateView):
+    """
+    The first step in running calculations.
+    On a GET request, this should return a view where the user can choose calculation settings.
+    On a POST request, this should perform the chosen calculations and return to a results viewing page.
+    """
+    model = Project
+    template_name = 'project_calculations.html'
+    
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        """Return a view where the user can choose calculation settings."""
+        # TODO Form
+        # form = ?
+        return render(request, self.template_name, {})
+
+    
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        """Perform the chosen calculations and return to a results viewing page."""

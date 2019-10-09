@@ -4,15 +4,20 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <h2>Projects in TRACI</h2>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <button onclick="window.location.href='/projects/create/'" class="btn btn-md btn-info">Create New Project</button>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <button id="viewDetailsButton" onclick="viewDetailsProject()" class="btn btn-md btn-info" disabled>
                 View Project Details
+            </button>
+        </div>
+        <div class="col-md-2">
+            <button id="runCalculationsButton" onclick="runCalculationsProject()" class="btn btn-md btn-info" disabled>
+                Run Calculations
             </button>
         </div>
     </div>
@@ -58,10 +63,16 @@
         $("#" + id).addClass('table-active');
         $("#viewDetailsButton").removeAttr('disabled');
         $("#viewDetailsButton").val(id);
+        $("#runCalculationsButton").removeAttr('disabled');
+        $("#runCalculationsButton").val(id);
     }
 
     function viewDetailsProject() {
         window.location.href = '/projects/detail/' + $("#viewDetailsButton").val() + '/';
+    }
+
+    function runCalculationsProject() {
+        window.location.href = '/projects/calculations/' + $("#runCalculationsButton").val() + '/';
     }
 </script>
 {% endblock %}
