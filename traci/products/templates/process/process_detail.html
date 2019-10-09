@@ -43,13 +43,19 @@
         else
             window.location.href = '/products/resource/delete/' + typeIdSplit[1];
     }
-
     function rowClick(id) {
         $("tr").removeClass('table-active');
         $("#" + id).addClass('table-active');
         $("i").removeAttr('disabled');
         $("i").attr('id', id);
     }
-
+    function viewResourceReleaseFactors(btn) {
+        if ($(btn).attr('disabled')) return;
+        var typeIdSplit = $(btn).attr('id').split('_');
+        if (typeIdSplit[0].toLowerCase() === 'release')
+            window.location.href = '/products/release/factors/' + typeIdSplit[1];
+        //else
+            //window.location.href = '/products/resource/factors/' + typeIdSplit[1];
+    }
 </script>
 {% endblock %}

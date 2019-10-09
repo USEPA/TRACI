@@ -14,6 +14,7 @@ from django.views.generic import ListView, UpdateView, CreateView, DetailView, D
 from products.forms import ProductForm, LifeCycleStageForm, ProcessForm, SubstanceTypeForm, \
     ResourceForm, ReleaseForm
 from products.models import Product, LifeCycleStage, Process, ProcessName, Release, Resource
+from products.serializers import ReleaseSerializer
 from projects.models import Project
 from chemicals.models import Chemical
 
@@ -319,3 +320,19 @@ class ResourceDeleteView(DeleteView):
     def get_success_url(self):
         process = self.object.process
         return  reverse_lazy('detail_process', kwargs={'pk': process.id})
+
+
+def release_factor_view(request, pk):
+    """Go to the view for the given release object's factors."""
+    if not request.user.is_authenticated:
+        return HttpRedirect('about')
+
+    # TODO Finish this for displaying the release factors.
+    release_obj = Release.objects.get(id=pk)
+    release = ReleaseSerializer(release_obj).data
+    global_warming = release_obj.GlobalWarmingPotential()
+    factors = {}
+
+
+    return render(request, "resourcerelease/release_factor_view.html",
+                  {'release': release_obj, 'factors': factors})

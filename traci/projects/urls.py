@@ -14,7 +14,7 @@ Available functions:
 
 from django.conf.urls import url
 from projects.views import ProjectListView, ProjectCreateView, get_projects, ProjectEditView, \
-    ProjectDetailView, ProjectDeleteView
+    ProjectDetailView, ProjectDeleteView, ProjectCalculationsView
 
 urlpatterns = [
     url(r'^projects/?$', ProjectListView.as_view(), name='projects'),
@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^edit/(?P<pk>\d+)/?$', ProjectEditView.as_view(), name='edit_project'),
     url(r'^detail/(?P<pk>\d+)/?$', ProjectDetailView.as_view(), name='detail_project'),
     url(r'^delete/(?P<pk>\d+)/?$', ProjectDeleteView.as_view(), name='delete_project'),
+    url(r'^calculations/(?P<pk>\d+)/?$', ProjectCalculationsView.as_view(), name='delete_project'),
     url(r'^get_projects/?$', get_projects, name='get_projects'),
 ]
