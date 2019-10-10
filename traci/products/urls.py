@@ -17,7 +17,7 @@ from products.views import ProductCreateView, ProductEditView, ProductDetailView
     LifeCycleStageCreateView, LifeCycleStageEditView, LifeCycleStageDetailView, \
     LifeCycleStageDeleteView, ProcessCreateView, ProcessEditView, ProcessDetailView, ProcessDeleteView, \
     ResourceReleaseCreateView, ReleaseEditView, ResourceEditView, ReleaseDeleteView, ResourceDeleteView, \
-    release_factor_view
+    release_factor_view, resource_factor_view
 
 urlpatterns = [
     # URLs for Product CRUD operations.
@@ -47,5 +47,5 @@ urlpatterns = [
     # URLs for Resource
     url(r'^resource/edit/(?P<pk>\d+)/?$', ResourceEditView.as_view(), name='edit_resource'),
     url(r'^resource/delete/(?P<pk>\d+)/?$', ResourceDeleteView.as_view(), name='delete_resource'),
-
+    url(r'^resource/factors/(?P<pk>\d+)/?$', resource_factor_view, name='delete_resource'),
 ]

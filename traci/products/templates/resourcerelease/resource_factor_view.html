@@ -1,0 +1,39 @@
+﻿{% extends "main/base.html" %}
+{% block content %}
+<div class="container">
+    <div class="mb-3 row">
+        <div class="col-sm-6">
+            <h3>Characterization Factors</h3>
+            <h4>{{resource.substance_type.name}}</h4>
+        </div>
+        <div class="col-sm-3">
+            <button onclick="window.location.href='/products/process/detail/{{resource.process.id}}'"
+                    class="my-2 col-md-12 btn btn-md btn-info">Back to Process Details</button>
+        </div>
+    </div>
+    <div class="row">
+        {% if factors %}
+        <table class="table table-striped table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Factor Name</th>
+                    <th>Factor Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for factor, value in factors.items %}
+                <tr>
+                    <th scope="row">{{factor}}</th>
+                    <td>{{value}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

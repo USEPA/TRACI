@@ -54,8 +54,8 @@
         var typeIdSplit = $(btn).attr('id').split('_');
         if (typeIdSplit[0].toLowerCase() === 'release')
             window.location.href = '/products/release/factors/' + typeIdSplit[1];
-        //else
-            //window.location.href = '/products/resource/factors/' + typeIdSplit[1];
+        else
+            window.location.href = '/products/resource/factors/' + typeIdSplit[1];
     }
 </script>
 {% endblock %}

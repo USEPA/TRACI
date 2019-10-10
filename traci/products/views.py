@@ -6,14 +6,15 @@
 """Definition of Products views."""
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpRedirect, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
 from products.forms import ProductForm, LifeCycleStageForm, ProcessForm, SubstanceTypeForm, \
     ResourceForm, ReleaseForm
-from products.models import Product, LifeCycleStage, Process, ProcessName, Release, Resource
+from products.models.product import Product, LifeCycleStage, Process, ProcessName, Resource
+from products.models.release import Release
 from products.serializers import ReleaseSerializer
 from projects.models import Project
 from chemicals.models import Chemical
@@ -125,7 +126,7 @@ class LifeCycleStageDetailView(DetailView):
     """View for viewing the details of a life cycle stage entry for a product"""
     model = LifeCycleStage
     template_name = 'lifecyclestage/lifecyclestage_detail.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['process_list'] = Process.objects.filter(lifecyclestage=context['object'])
@@ -262,7 +263,7 @@ class ResourceReleaseCreateView(CreateView):
             if resource_form.is_valid():
                 resource_obj = resource_form.save(commit=True)
                 return HttpResponseRedirect('/products/process/detail/' + str(resource_obj.process.id))
-        
+
         return render(request, "resourcerelease/resourcerelease_create.html", {'form': form})
 
 
@@ -327,9 +328,7 @@ def release_factor_view(request, pk):
     if not request.user.is_authenticated:
         return HttpRedirect('about')
 
-    # TODO Finish this for displaying the release factors.
     release_obj = Release.objects.get(id=pk)
-    #release = ReleaseSerializer(release_obj).data
     ctx = {'release': release_obj}
     impacts = [
         'GlobalWarmingPotential', 'Acidification', 'HumanHealthCriteria', 'Eutrophication',
@@ -353,3 +352,27 @@ def release_factor_view(request, pk):
 
 
     return render(request, "resourcerelease/release_factor_view.html", ctx)
+
+
+def resource_factor_view(request, id):
+    """Go to the view for the given resource object's factors."""
+    if not request.user.is_authenticated:
+        return HttpRedirect('about')
+
+    resource_obj = Resource.objects.get(id=id)
+    ctx = {'resource': resource_obj}
+
+    impacts = [
+        'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx',
+        'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx',
+        'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx',
+        'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx', 'xxxxxxxxxxxx'
+        ]
+
+    ctx['factors'] = {}
+    #for impact_name in impacts:
+    #    val = release_obj.GetImpactValue(impact_name)
+    #    if val:
+    #        ctx['factors'][impact_name] = val
+
+    return render(request, "resourcerelease/resource_factor_view.html", ctx)

@@ -37,15 +37,14 @@ class ProjectDetailView(DetailView):
         return context
 
 
-def get_projects(order):
+def get_projects():
+    """TODO"""
     projects = list(Project.objects.values())
     #data = list(serializers.serialize('json', projects))
     data = json.dumps(projects)
-    mimetype = 'application/json'
     return HttpResponse(data)
 
-# TODO update this based on the Createview found:
-# https://docs.djangoproject.com/en/2.2/ref/class-based-views/generic-editing/
+
 class ProjectCreateView(CreateView):
     """View for creating a new Project."""
 
@@ -93,7 +92,11 @@ class ProjectCalculationsView(TemplateView):
     """
     model = Project
     template_name = 'project_calculations.html'
-    
+
+    @method_decorator(login_required)
+    def run_release_calculations(self, release_list):
+        """Run release related calculations on the provided list of release objects."""
+
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         """Return a view where the user can choose calculation settings."""
@@ -106,9 +109,9 @@ class ProjectCalculationsView(TemplateView):
         """Perform the chosen calculations and return to a results viewing page."""
         # TODO Form
         # form = ?
-        pk = self.kwargs['pk']
+        id = self.kwargs['pk']
         rels = []
-        project = Project.objects.get(id=pk)
+        project = Project.objects.get(id=id)
         products = Product.objects.filter(project=project)
         for product in products:
             stages = LifeCycleStage.objects.filter(product=product)
@@ -120,9 +123,5 @@ class ProjectCalculationsView(TemplateView):
                         rels.append(rel)
                     resources = Resource.objects.filter(process=proc)
                     # for res in resources:
-        release_results = run_release_calculations(rels)
 
-    @method_decorator(login_required)
-    def run_release_calculations(release_list):
-        """Run release related calculations on the provided list of release objects."""
-        
+        release_results = self.run_release_calculations(rels)
