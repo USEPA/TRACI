@@ -329,10 +329,27 @@ def release_factor_view(request, pk):
 
     # TODO Finish this for displaying the release factors.
     release_obj = Release.objects.get(id=pk)
-    release = ReleaseSerializer(release_obj).data
-    global_warming = release_obj.GlobalWarmingPotential()
-    factors = {}
+    #release = ReleaseSerializer(release_obj).data
+    ctx = {'release': release_obj}
+    impacts = [
+        'GlobalWarmingPotential', 'Acidification', 'HumanHealthCriteria', 'Eutrophication',
+        'EutrophicationAir', 'EutrophicationWater', 'OzoneDepletion', 'SmogAir',
+        # Disabling ecotox fields because they don't map properly between excel and VB tool...
+        # 'EcoToxicity', 'EcotoxCFairUfreshwater', 'EcotoxCFairCfreshwater', 'EcotoxCFfreshWaterCfreshwater',
+        # 'EcotoxCFfreshWaterUfreshwater', 'EcotoxCFseaWaterCfreshwater', 'EcotoxCFnativeSoilCfreshwater',
+        # 'EcotoxCFagriculturalSoilCfreshwater',
+        'HumanHealthCancer', 'HumanHealthNonCancer',
+        'HumanHealthUrbanAirCancer', 'HumanHealthUrbanAirNonCancer', 'HumanHealthRuralAirCancer',
+        'HumanHealthRuralAirNonCancer', 'HumanHealthFreshwaterCancer', 'HumanHealthFreshwaterNonCancer',
+        'HumanHealthSeawaterCancer', 'HumanHealthSeawaterNonCancer', 'HumanHealthNativeSoilCancer',
+        'HumanHealthNativeSoilNonCancer', 'HumanHealthAgriculturalSoilCancer',
+        'HumanHealthAgriculturalSoilNonCancer']
+
+    ctx['factors'] = {}
+    for impact_name in impacts:
+        val = release_obj.GetImpactValue(impact_name)
+        if val:
+            ctx['factors'][impact_name] = val
 
 
-    return render(request, "resourcerelease/release_factor_view.html",
-                  {'release': release_obj, 'factors': factors})
+    return render(request, "resourcerelease/release_factor_view.html", ctx)

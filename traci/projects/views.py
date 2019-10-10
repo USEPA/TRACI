@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DetailView, \
     DeleteView
-from products.models import Product
+from products.models import Product, LifeCycleStage, Process, Release, Resource
 from projects.forms import ProjectForm
 from projects.models import Project
 
@@ -101,7 +101,28 @@ class ProjectCalculationsView(TemplateView):
         # form = ?
         return render(request, self.template_name, {})
 
-    
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         """Perform the chosen calculations and return to a results viewing page."""
+        # TODO Form
+        # form = ?
+        pk = self.kwargs['pk']
+        rels = []
+        project = Project.objects.get(id=pk)
+        products = Product.objects.filter(project=project)
+        for product in products:
+            stages = LifeCycleStage.objects.filter(product=product)
+            for stage in stages:
+                processes = Process.objects.filter(lifecyclestage=stage)
+                for proc in processes:
+                    releases = Release.objects.filter(process=proc)
+                    for rel in releases:
+                        rels.append(rel)
+                    resources = Resource.objects.filter(process=proc)
+                    # for res in resources:
+        release_results = run_release_calculations(rels)
+
+    @method_decorator(login_required)
+    def run_release_calculations(release_list):
+        """Run release related calculations on the provided list of release objects."""
+        
