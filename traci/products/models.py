@@ -113,7 +113,6 @@ class Resource(models.Model):
     process = models.ForeignKey("Process", on_delete=models.CASCADE)
 
 
-
 # Substance type "Chemical Release"
 class Release(models.Model):
     """Information for a Chemical Release (output)."""
@@ -131,8 +130,8 @@ class Release(models.Model):
 
     def Factor(self, emission):
         try:
-            float(emission) * self.release_quantity * ConversionFactors.ReleaseFactor(self.release_unit)
-        except ValueError:
+            return float(emission) * self.release_quantity * ConversionFactors.ReleaseFactor(self.release_unit)
+        except (ValueError, TypeError):
             return 0
 
 
@@ -165,7 +164,7 @@ class Release(models.Model):
         return self.Factor(self.chemical.smog_air)
 
     # Ecotox section
-    # The functions in VB program don"t match the data from the Excel sheet (which is in the PSQL DB).
+    # The functions in VB program don't match the data from the Excel sheet (which is in the PSQL DB).
     # Therefore, we will be focusing on the data in the Excel Sheet/PSQL DB.
     def EcotoxAirU(self):
         """Calculate the EcotoxAirU for this chemical release."""
@@ -219,12 +218,12 @@ class Release(models.Model):
         """Calculate the HumanHealthSeawaterCancer for this chemical release."""
         return self.Factor(self.chemical.hhcf.hhcf_seawater_cancer)
 
-    def HumanHealthNatSoilCancer(self):
+    def HumanHealthNativeSoilCancer(self):
         """Calculate the HumanHealthNatSoilCancer for this chemical release."""
         return self.Factor(self.chemical.hhcf.hhcf_natsoil_cancer)
 
-    def HumanHealthAgrSoilCancer(self):
-        """Calculate the HumanHealthAgrSoilCancer for this chemical release."""
+    def HumanHealthAgriculturalSoilCancer(self):
+        """Calculate the HumanHealthAgriculturalSoilCancer for this chemical release."""
         return self.Factor(self.chemical.hhcf.hhcf_agrsoil_cancer)
     
     def HumanHealthNonCancer(self):
@@ -252,88 +251,88 @@ class Release(models.Model):
         """Calculate the HumanHealthSeawaterNonCancer for this chemical release."""
         return self.Factor(self.chemical.hhcf.hhcf_seawater_noncanc)
 
-    def HumanHealthNatSoilNonCancer(self):
-        """Calculate the HumanHealthNatSoilNonCancer for this chemical release."""
+    def HumanHealthNativeSoilNonCancer(self):
+        """Calculate the HumanHealthNativeSoilNonCancer for this chemical release."""
         return self.Factor(self.chemical.hhcf.hhcf_natsoil_noncanc)
 
-    def HumanHealthAgrSoilNonCancer(self):
+    def HumanHealthAgriculturalSoilNonCancer(self):
         """Calculate the HumanHealthAgrSoilNonCancer for this chemical release."""
         return self.Factor(self.chemical.hhcf.hhcf_agrsoil_noncanc)
 
     def GetImpactValue(self, impact):
         """Return the value for the given impact, summing totals in the case of ecotox or hhcf"""
         if impact == "GlobalWarmingPotential":
-            return this.GlobalWarmingPotential
+            return self.GlobalWarmingPotential()
         if impact == "Acidification":
-            return this.Acidification
+            return self.Acidification()
         if impact == "HumanHealthCriteria":
-            return this.HumanHealthCriteria
+            return self.HumanHealthCriteria()
         if impact == "Eutrophication":
-            return this.EutrophicationAir + this.EutrophicationAir
+            return self.EutrophicationAir() + self.EutrophicationWater()
         if impact == "EutrophicationAir":
-            return this.EutrophicationAir
+            return self.EutrophicationAir()
         if impact == "EutrophicationWater":
-            return this.EutrophicationWater
+            return self.EutrophicationWater()
         if impact == "OzoneDepletion":
-            return this.OzoneDepletion
+            return self.OzoneDepletion()
         if impact == "SmogAir":
-            return this.SmogAir
+            return self.SmogAir()
 
         if impact == "EcoToxicity":
-            return this.EcotoxCFagriculturalSoilCfreshwater + this.EcotoxCFairCfreshwater + \
-                this.EcotoxCFairUfreshwater + this.EcotoxCFfreshWaterCfreshwater + \
-                this.EcotoxCFfreshWaterUfreshwater + this.EcotoxCFnativeSoilCfreshwater + \
-                this.EcotoxCFseaWaterCfreshwater
+            return self.EcotoxCFagriculturalSoilCfreshwater() + self.EcotoxCFairCfreshwater() + \
+                self.EcotoxCFairUfreshwater() + self.EcotoxCFfreshWaterCfreshwater() + \
+                self.EcotoxCFfreshWaterUfreshwater() + self.EcotoxCFnativeSoilCfreshwater() + \
+                self.EcotoxCFseaWaterCfreshwater()
 
         if impact == "EcotoxCFairUfreshwater":
-            return this.EcotoxCFairUfreshwater
+            return self.EcotoxCFairUfreshwater()
         if impact == "EcotoxCFairCfreshwater":
-            return this.EcotoxCFairCfreshwater
+            return self.EcotoxCFairCfreshwater()
         if impact == "EcotoxCFfreshWaterCfreshwater":
-            return this.EcotoxCFfreshWaterCfreshwater
+            return self.EcotoxCFfreshWaterCfreshwater()
         if impact == "EcotoxCFfreshWaterUfreshwater":
-            return this.EcotoxCFfreshWaterUfreshwater
+            return self.EcotoxCFfreshWaterUfreshwater()
         if impact == "EcotoxCFseaWaterCfreshwater":
-            return this.EcotoxCFseaWaterCfreshwater
+            return self.EcotoxCFseaWaterCfreshwater()
         if impact == "EcotoxCFnativeSoilCfreshwater":
-            return this.EcotoxCFnativeSoilCfreshwater
+            return self.EcotoxCFnativeSoilCfreshwater()
         if impact == "EcotoxCFagriculturalSoilCfreshwater":
-            return this.EcotoxCFagriculturalSoilCfreshwater
+            return self.EcotoxCFagriculturalSoilCfreshwater()
 
         if impact == "HumanHealthCancer":
-            return this.HumanHealthUrbanAirCancer + this.HumanHealthSeawaterCancer + \
-                this.HumanHealthRuralAirCancer + this.HumanHealthNativeSoilCancer + \
-                his.HumanHealthFreshwaterCancer + this.HumanHealthAgriculturalSoilCancer
+            return self.HumanHealthUrbanAirCancer() + self.HumanHealthSeawaterCancer() + \
+                self.HumanHealthRuralAirCancer() + self.HumanHealthNativeSoilCancer() + \
+                self.HumanHealthFreshwaterCancer() + self.HumanHealthAgriculturalSoilCancer()
 
         if impact == "HumanHealthNonCancer":
-            return this.HumanHealthUrbanAirNonCancer + this.HumanHealthSeawaterNonCancer + \
-                this.HumanHealthRuralAirNonCancer + this.HumanHealthNativeSoilNonCancer + \
-                this.HumanHealthFreshwaterNonCancer + this.HumanHealthAgriculturalSoilNonCancer
+            return self.HumanHealthUrbanAirNonCancer() + self.HumanHealthSeawaterNonCancer() + \
+                self.HumanHealthRuralAirNonCancer() + self.HumanHealthNativeSoilNonCancer() + \
+                self.HumanHealthFreshwaterNonCancer() + self.HumanHealthAgriculturalSoilNonCancer()
 
         if impact == "HumanHealthUrbanAirCancer":
-            return this.HumanHealthUrbanAirCancer
+            return self.HumanHealthUrbanAirCancer()
         if impact == "HumanHealthUrbanAirNonCancer":
-            return this.HumanHealthUrbanAirNonCancer
+            return self.HumanHealthUrbanAirNonCancer()
         if impact == "HumanHealthRuralAirCancer":
-            return this.HumanHealthRuralAirCancer
+            return self.HumanHealthRuralAirCancer()
         if impact == "HumanHealthRuralAirNonCancer":
-            return this.HumanHealthRuralAirNonCancer
+            return self.HumanHealthRuralAirNonCancer()
         if impact == "HumanHealthFreshwaterCancer":
-            return this.HumanHealthFreshwaterCancer
+            return self.HumanHealthFreshwaterCancer()
         if impact == "HumanHealthFreshwaterNonCancer":
-            return this.HumanHealthFreshwaterNonCancer
+            return self.HumanHealthFreshwaterNonCancer()
         if impact == "HumanHealthSeawaterCancer":
-            return this.HumanHealthSeawaterCancer
+            return self.HumanHealthSeawaterCancer()
         if impact == "HumanHealthSeawaterNonCancer":
-            return this.HumanHealthSeawaterNonCancer
+            return self.HumanHealthSeawaterNonCancer()
         if impact == "HumanHealthNativeSoilCancer":
-            return this.HumanHealthNativeSoilCancer
+            return self.HumanHealthNativeSoilCancer()
         if impact == "HumanHealthNativeSoilNonCancer":
-            return this.HumanHealthNativeSoilNonCancer
+            return self.HumanHealthNativeSoilNonCancer()
         if impact == "HumanHealthAgriculturalSoilCancer":
-            return this.HumanHealthAgriculturalSoilCancer
+            return self.HumanHealthAgriculturalSoilCancer()
         if impact == "HumanHealthAgriculturalSoilNonCancer":
-            return this.HumanHealthAgriculturalSoilNonCancer
+            return self.HumanHealthAgriculturalSoilNonCancer()
         return 0
 
         def GetImpactFactor(self, impact):

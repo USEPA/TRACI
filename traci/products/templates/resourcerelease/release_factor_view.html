@@ -13,7 +13,24 @@
         </div>
     </div>
     <div class="row">
-
+        {% if factors %}
+        <table class="table table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th>Factor Name</th>
+                    <th>Factor Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for factor, value in factors.items %}
+                <tr>
+                    <th scope="row">{{factor}}</th>
+                    <td>{{value}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
