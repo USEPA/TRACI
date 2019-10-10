@@ -6,7 +6,7 @@
 """Definition of Products views."""
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRedirect, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -15,7 +15,6 @@ from products.forms import ProductForm, LifeCycleStageForm, ProcessForm, Substan
     ResourceForm, ReleaseForm
 from products.models.product import Product, LifeCycleStage, Process, ProcessName, Resource
 from products.models.release import Release
-from products.serializers import ReleaseSerializer
 from projects.models import Project
 from chemicals.models import Chemical
 
@@ -242,7 +241,7 @@ class ResourceReleaseCreateView(CreateView):
         if form.is_valid():
             # To support the model select form integrating with our custom chemical search box,
             # we have to do some dirty code. Otherwise, the form won't validate
-            chemical_name = request.POST.get('chemical', '');
+            chemical_name = request.POST.get('chemical', '')
             if chemical_name:
                 # Retrieve a queryset that contains the selected chemical
                 queryset = Chemical.objects.filter(name=chemical_name)
@@ -326,7 +325,7 @@ class ResourceDeleteView(DeleteView):
 def release_factor_view(request, pk):
     """Go to the view for the given release object's factors."""
     if not request.user.is_authenticated:
-        return HttpRedirect('about')
+        return HttpResponseRedirect('about')
 
     release_obj = Release.objects.get(id=pk)
     ctx = {'release': release_obj}
@@ -354,12 +353,12 @@ def release_factor_view(request, pk):
     return render(request, "resourcerelease/release_factor_view.html", ctx)
 
 
-def resource_factor_view(request, id):
+def resource_factor_view(request, pk):
     """Go to the view for the given resource object's factors."""
     if not request.user.is_authenticated:
-        return HttpRedirect('about')
+        return HttpResponseRedirect('about')
 
-    resource_obj = Resource.objects.get(id=id)
+    resource_obj = Resource.objects.get(id=pk)
     ctx = {'resource': resource_obj}
 
     impacts = [

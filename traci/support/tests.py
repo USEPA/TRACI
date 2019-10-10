@@ -13,7 +13,6 @@ Available functions:
 # TODO Test Email sender:
 # https://stackoverflow.com/questions/3728528/testing-email-sending
 
-# TODO This needs to be refactored for TRACI not GWSC.
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.test.client import RequestFactory

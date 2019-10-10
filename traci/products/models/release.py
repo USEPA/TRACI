@@ -12,7 +12,7 @@ Available models:
 
 from django.db import models
 from chemicals.models import Chemical, Unit
-from chemicals.util import ConversionFactors
+from chemicals.util import ReleaseFactor
 
 
 # Substance type "Chemical Release"
@@ -31,7 +31,7 @@ class Release(models.Model):
 
     def __factor(self, emission):
         try:
-            return float(emission) * self.release_quantity * ConversionFactors.ReleaseFactor(self.release_unit)
+            return float(emission) * self.release_quantity * ReleaseFactor(self.release_unit)
         except (ValueError, TypeError):
             return 0
 

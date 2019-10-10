@@ -109,9 +109,9 @@ class ProjectCalculationsView(TemplateView):
         """Perform the chosen calculations and return to a results viewing page."""
         # TODO Form
         # form = ?
-        id = self.kwargs['pk']
+        pk = self.kwargs['pk']
         rels = []
-        project = Project.objects.get(id=id)
+        project = Project.objects.get(id=pk)
         products = Product.objects.filter(project=project)
         for product in products:
             stages = LifeCycleStage.objects.filter(product=product)
@@ -121,7 +121,8 @@ class ProjectCalculationsView(TemplateView):
                     releases = Release.objects.filter(process=proc)
                     for rel in releases:
                         rels.append(rel)
-                    resources = Resource.objects.filter(process=proc)
+                    # resources = Resource.objects.filter(process=proc)
                     # for res in resources:
 
         release_results = self.run_release_calculations(rels)
+        return release_results

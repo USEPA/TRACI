@@ -41,7 +41,7 @@ def get_units(request):
     """Retrieve a list of units for the specified resource/release type"""
     #if request.is_ajax():
     #    type_id = request.GET.get('type_id', '')
-    #units = 
+    #units =
 
 def get_chemicals(request):
     """Retrieve a filtered list of chemicals."""
