@@ -1,116 +1,18 @@
-# models.py (products)
+# models/release.py (products)
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
 
 """
-Models for Products (LCI Products).
+Models for Chemical Releases.
 
 Available models:
-- Media option for an instance of a chemical such as Water, Air, etc.
-- Location option for a Process.
-- Process is a part of the parent life cycle stage, can contain one or more resource/release chemicals.
-- LifeCycleStageName is a stage of the product"s life cycle with one or more processes
-- Product is an end product
+- Release an instance of a chemical release under some parent process.
 """
 
 from django.db import models
 from chemicals.models import Chemical, Unit
 from chemicals.util import ConversionFactors
-from projects.models import Project
-
-
-class Product(models.Model):
-    """Product object containing LCI information for contained chemicals."""
-    name = models.CharField(null=False, blank=False, max_length=255)
-    # Parent project
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-
-
-class LifeCycleStageName(models.Model):
-    """
-    Life Cycle Stages, the database entries for this will not change.
-    There are six static options.
-    """
-    name = models.CharField(null=False, blank=False, max_length=63)
-
-
-class LifeCycleStage(models.Model):
-    """
-    Life Cycle Stage cross-reference with product, constitutes a single life cycle stage "entry" in a product.
-    Each entry can have multiple instances of processes, manufacturing of a chemical for example.
-    """
-    # One of some pre-approved stage names
-    name = models.ForeignKey(LifeCycleStageName, on_delete=models.CASCADE)
-    # Parent product
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
-    def __str__(self):
-        """Method stringify life cycle stage entry object, show the name"""
-        return self.name.name
-
-    
-class Location(models.Model):
-    """Location information for LCI."""
-    # select * from products_location order by parent_id desc, geogid desc
-    geogid = models.IntegerField(primary_key=True, null=False, blank=False)
-    # Name can be something like East of Mississippi or a City/County name.
-    name = models.CharField(null=True, blank=True, max_length=63)
-    abbreviation = models.CharField(null=True, blank=True, max_length=63)
-    ewid = models.IntegerField(null=True, blank=True)
-    region_id = models.IntegerField(null=True, blank=True)
-    geo_level_id = models.IntegerField(null=True, blank=True)
-    # Parent can be either United States (in the case of states or regions)
-    # or a State/Region (in the case of Cities or Counties).
-    parent = models.ForeignKey("Location", on_delete=models.SET_NULL, null=True, blank=True)
-
-
-class ProcessName(models.Model):
-    """Process information for LCI, Name options."""
-    name = models.CharField(null=False, blank=False, max_length=63)
-
-
-class Process(models.Model):
-    """Process information for LCI, instance of a process at a location."""
-    # Parent life cycle stage
-    lifecyclestage = models.ForeignKey(LifeCycleStage, on_delete=models.CASCADE)
-    name = models.ForeignKey("ProcessName", on_delete=models.CASCADE)
-    # Location will be a one to many with the Location table, foreign key ref
-    location = models.ForeignKey("Location", on_delete=models.CASCADE)
-    # Step 3: resource/release (dropdown with static options) - is actually a child of lc_stage
-
-
-class Media(models.Model):
-    """What medium is the chemical in, Air, Water, etc."""
-    name = models.CharField(null=False, blank=False, max_length=31)
-
-
-class SubstanceType(models.Model):
-    """Fixed options for Resource/Release"""
-    # Name will be Chemical Release, Land Use, Fossil Fuel, or Water Use
-    name = models.CharField(null=False, blank=False, max_length=63)
-    # Type will be Output or Input
-    type = models.CharField(null=False, blank=False, max_length=63)
-
-
-class SubstanceTypeUnit(models.Model):
-    """
-    Cross reference for substances and units,
-    allows specification of which units can belong to which substances.
-    """
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
-    substance = models.ForeignKey(SubstanceType, on_delete=models.CASCADE)
-
-
-# All other substance types, land use, water use, fossil fuels
-class Resource(models.Model):
-    """Information for resources (inputs)."""
-    substance_type = models.ForeignKey(SubstanceType, on_delete=models.CASCADE)
-    resource_media = models.ForeignKey("Media", on_delete=models.SET_NULL, blank=True, null=True)
-    resource_quantity = models.FloatField(blank=True, null=True, default=0)
-    resource_unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
-    # Parent process reference
-    process = models.ForeignKey("Process", on_delete=models.CASCADE)
 
 
 # Substance type "Chemical Release"
@@ -124,140 +26,138 @@ class Release(models.Model):
     release_media = models.ForeignKey("Media", on_delete=models.SET_NULL, blank=True, null=True)
     # Parent process reference
     process = models.ForeignKey("Process", on_delete=models.CASCADE)
-    
     # ReleaseImpactFactor is the data from Excel tool, now stored in the following Chemical tables:
     # chemicals_chemical, chemicals_ecotox, chemicals_fossilfuel, chemicals_hhcf, chemicals_unit
 
-    def Factor(self, emission):
+    def __factor(self, emission):
         try:
             return float(emission) * self.release_quantity * ConversionFactors.ReleaseFactor(self.release_unit)
         except (ValueError, TypeError):
             return 0
 
-
     def GlobalWarmingPotential(self):
         """Calculate the GlobalWarmingPotential for this chemical release."""
-        return self.Factor(self.chemical.global_warming_air)
+        return self.__factor(self.chemical.global_warming_air)
 
     def Acidification(self):
         """Calculate the Acidification for this chemical release."""
-        return self.Factor(self.chemical.acidification_air)
+        return self.__factor(self.chemical.acidification_air)
 
     def HumanHealthCriteria(self):
         """Calculate the HumanHealthCriteria for this chemical release."""
-        return self.Factor(self.chemical.hh_particulate_air)
+        return self.__factor(self.chemical.hh_particulate_air)
 
     def EutrophicationAir(self):
         """Calculate the EutrophicationAir for this chemical release."""
-        return self.Factor(self.chemical.eutrophication_air)
+        return self.__factor(self.chemical.eutrophication_air)
 
     def EutrophicationWater(self):
         """Calculate the EutrophicationWater for this chemical release."""
-        return self.Factor(self.chemical.eutrophication_water)
+        return self.__factor(self.chemical.eutrophication_water)
 
     def OzoneDepletion(self):
         """Calculate the OzoneDepletion for this chemical release."""
-        return self.Factor(self.chemical.ozone_depletion_air)
+        return self.__factor(self.chemical.ozone_depletion_air)
 
     def SmogAir(self):
         """Calculate the SmogAir for this chemical release."""
-        return self.Factor(self.chemical.smog_air)
+        return self.__factor(self.chemical.smog_air)
 
     # Ecotox section
     # The functions in VB program don't match the data from the Excel sheet (which is in the PSQL DB).
     # Therefore, we will be focusing on the data in the Excel Sheet/PSQL DB.
     def EcotoxAirU(self):
         """Calculate the EcotoxAirU for this chemical release."""
-        return self.Factor(self.chemical.ecotox.ecotox_airu)
-    
+        return self.__factor(self.chemical.ecotox.ecotox_airu)
+
     def EcotoxAirC(self):
         """Calculate the EcotoxAirC for this chemical release."""
-        return self.Factor(self.chemical.ecotox.ecotox_airc)
-    
+        return self.__factor(self.chemical.ecotox.ecotox_airc)
+
     def EcotoxWaterC(self):
         """Calculate the EcotoxWaterC for this chemical release."""
-        return self.Factor(self.chemical.ecotox.ecotox_waterc)
-    
+        return self.__factor(self.chemical.ecotox.ecotox_waterc)
+
     def EcotoxSeaWaterC(self):
         """Calculate the EcotoxSeaWaterC for this chemical release."""
-        return self.Factor(self.chemical.ecotox.ecotox_seawaterc)
-    
+        return self.__factor(self.chemical.ecotox.ecotox_seawaterc)
+
     def EcotoxNatSoilC(self):
         """Calculate the EcotoxNatSoilC for this chemical release."""
-        return self.Factor(self.chemical.ecotox.ecotox_nat_soilc)
-    
+        return self.__factor(self.chemical.ecotox.ecotox_nat_soilc)
+
     def EcotoxAgrSoilC(self):
         """Calculate the EcotoxAgrSoilC for this chemical release."""
-        return self.Factor(self.chemical.ecotox.ecotox_agr_soilc)
+        return self.__factor(self.chemical.ecotox.ecotox_agr_soilc)
 
     # Human Health section
     # The functions in VB program don"t match the data from the Excel sheet (which is in the PSQL DB).
     # Therefore, we will be focusing on the data in the Excel Sheet/PSQL DB.
     def HumanHealthCancer(self):
         """Calculate the HumanHealthCancer for this chemical release, summing all the cancers."""
-        return self.Factor(self.chemical.hhcf.hhcf_urban_air_cancer) + \
-            self.Factor(self.chemical.hhcf.hhcf_rural_air_cancer) + \
-            self.Factor(self.chemical.hhcf.hhcf_freshwater_cancer) + \
-            self.Factor(self.chemical.hhcf.hhcf_seawater_cancer) + \
-            self.Factor(self.chemical.hhcf.hhcf_natsoil_cancer) + \
-            self.Factor(self.chemical.hhcf.hhcf_agrsoil_cancer)
+        return self.__factor(self.chemical.hhcf.hhcf_urban_air_cancer) + \
+            self.__factor(self.chemical.hhcf.hhcf_rural_air_cancer) + \
+            self.__factor(self.chemical.hhcf.hhcf_freshwater_cancer) + \
+            self.__factor(self.chemical.hhcf.hhcf_seawater_cancer) + \
+            self.__factor(self.chemical.hhcf.hhcf_natsoil_cancer) + \
+            self.__factor(self.chemical.hhcf.hhcf_agrsoil_cancer)
 
     def HumanHealthUrbanAirCancer(self):
         """Calculate the HumanHealthUrbanAirCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_urban_air_cancer)
+        return self.__factor(self.chemical.hhcf.hhcf_urban_air_cancer)
 
     def HumanHealthRuralAirCancer(self):
         """Calculate the HumanHealthRuralAirCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_rural_air_cancer)
+        return self.__factor(self.chemical.hhcf.hhcf_rural_air_cancer)
 
     def HumanHealthFreshwaterCancer(self):
         """Calculate the HumanHealthFreshwaterCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_freshwater_cancer)
+        return self.__factor(self.chemical.hhcf.hhcf_freshwater_cancer)
 
     def HumanHealthSeawaterCancer(self):
         """Calculate the HumanHealthSeawaterCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_seawater_cancer)
+        return self.__factor(self.chemical.hhcf.hhcf_seawater_cancer)
 
     def HumanHealthNativeSoilCancer(self):
         """Calculate the HumanHealthNatSoilCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_natsoil_cancer)
+        return self.__factor(self.chemical.hhcf.hhcf_natsoil_cancer)
 
     def HumanHealthAgriculturalSoilCancer(self):
         """Calculate the HumanHealthAgriculturalSoilCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_agrsoil_cancer)
-    
+        return self.__factor(self.chemical.hhcf.hhcf_agrsoil_cancer)
+
     def HumanHealthNonCancer(self):
         """Calculate the HumanHealthNonCancer for this chemical release, summing all the non-cancers."""
-        return self.Factor(self.chemical.hhcf.hhcf_urban_air_noncanc) + \
-            self.Factor(self.chemical.hhcf.hhcf_rural_air_noncanc) + \
-            self.Factor(self.chemical.hhcf.hhcf_freshwater_noncanc) + \
-            self.Factor(self.chemical.hhcf.hhcf_seawater_noncanc) + \
-            self.Factor(self.chemical.hhcf.hhcf_natsoil_noncanc) + \
-            self.Factor(self.chemical.hhcf.hhcf_agrsoil_noncanc)
+        return self.__factor(self.chemical.hhcf.hhcf_urban_air_noncanc) + \
+            self.__factor(self.chemical.hhcf.hhcf_rural_air_noncanc) + \
+            self.__factor(self.chemical.hhcf.hhcf_freshwater_noncanc) + \
+            self.__factor(self.chemical.hhcf.hhcf_seawater_noncanc) + \
+            self.__factor(self.chemical.hhcf.hhcf_natsoil_noncanc) + \
+            self.__factor(self.chemical.hhcf.hhcf_agrsoil_noncanc)
 
     def HumanHealthUrbanAirNonCancer(self):
         """Calculate the HumanHealthUrbanAirNonCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_urban_air_noncanc)
+        return self.__factor(self.chemical.hhcf.hhcf_urban_air_noncanc)
 
     def HumanHealthRuralAirNonCancer(self):
         """Calculate the HumanHealthRuralAirNonCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_rural_air_noncanc)
+        return self.__factor(self.chemical.hhcf.hhcf_rural_air_noncanc)
 
     def HumanHealthFreshwaterNonCancer(self):
         """Calculate the HumanHealthFreshwaterNonCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_freshwater_noncanc)
+        return self.__factor(self.chemical.hhcf.hhcf_freshwater_noncanc)
 
     def HumanHealthSeawaterNonCancer(self):
         """Calculate the HumanHealthSeawaterNonCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_seawater_noncanc)
+        return self.__factor(self.chemical.hhcf.hhcf_seawater_noncanc)
 
     def HumanHealthNativeSoilNonCancer(self):
         """Calculate the HumanHealthNativeSoilNonCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_natsoil_noncanc)
+        return self.__factor(self.chemical.hhcf.hhcf_natsoil_noncanc)
 
     def HumanHealthAgriculturalSoilNonCancer(self):
         """Calculate the HumanHealthAgrSoilNonCancer for this chemical release."""
-        return self.Factor(self.chemical.hhcf.hhcf_agrsoil_noncanc)
+        return self.__factor(self.chemical.hhcf.hhcf_agrsoil_noncanc)
 
     def GetImpactValue(self, impact):
         """Return the value for the given impact, summing totals in the case of ecotox or hhcf"""
@@ -277,13 +177,11 @@ class Release(models.Model):
             return self.OzoneDepletion()
         if impact == "SmogAir":
             return self.SmogAir()
-
         if impact == "EcoToxicity":
             return self.EcotoxCFagriculturalSoilCfreshwater() + self.EcotoxCFairCfreshwater() + \
                 self.EcotoxCFairUfreshwater() + self.EcotoxCFfreshWaterCfreshwater() + \
                 self.EcotoxCFfreshWaterUfreshwater() + self.EcotoxCFnativeSoilCfreshwater() + \
                 self.EcotoxCFseaWaterCfreshwater()
-
         if impact == "EcotoxCFairUfreshwater":
             return self.EcotoxCFairUfreshwater()
         if impact == "EcotoxCFairCfreshwater":
@@ -298,17 +196,14 @@ class Release(models.Model):
             return self.EcotoxCFnativeSoilCfreshwater()
         if impact == "EcotoxCFagriculturalSoilCfreshwater":
             return self.EcotoxCFagriculturalSoilCfreshwater()
-
         if impact == "HumanHealthCancer":
             return self.HumanHealthUrbanAirCancer() + self.HumanHealthSeawaterCancer() + \
                 self.HumanHealthRuralAirCancer() + self.HumanHealthNativeSoilCancer() + \
                 self.HumanHealthFreshwaterCancer() + self.HumanHealthAgriculturalSoilCancer()
-
         if impact == "HumanHealthNonCancer":
             return self.HumanHealthUrbanAirNonCancer() + self.HumanHealthSeawaterNonCancer() + \
                 self.HumanHealthRuralAirNonCancer() + self.HumanHealthNativeSoilNonCancer() + \
                 self.HumanHealthFreshwaterNonCancer() + self.HumanHealthAgriculturalSoilNonCancer()
-
         if impact == "HumanHealthUrbanAirCancer":
             return self.HumanHealthUrbanAirCancer()
         if impact == "HumanHealthUrbanAirNonCancer":

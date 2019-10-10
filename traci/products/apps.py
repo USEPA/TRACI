@@ -21,5 +21,5 @@ from django.apps import AppConfig
 
 class ProductsConfig(AppConfig):
     """Add docstring."""
-
+    
     name = 'products'

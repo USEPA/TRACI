@@ -14,8 +14,8 @@ class ConversionFactors():
     """A utility class containing methods for retrieving various factors."""
 
     # TODO Refactor the units database. It doesn't quite match the logic in the old software...
-
-    def ReleaseFactor(uom):
+    
+    def ReleaseFactor(self, uom):
         """Retrieve the conversion factor for a Release unit."""
         if uom == 'gram' or uom == 'gm':
             return 0.001
@@ -30,73 +30,73 @@ class ConversionFactors():
             return 0.45359237
         return 2000 * 0.45359237
 
-    def CoalFactor(uom):
+    def CoalFactor(self, uom):
         """Retrieve the conversion factor for a Coal unit."""
-        if uom == 'btu' or uom == 'xxxxxxx':
+        if uom == 'btu':
             return 0.0010545
-        if uom == 'kilogram' or uom == 'kg':
+        if uom in ('kilogram', 'kg'):
             return 24900
-        if uom == 'megajoule' or uom == 'xxxxxxx':
+        if uom == 'megajoule':
             return 1.0
-        if uom == 'millionBTU' or uom == 'xxxxxxx':
+        if uom == 'millionBTU':
             return 1054.5
-        if uom == 'pound' or uom == 'lb':
+        if uom in ('pound', 'lb'):
             return 11300
         return 22600000
 
-    def OilFactor(uom):
+    def OilFactor(self, uom):
         """Retrieve the conversion factor for an Oil unit."""
         if uom == 'btu' or uom == 'xxxxxxx':
             return 0.0010545
-        if uom == 'kilogram' or uom == 'kg':
+        if uom in ('kilogram', 'kg'):
             return 0.0000000461525620459621 # 41.868e3 MJ/ton  / 907.18474 kg/ton;
-        if uom == 'megajoule' or uom == 'xxxxxxx':
+        if uom == 'megajoule':
             return 1.0
-        if uom == 'millionBTU' or uom == 'xxxxxxx':
+        if uom == 'millionBTU':
             return 1054.5
-        if uom == 'pound' or uom == 'lb':
+        if uom in ('pound', 'lb'):
             return 11300
         return 41868
 
-    def NaturalGasFactor(uom):
+    def NaturalGasFactor(self, uom):
         """Retrieve the conversion factor for a NaturalGas unit."""
-        if uom == 'btu' or uom == 'xxxxxxx':
+        if uom == 'btu':
             return 0.0010545
-        if uom == 'cubicmeter' or uom == 'M3':
+        if uom in('cubicmeter', 'M3'):
             return 38.1
         if uom == 'hundredcubicfeet':
             return 105505585.262
         # Derived from previous UOM
-        if uom == 'CF' or uom == 'scf' or uom == 'Cu Ft':
+        if uom in ('CF', 'scf', 'Cu Ft'):
             return 1055055.85262
-        if uom == 'kilogram' or uom == 'kg':
+        if uom in ('kilogram', 'kg'):
             return 49
-        if uom == 'megajoule' or uom == 'xxxxxxx':
+        if uom == 'megajoule':
             return 1.0
-        if uom == 'millionBTU' or uom == 'xxxxxxx':
+        if uom == 'millionBTU':
             return 1054.5
-        if uom == 'pound' or uom == 'lb':
+        if uom in ('pound', 'lb'):
             return 49 * 0.45359237
-        if uom == 'thousandcubicfeet' or uom == 'xxxxxxx':
+        if uom == 'thousandcubicfeet':
             return 1055055852.62
         return 105.4804
 
-    def LandUseFactor(uom):
+    def LandUseFactor(self, uom):
         """Retrieve the conversion factor for a LandUse unit."""
-        if uom == 'acre' or uom == 'Acres':
+        if uom in ('acre', 'Acres'):
             return 0.0015625
-        if uom == 'hectare' or uom == 'xxxxxxx':
+        if uom == 'hectare':
             return 0.00386102
-        if uom == 'squarefoot' or uom == 'SQ.Ft':
+        if uom in ('squarefoot', 'SQ.Ft'):
             return .00000003587
-        if uom == 'squarekilometer' or uom == 'SQ.Km':
+        if uom in ('squarekilometer', 'SQ.Km'):
             return 0.386102
         return 1
 
-    def WaterUseFactor(uom):
+    def WaterUseFactor(self, uom):
         """Retrieve the conversion factor for a WaterUse unit."""
-        if uom == 'gallon' or uom == 'GAL':
+        if uom in ('gallon', 'GAL'):
             return 1.0
-        if uom == 'liter' or uom == 'L':
+        if uom in ('liter', 'L'):
             return 0.2642
         return 1000000

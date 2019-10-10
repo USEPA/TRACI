@@ -6,7 +6,7 @@
 
 """Definition of forms."""
 
-from django.forms import ModelForm, CharField, FloatField, TextInput, Textarea, ChoiceField, Select
+from django.forms import ModelForm, CharField, TextInput, Textarea, ChoiceField, Select
 from django.utils.translation import ugettext_lazy as _
 from constants.models import TRACI_SCOPE_OPTIONS
 from projects.models import Project
@@ -49,7 +49,6 @@ class ProjectForm(ModelForm):
         widget=TextInput({'class': 'form-control mb-2', 'placeholder': '(###) ###-####'}),
         label=_("Phone Number"), required=True)
     # scope - dropdown
-    # TODO: CHOICES
     scope = ChoiceField(
         choices=TRACI_SCOPE_OPTIONS,
         widget=Select({'class': 'form-control mb-2',}),
