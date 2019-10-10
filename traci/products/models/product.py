@@ -15,7 +15,7 @@ Available models:
 """
 
 from django.db import models
-from chemicals.models import Unit
+from chemicals.models import FossilFuel, Unit
 from projects.models import Project
 
 
@@ -101,10 +101,24 @@ class SubstanceTypeUnit(models.Model):
     substance = models.ForeignKey(SubstanceType, on_delete=models.CASCADE)
 
 
+class LandUse(models.Model):
+    """Model containing available land uses."""
+    name = models.CharField(null=False, blank=False, max_length=63)
+
+
+class WaterUse(models.Model):
+    """Model containing available water uses."""
+    name = models.CharField(null=False, blank=False, max_length=63)
+
+
 # All other substance types, land use, water use, fossil fuels
 class Resource(models.Model):
     """Information for resources (inputs)."""
     substance_type = models.ForeignKey(SubstanceType, on_delete=models.CASCADE)
+    # Depending on the substance type, one of the three options will be populated:
+    fossil_fuel = models.ForeignKey(FossilFuel, null=True, on_delete=models.SET_NULL)
+    water_use = models.ForeignKey(WaterUse, null=True, on_delete=models.SET_NULL)
+    land_use = models.ForeignKey(LandUse, null=True, on_delete=models.SET_NULL)
     resource_media = models.ForeignKey("Media", on_delete=models.SET_NULL, blank=True, null=True)
     resource_quantity = models.FloatField(blank=True, null=True, default=0)
     resource_unit = models.ForeignKey(Unit, on_delete=models.CASCADE)

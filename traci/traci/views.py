@@ -7,7 +7,6 @@
 
 from datetime import datetime
 from os.path import join
-import json
 import subprocess
 import requests
 from django.contrib.auth.decorators import login_required
@@ -104,10 +103,7 @@ class ScenarioView(TemplateView):
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         """Process the data from a Scenario and run calculations."""
-        # TODO
-        chemicals = request.POST.get('chemicals', )
         return HttpResponse("Success!!")
-        #return render(request, "scenario.html", ctx)
 
 
 def citation(request):

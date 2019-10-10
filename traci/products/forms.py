@@ -31,7 +31,7 @@ class ProductForm(ModelForm):
                                required=True, label=_("Parent Project"),
                                widget=TextInput(attrs={'class': 'form-control mb-2',
                                                        'readonly':'readonly'}))
-    
+
     class Meta:
         """Meta data for Product form."""
 
@@ -49,11 +49,11 @@ class LifeCycleStageForm(ModelForm):
                             initial=0, required=True,
                             label=_("Life Cycle Stage Type"),
                             widget=Select(attrs={'class': 'form-control mb-2'}))
-    
+
     product = ModelChoiceField(queryset=Product.objects.all(), initial=0, required=True,
                                widget=TextInput(attrs={'class': 'form-control mb-2',
                                                        'readonly':'readonly'}))
-    
+
     def __init__(self, *args, **kwargs):
         """This method is used to display a custom name, obj.name, instead of the stringified object view"""
         super(LifeCycleStageForm, self).__init__(*args, **kwargs)
@@ -110,7 +110,7 @@ class SubstanceTypeForm(ModelForm):
     substance_type = ModelChoiceField(queryset=SubstanceType.objects.all(), initial=0, required=True,
                                       label=_("Substance Type"),
                                       widget=Select(attrs={'class': 'form-control mb-2'}))
-    
+
     def __init__(self, *args, **kwargs):
         """
         This method is used to display a custom name, obj.name, instead of the stringified object view.
