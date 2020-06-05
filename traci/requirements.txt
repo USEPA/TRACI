@@ -11,7 +11,7 @@
 # All of these packages appear to be necessary for both Windows and Linux environments. #
 #---------------------------------------------------------------------------------------#
 
-astroid==2.3.3                  # Currently the library powering pylint’s capabilities.
+astroid==2.3.3                  # Currently the library powering pylintâ€™s capabilities.
 atomicwrites==1.3.0             # Simple high-level API that wraps a very flexible class-based API.
 attrs==19.3.0                   # Class decorator and a way to declaratively define the attributes on that class.
 autopep8==1.4.4                 # Automatically formats Python code to conform to the PEP 8 style guide.
@@ -20,7 +20,7 @@ chardet==3.0.4                  # Universal encoding detector for Python 2 and 3
 colorama==0.4.1                 # Cross-platform colored terminal text.
 coverage==4.5.4                 # Measures code coverage, typically during test execution.
 django-session-security==2.6.5  # Provides a mechanism to logout inactive authenticated users.
-Django==2.2.7                   # Python Modules.
+Django==2.2.13                   # Python Modules.
 djangorestframework==3.10.3     # Powerful and flexible toolkit for building Web APIs.
 entrypoints==0.3                # Python packages to advertise objects with some common interface.
 et-xmlfile==1.0.1               # An implementation of lxml.xmlfile for the standard library.
