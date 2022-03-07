@@ -136,13 +136,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'America/New_York'
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 if os.name == 'nt':
@@ -159,6 +155,10 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
 STATIC_ROOT = os.path.join(BASE_DIR, 'traci', 'static')
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# TODO: Change this on server once published:
+DEFAULT_FROM_EMAIL = '__DEFAULT_FROM_EMAIL__'
 
 ########################################################################
 DOWNLOADS_DIR = os.path.join("..", "DOCS")
