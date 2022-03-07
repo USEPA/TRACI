@@ -106,8 +106,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'traci',
-        'USER': 'dyoung11',
-        'PASSWORD': '***REMOVED***',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '5432'
     }
@@ -168,6 +168,9 @@ EXCEL_TOOL_NAME = 'TRACI_2_1_2017_April_24.xlsx'
 # TODO add TRACI Citation:
 CITATION = ''
 CITE_SCRIPT = 'cite.' + SCRIPT_EXT
+
+# TODO: Change this on hosted server:
+DEFAULT_FROM_EMAIL = '__DEFAULT_FROM_EMAIL__'
 
 APP_NAME = 'TRACI'
 APP_NAME_SHORT = 'TRACI'
