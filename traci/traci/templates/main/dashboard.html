@@ -141,7 +141,7 @@
         <!-- Will need to get with Jake on how to add the inventory here from TRACI workbook -->
         <div class="tab-pane fade {% if open_tab == 'Inventory of Stressors' %}active{% endif %} in" id="stressors">
             <div class="padding10">
-            {% load staticfiles %}
+            {% load static %}
              <img src="{% static 'img/traci.png' %}" alt="TRACI">
         <!-- Add stressors here from TRACI tool -->
 
@@ -151,7 +151,7 @@
 {% endblock %}
 
 {% block scripts %}
-    {% load staticfiles %}
+    {% load static %}
     <script>
         $(document).ready( function () {
             $('[data-toggle="popover"]').popover({ html: true });

@@ -136,13 +136,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'America/New_York'
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 if os.name == 'nt':
@@ -168,6 +164,8 @@ EXCEL_TOOL_NAME = 'TRACI_2_1_2017_April_24.xlsx'
 # TODO add TRACI Citation:
 CITATION = ''
 CITE_SCRIPT = 'cite.' + SCRIPT_EXT
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # TODO: Change this on hosted server:
 DEFAULT_FROM_EMAIL = '__DEFAULT_FROM_EMAIL__'
