@@ -57,13 +57,13 @@
                         <tr><td>&nbsp;</td></tr>
                         <tr><td>Disclaimer</td></tr>
                         <tr><td>
-                            Use of TRACI, including but not limited to the impact assessment modeling, 
-                            does not create regulatory or scientific approval by the US EPA on any issues to 
-                            which it is applied, nor does it release any users from any potential liability, 
-                            either administratively or judicially, for any damage to human health or the environment.  
-                            The US EPA does not make any warranty concerning the correctness of the database, any 
-                            actions taken by third parties as a result of using the model, or the merchantability 
-                            or fitness for a particular purpose of the model.  The EPA does not endorse 
+                            Use of TRACI, including but not limited to the impact assessment modeling,
+                            does not create regulatory or scientific approval by the US EPA on any issues to
+                            which it is applied, nor does it release any users from any potential liability,
+                            either administratively or judicially, for any damage to human health or the environment.
+                            The US EPA does not make any warranty concerning the correctness of the database, any
+                            actions taken by third parties as a result of using the model, or the merchantability
+                            or fitness for a particular purpose of the model.  The EPA does not endorse
                             any products or services.
                         </td></tr>
                     </tbody>
@@ -72,7 +72,7 @@
                 <a href="/projects/projects/"><span class="btn btn-info">Enter / Edit LCI Data</span></a>
             </div>
         </div>
-        
+
         <!-- Add scenario .xlxs file to open here -->
 
         <!-- List of teams tab -->
@@ -141,7 +141,7 @@
         <!-- Will need to get with Jake on how to add the inventory here from TRACI workbook -->
         <div class="tab-pane fade {% if open_tab == 'Inventory of Stressors' %}active{% endif %} in" id="stressors">
             <div class="padding10">
-            {% load staticfiles %}
+            {% load static %}
              <img src="{% static 'img/traci.png' %}" alt="TRACI">
         <!-- Add stressors here from TRACI tool -->
 
@@ -151,7 +151,7 @@
 {% endblock %}
 
 {% block scripts %}
-    {% load staticfiles %}
+    {% load static %}
     <script>
         $(document).ready( function () {
             $('[data-toggle="popover"]').popover({ html: true });
