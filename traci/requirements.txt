@@ -11,17 +11,10 @@
 # All of these packages appear to be necessary for both Windows and Linux environments. #
 #---------------------------------------------------------------------------------------#
 
-astroid==2.3.3                  # Currently the library powering pylint’s capabilities.
-atomicwrites==1.3.0             # Simple high-level API that wraps a very flexible class-based API.
-attrs==19.3.0                   # Class decorator and a way to declaratively define the attributes on that class.
-autopep8==1.4.4                 # Automatically formats Python code to conform to the PEP 8 style guide.
-certifi==2019.9.11              # Collection of Root Certificates for validating trustworthiness of SSL certificates while verifying identity TLS hosts.
-chardet==3.0.4                  # Universal encoding detector for Python 2 and 3.
-colorama==0.4.1                 # Cross-platform colored terminal text.
-coverage==4.5.4                 # Measures code coverage, typically during test execution.
-django-session-security==2.6.5  # Provides a mechanism to logout inactive authenticated users.
-Django==2.2.7                   # Python Modules.
-djangorestframework==3.10.3     # Powerful and flexible toolkit for building Web APIs.
+coverage==5.5.                  # Measures code coverage, typically during test execution.
+django-session-security==2.6.6  # Provides a mechanism to logout inactive authenticated users.
+Django==3.2.12                  # Python Modules.
+djangorestframework==3.12.4     # Powerful and flexible toolkit for building Web APIs.
 entrypoints==0.3                # Python packages to advertise objects with some common interface.
 et-xmlfile==1.0.1               # An implementation of lxml.xmlfile for the standard library.
 flake8==3.7.9                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder's McCabe script.
