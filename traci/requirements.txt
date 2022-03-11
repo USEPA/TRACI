@@ -11,13 +11,10 @@
 # All of these packages appear to be necessary for both Windows and Linux environments. #
 #---------------------------------------------------------------------------------------#
 
-coverage==5.5                   # Measures code coverage, typically during test execution.
+coverage==5.5.                  # Measures code coverage, typically during test execution.
+django-session-security==2.6.6  # Provides a mechanism to logout inactive authenticated users.
 Django==3.2.12                  # Python Modules.
-django-docs>=0.3.1              # Allows to serve Sphinx generated docs directly from Django.
-django-filter>=2.4.0            # Reusable Django application allows users to filter querysets dynamically.
-django-grappelli>=2.15          # A jazzy skin for the Django Admin-Interface.
-django-session-security>=2.6.6  # Provides a mechanism to logout inactive authenticated users.
-djangorestframework>=3.12.4       # Powerful and flexible toolkit for building Web APIs.
+djangorestframework==3.12.4     # Powerful and flexible toolkit for building Web APIs.
 entrypoints==0.3                # Python packages to advertise objects with some common interface.
 et-xmlfile==1.0.1               # An implementation of lxml.xmlfile for the standard library.
 flake8==3.7.9                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder's McCabe script.
