@@ -88,7 +88,7 @@ class DashboardView(TemplateView):
         teams_data = requests.get(api_domain + '/teams/api/team/', headers=headers)
         ctx['teams'] = teams_data.json()
 
-        return render(request, 'main/dashboard.html', ctx)
+        return render(request, self.template_name, ctx)
 
 
 class ScenarioView(TemplateView):
