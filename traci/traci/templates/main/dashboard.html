@@ -2,28 +2,21 @@
 {% load humanize %}
 {% block content %}
 <div class="white-box">
-    <h2 class="vmargin10">
-        {% if request.user.first_name %}{{request.user.first_name}}{% else %}{{request.user.username}}{% endif %}'s
-        Dashboard
-    </h2>
-    <div>
-        <p>
-            Details here
-        </p>
-    </div>
+    <h2>{{layout_name}}</h2>
+    <!-- <div><p>Details here</p></div> -->
 
     <!-- tab navigation -->
     <ul class="nav nav-tabs">
         <li>
             <li class="{% if open_tab == 'scenario' %}active{% endif %}">
-            <a href="#scenario" data-toggle="tab">Scenario</a>
+            <a href="#scenario" data-toggle="tab" onclick="updateActive(this)">Scenario</a>
         </li>
         <li class="{% if open_tab != 'scenario' and open_tab != 'stressors' %}active{% endif %}">
-            <a href="#teams" data-toggle="tab">Teams</a>
+            <a href="#teams" data-toggle="tab" onclick="updateActive(this)">Teams</a>
         </li>
         <li>
             <li class="{% if open_tab == 'stressors' %}active{% endif %}">
-            <a href="#stressors" data-toggle="tab">Inventory of Stressors</a>
+            <a href="#stressors" data-toggle="tab" onclick="updateActive(this)">Inventory of Stressors</a>
         </li>
     </ul>
 
@@ -31,46 +24,26 @@
         <!-- Scenario tab -->
         <!-- Need Jake to add the excel workbook to this page open and edit save -->
         <div class="tab-pane fade {% if open_tab == 'scenario' %}active{% endif %} in" id="scenario">
-            <div class="padding10">
-                <style type="text/css">
-                    table.tableizer-table {
-                        font-size: 12px;
-                        border: 1px solid #CCC;
-                        font-family: Arial, Helvetica, sans-serif;
-                    }
-                    .tableizer-table td {
-                        padding: 4px;
-                        margin: 3px;
-                        border: 1px solid #CCC;
-                    }
-                    .tableizer-table th {
-                        background-color: #104E8B;
-                        color: #FFF;
-                        font-weight: bold;
-                    }
-                </style>
-                <table class="tableizer-table">
-                    <thead><tr class="tableizer-firstrow"><th>TRACI 2.1</th></tr></thead>
-                    <tbody>
-                        <tr><td>Tool for the Reduction and Assessment of Chemical and other environmental Impacts 2.1</td></tr>
-                        <tr><td>Available from: the US EPA, Office of Research and Development</td></tr>
-                        <tr><td>&nbsp;</td></tr>
-                        <tr><td>Disclaimer</td></tr>
-                        <tr><td>
-                            Use of TRACI, including but not limited to the impact assessment modeling,
-                            does not create regulatory or scientific approval by the US EPA on any issues to
-                            which it is applied, nor does it release any users from any potential liability,
-                            either administratively or judicially, for any damage to human health or the environment.
-                            The US EPA does not make any warranty concerning the correctness of the database, any
-                            actions taken by third parties as a result of using the model, or the merchantability
-                            or fitness for a particular purpose of the model.  The EPA does not endorse
-                            any products or services.
-                        </td></tr>
-                    </tbody>
-                </table>
-                <a href="/scenario/"><span class="btn btn-info">Run a Scenario</span></a>
-                <a href="/projects/projects/"><span class="btn btn-info">Enter / Edit LCI Data</span></a>
-            </div>
+            <table class="table">
+                <thead><tr><th>TRACI 2.1</th></tr></thead>
+                <tbody>
+                    <tr><td>Tool for the Reduction and Assessment of Chemical and other environmental Impacts 2.1</td></tr>
+                    <tr><td>Available from: the US EPA, Office of Research and Development</td></tr>
+                    <tr><th>Disclaimer</th></tr>
+                    <tr><td>
+                        Use of TRACI, including but not limited to the impact assessment modeling,
+                        does not create regulatory or scientific approval by the US EPA on any issues to
+                        which it is applied, nor does it release any users from any potential liability,
+                        either administratively or judicially, for any damage to human health or the environment.
+                        The US EPA does not make any warranty concerning the correctness of the database, any
+                        actions taken by third parties as a result of using the model, or the merchantability
+                        or fitness for a particular purpose of the model.  The EPA does not endorse
+                        any products or services.
+                    </td></tr>
+                </tbody>
+            </table>
+            <a href="/scenario/"><span class="btn btn-info">Run a Scenario</span></a>
+            <a href="/projects/projects/"><span class="btn btn-info">Enter / Edit LCI Data</span></a>
         </div>
 
         <!-- Add scenario .xlxs file to open here -->
@@ -141,11 +114,10 @@
         <!-- Will need to get with Jake on how to add the inventory here from TRACI workbook -->
         <div class="tab-pane fade {% if open_tab == 'Inventory of Stressors' %}active{% endif %} in" id="stressors">
             <div class="padding10">
-            {% load static %}
-             <img src="{% static 'img/traci.png' %}" alt="TRACI">
-        <!-- Add stressors here from TRACI tool -->
-
-    </div>
+                {% load static %}
+                <img src="{% static 'img/traci.png' %}" alt="TRACI">
+                <!-- Add stressors here from TRACI tool -->
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -156,5 +128,12 @@
         $(document).ready( function () {
             $('[data-toggle="popover"]').popover({ html: true });
         } );
+
+        function updateActive(e) {
+            $('li').each(function(i){
+                $(this).removeClass('active');
+            });
+            e.parentElement.classList.add('active');
+        }
     </script>
 {% endblock %}
