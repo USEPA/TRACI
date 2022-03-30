@@ -144,15 +144,6 @@ class SubstanceTypeForm(ModelForm):
         label=_("Substance Type"),
         widget=Select(attrs={'class': 'form-control mb-2'}))
 
-    def __init__(self, *args, **kwargs):
-        """
-        This method is used to display a custom name, obj.name,
-        instead of the stringified object view.
-        """
-        super(SubstanceTypeForm, self).__init__(*args, **kwargs)
-        self.fields[
-            'substance_type'].label_from_instance = lambda obj: "%s" % obj.name
-
     class Meta:
         """Meta data for SubstanceType form."""
 
