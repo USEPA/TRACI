@@ -98,6 +98,9 @@ class SubstanceType(models.Model):
     # Type will be Output or Input
     type = models.CharField(null=False, blank=False, max_length=63)
 
+    def __str__(self):
+        return self.name
+
 
 class SubstanceTypeUnit(models.Model):
     """
@@ -130,7 +133,7 @@ class Resource(models.Model):
                                   null=True,
                                   on_delete=models.SET_NULL)
     land_use = models.ForeignKey(LandUse, null=True, on_delete=models.SET_NULL)
-    resource_media = models.ForeignKey("Media",
+    resource_media = models.ForeignKey(Media,
                                        on_delete=models.SET_NULL,
                                        blank=True,
                                        null=True)
