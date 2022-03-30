@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Views for managing user accounts and profiles.
 
@@ -94,11 +93,11 @@ class UsernameReminderRequestView(FormView):
                             'user': user,
                             'protocol': 'http'
                         }
-                        subject_template_name = 'registration/username_reminder_subject.txt'
-                        # Copied from django/contrib/admin/templates/registration/password_reset_subject.txt
+                        subject_template_name = \
+                            'registration/username_reminder_subject.txt'
                         # to templates directory.
-                        email_template_name = 'registration/username_reminder_email.html'
-                        # Copied from django/contrib/admin/templates/registration/password_reset_email.html
+                        email_template_name = \
+                            'registration/username_reminder_email.html'
                         # to templates directory.
                         subject = loader.render_to_string(
                             subject_template_name, content)
@@ -106,16 +105,18 @@ class UsernameReminderRequestView(FormView):
                         subject = ''.join(subject.splitlines())
                         email = loader.render_to_string(
                             email_template_name, content)
-                        send_mail(subject, email, settings.DEFAULT_FROM_EMAIL,
-                                  [user.email], fail_silently=True)
+                        send_mail(subject,
+                                  email,
+                                  settings.DEFAULT_FROM_EMAIL, [user.email],
+                                  fail_silently=True)
                     # Render the done page.
                     return render(request,
                                   'registration/username_reminder_done.html',
                                   locals())
 
                 result = self.form_invalid(form)
-                messages.error(request,
-                               'No user is associated with this email address')
+                messages.error(
+                    request, 'No user is associated with this email address')
                 return result
 
             # Email is not valid.
@@ -166,9 +167,9 @@ class PasswordResetRequestView(FormView):
                 temp_data = form.cleaned_data["email_or_username"]
             else:
                 result = self.form_invalid(form)
-                messages.error(request,
-                               'Please enter a valid email address or '
-                               'username')
+                messages.error(
+                    request, 'Please enter a valid email address or '
+                    'username')
                 return result
 
             # Determine if the email address or username matches an account.
@@ -178,17 +179,17 @@ class PasswordResetRequestView(FormView):
                     Q(email=temp_data) | Q(username=temp_data))
                 if associated_users.exists() is False:
                     result = self.form_invalid(form)
-                    messages.error(request,
-                                   'No user is associated with this email '
-                                   'address')
+                    messages.error(
+                        request, 'No user is associated with this email '
+                        'address')
                     return result
             else:
                 associated_users = User.objects.filter(username=temp_data)
                 if associated_users.exists() is False:
                     result = self.form_invalid(form)
-                    messages.error(request,
-                                   'This username does not exist in the '
-                                   'system.')
+                    messages.error(
+                        request, 'This username does not exist in the '
+                        'system.')
                     return result
 
             # Send an email to the user with a password reset token.
@@ -206,14 +207,16 @@ class PasswordResetRequestView(FormView):
                     'registration/password_reset_subject.txt'
                 email_template_name = 'registration/password_reset_email.html'
 
-                subject = loader.render_to_string(
-                    subject_template_name, content)
+                subject = loader.render_to_string(subject_template_name,
+                                                  content)
                 # Email subject *must not* contain newlines.
                 subject = ''.join(subject.splitlines())
                 email = loader.render_to_string(email_template_name, content)
 
-                send_mail(subject, email, settings.DEFAULT_FROM_EMAIL,
-                          [user.email], fail_silently=True)
+                send_mail(subject,
+                          email,
+                          settings.DEFAULT_FROM_EMAIL, [user.email],
+                          fail_silently=True)
 
             # Render the done page.
             return render(request,
@@ -240,7 +243,9 @@ class PasswordResetConfirmView(FormView):
         """Responds to link from password reset email."""
         form = self.form_class(None)
         if uidb64 is None or token is None:
-            return render(request, 'registration/password_reset_confirm_no_token.html', {'form': form})
+            return render(request,
+                          'registration/password_reset_confirm_no_token.html',
+                          {'form': form})
         usermodel = get_user_model()
 
         try:
@@ -249,14 +254,24 @@ class PasswordResetConfirmView(FormView):
         except (TypeError, ValueError, OverflowError, usermodel.DoesNotExist):
             user = None
 
-        if user is None or default_token_generator.check_token(user, token) is False:
-            return render(request, 'registration/password_reset_confirm_no_token.html',
-                          {'form': form, 'usermodel': usermodel, 'uid': uid})
+        if user is None or default_token_generator.check_token(user,
+                                                               token) is False:
+            return render(request,
+                          'registration/password_reset_confirm_no_token.html',
+                          {
+                              'form': form,
+                              'usermodel': usermodel,
+                              'uid': uid
+                          })
 
-        return render(request, 'registration/password_reset.html',
-                      {'form': form, 'usermodel': usermodel, 'uid': uid, 'user': user})
+        return render(request, 'registration/password_reset.html', {
+            'form': form,
+            'usermodel': usermodel,
+            'uid': uid,
+            'user': user
+        })
 
-    def post(self, request, uidb64=None, token=None, *arg, **kwargs):  # pylint: disable=keyword-arg-before-vararg
+    def post(self, request, uidb64=None, token=None, *arg, **kwargs):
         """
         :param request:
         :param uidb64:
@@ -274,14 +289,15 @@ class PasswordResetConfirmView(FormView):
             user = usermodel._default_manager.get(pk=uid)
         except (TypeError, ValueError, OverflowError, usermodel.DoesNotExist):
             user = None
-        if user is not None and default_token_generator.check_token(user,
-                                                                    token):
+        if user is not None and default_token_generator.check_token(
+                user, token):
             if form.is_valid():
                 new_password = form.cleaned_data['new_password2']
                 user.set_password(new_password)
                 user.save()
 
-                return render(request, 'registration/password_reset_done.html', locals())
+                return render(request, 'registration/password_reset_done.html',
+                              locals())
 
             messages.error(
                 request, 'Password reset was unsuccessful. Please try again')
@@ -317,8 +333,11 @@ class ProfileView(FormView):
         # If password info changed, make sure current password is correct.
         success = True
 
-        return render(request, 'main/profile.html',
-                      {'user': user, 'form': form, 'success': success})
+        return render(request, 'main/profile.html', {
+            'user': user,
+            'form': form,
+            'success': success
+        })
 
 
 class UserRegistrationView(FormView):
@@ -332,10 +351,13 @@ class UserRegistrationView(FormView):
 
     template_register = "registration/register.html"
     # email and subject line for the message sent to the app admins
-    admin_subject_template_name = 'registration/register_request_admin_subject.txt'
-    admin_email_template_name = 'registration/register_request_admin_email.html'
+    admin_subject_template_name = \
+        'registration/register_request_admin_subject.txt'
+    admin_email_template_name = \
+        'registration/register_request_admin_email.html'
     # email and subject line for the message sent to the potential app user
-    user_subject_template_name = 'registration/register_request_user_subject.txt'
+    user_subject_template_name = \
+        'registration/register_request_user_subject.txt'
     user_email_template_name = 'registration/register_request_user_email.html'
     form_class = ProfileCreationForm
 
@@ -376,32 +398,38 @@ class UserRegistrationView(FormView):
                 'country': country,
                 'protocol': 'http',
             }
-            subject = loader.render_to_string(
-                self.admin_subject_template_name, request_email_context)
+            subject = loader.render_to_string(self.admin_subject_template_name,
+                                              request_email_context)
             # Email subject *must not* contain newlines
             subject = ''.join(subject.splitlines())
-            email = loader.render_to_string(
-                self.admin_email_template_name, request_email_context)
+            email = loader.render_to_string(self.admin_email_template_name,
+                                            request_email_context)
             # this is driven by local_settings.py
-            send_mail(subject, email, settings.DEFAULT_FROM_EMAIL,
-                      settings.USER_APPROVAL_EMAIL, fail_silently=False)
+            send_mail(subject,
+                      email,
+                      settings.DEFAULT_FROM_EMAIL,
+                      settings.USER_APPROVAL_EMAIL,
+                      fail_silently=False)
 
-            # send an email to the user notifying them that the account request is under review
+            # send an email to the user notifying them that
+            # the account request is under review
             user_email_context = {
                 'APP_NAME': settings.APP_NAME,
                 'email': user.email
             }
-            subject = loader.render_to_string(
-                self.user_subject_template_name, user_email_context)
+            subject = loader.render_to_string(self.user_subject_template_name,
+                                              user_email_context)
             # Email subject *must not* contain newlines
             subject = ''.join(subject.splitlines())
-            email = loader.render_to_string(
-                self.user_email_template_name, user_email_context)
-            send_mail(subject, email, settings.DEFAULT_FROM_EMAIL,
-                      [user.email], fail_silently=False)
+            email = loader.render_to_string(self.user_email_template_name,
+                                            user_email_context)
+            send_mail(subject,
+                      email,
+                      settings.DEFAULT_FROM_EMAIL, [user.email],
+                      fail_silently=False)
 
             # render the activation needed template
-            return render(request, self.template_register_inactive, locals())  # pylint: disable=no-member
+            return render(request, self.template_register_inactive, locals())
         return render(request, self.template_register, locals())
 
 
@@ -444,14 +472,16 @@ class UserApprovalView(TemplateView):
                 'domain': request.META['HTTP_HOST']
             }
 
-            subject = loader.render_to_string(
-                self.subject_template_name, user_email_context)
+            subject = loader.render_to_string(self.subject_template_name,
+                                              user_email_context)
             # Email subject *must not* contain newlines
             subject = ''.join(subject.splitlines())
-            email = loader.render_to_string(
-                self.email_template_name, user_email_context)
-            send_mail(subject, email, settings.DEFAULT_FROM_EMAIL,
-                      [user.email], fail_silently=False)
+            email = loader.render_to_string(self.email_template_name,
+                                            user_email_context)
+            send_mail(subject,
+                      email,
+                      settings.DEFAULT_FROM_EMAIL, [user.email],
+                      fail_silently=False)
 
         except (TypeError, ValueError, OverflowError, user_model.DoesNotExist):
             user = None
@@ -466,8 +496,8 @@ class UserDenialView(TemplateView):
     View for starting the password reset process.
 
     This view renders the form to enter a username or email address.
-    Upon successful entry of a user/email, an email is sent with password reset instructions
-    and a confirmation message displayed.
+    Upon successful entry of a user/email, an email is sent with
+    password reset instructions and a confirmation message displayed.
     """
 
     template_name = "registration/register_denied.html"
@@ -495,13 +525,15 @@ class UserDenialView(TemplateView):
                 'APP_NAME': settings.APP_NAME,
                 'username': username,
             }
-            subject = loader.render_to_string(
-                self.subject_template_name, context)
+            subject = loader.render_to_string(self.subject_template_name,
+                                              context)
             # Email subject *must not* contain newlines
             subject = ''.join(subject.splitlines())
             email = loader.render_to_string(self.email_template_name, context)
-            send_mail(subject, email, settings.DEFAULT_FROM_EMAIL,
-                      [user.email], fail_silently=False)
+            send_mail(subject,
+                      email,
+                      settings.DEFAULT_FROM_EMAIL, [user.email],
+                      fail_silently=False)
 
             # delete the account
             user.delete()
@@ -526,7 +558,9 @@ class UserActivationView(TemplateView):
     def get(self, request, uidb64=None, token=None):
         """Activate a user, given a valid token in the url."""
         if uidb64 is None or token is None:
-            return render(request, 'registration/register_activate_no_token.html', locals())
+            return render(request,
+                          'registration/register_activate_no_token.html',
+                          locals())
 
         usermodel = get_user_model()
         try:
@@ -538,8 +572,11 @@ class UserActivationView(TemplateView):
         except (TypeError, ValueError, OverflowError, usermodel.DoesNotExist):
             user = None
 
-        if user is None or default_token_generator.check_token(user, token) is False:
-            return render(request, 'registration/register_activate_no_token.html', locals())
+        if user is None or default_token_generator.check_token(user,
+                                                               token) is False:
+            return render(request,
+                          'registration/register_activate_no_token.html',
+                          locals())
 
         return render(request, self.template_name, locals())
 
@@ -547,8 +584,12 @@ class UserActivationView(TemplateView):
 @sensitive_post_parameters()
 @csrf_protect
 @never_cache
-def login(request, template_name='registration/login.html', redirect_field_name=REDIRECT_FIELD_NAME,
-          authentication_form=AuthenticationForm, current_app=None, extra_context=None):
+def login(request,
+          template_name='registration/login.html',
+          redirect_field_name=REDIRECT_FIELD_NAME,
+          authentication_form=AuthenticationForm,
+          current_app=None,
+          extra_context=None):
     """Displays the login form and handles the login action."""
     redirect_to = request.GET.get(redirect_field_name, )
 
@@ -562,8 +603,8 @@ def login(request, template_name='registration/login.html', redirect_field_name=
             form = ProfileCreationForm(
                 initial={
                     'username': request.POST['username'],
-                    'password1': request.POST['password']}
-            )
+                    'password1': request.POST['password']
+                })
             return render(request, "registration/register.html", locals())
 
         # Otherwise, assume the user is trying to login.
@@ -609,8 +650,12 @@ def login(request, template_name='registration/login.html', redirect_field_name=
     return TemplateResponse(request, template_name, context)
 
 
-def logout(request, next_page=None, template_name='registration/logout.html',
-           redirect_field_name=REDIRECT_FIELD_NAME, current_app=None, extra_context=None):
+def logout(request,
+           next_page=None,
+           template_name='registration/logout.html',
+           redirect_field_name=REDIRECT_FIELD_NAME,
+           current_app=None,
+           extra_context=None):
     """Logs out the user and displays 'You are logged out' message."""
     auth_logout(request)
     redirect_to = request.GET.get(redirect_field_name, )

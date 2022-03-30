@@ -4,7 +4,6 @@
 # young.daniel@epa.gov
 # pylint: disable=invalid-name
 # We disable the invalid name because urlpatterns is the Django default
-
 """
 URLs related to managing teams of users.
 

@@ -4,7 +4,6 @@
 # young.daniel@epa.gov
 # pylint: disable=invalid-name
 # We disable the invalid name because urlpatterns is the Django default
-
 """
 Module related to urls for user accounts.
 
@@ -33,23 +32,27 @@ urlpatterns = [
     url(r'^register/$', UserRegistrationView.as_view(), name='register'),
     # Give admins a chance to approve or deny new users, taken from Greenscope
     url(r'^register/approve/(?P<uidb64>[0-9A-Za-z]+)/$',
-        UserApprovalView.as_view(), name='register_approve'),
+        UserApprovalView.as_view(),
+        name='register_approve'),
     url(r'^register/deny/(?P<uidb64>[0-9A-Za-z]+)/$',
-        UserDenialView.as_view(), name='register_deny'),
+        UserDenialView.as_view(),
+        name='register_deny'),
     # url(r'^register/activate/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
     #    UserActivationView.as_view(), name='register_activate'),
 
     # password management
-    url(r'^password/reset/$', PasswordResetRequestView.as_view(),
+    url(r'^password/reset/$',
+        PasswordResetRequestView.as_view(),
         name="password_reset"),
-
     url(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
-        PasswordResetConfirmView.as_view(), name='reset_password_confirm'),
-    url(r'^password/reset/confirm/$', PasswordResetConfirmView.as_view(),
+        PasswordResetConfirmView.as_view(),
+        name='reset_password_confirm'),
+    url(r'^password/reset/confirm/$',
+        PasswordResetConfirmView.as_view(),
         name='reset_password_confirm_no_token'),
 
     # username management
-    url(r'^username/$', UsernameReminderRequestView.as_view(),
+    url(r'^username/$',
+        UsernameReminderRequestView.as_view(),
         name="username_reminder"),
-
 ]

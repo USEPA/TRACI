@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Models for teams of users.
 
@@ -20,14 +19,20 @@ class Team(models.Model):
     """Team object allows groups of users to share projects."""
 
     # when and by whom the team was created
-    created_date = models.DateTimeField(auto_now_add=True, null=True,
-                                        blank=True, editable=False)
-    created_by = models.ForeignKey(User, blank=True, editable=False,
+    created_date = models.DateTimeField(auto_now_add=True,
+                                        null=True,
+                                        blank=True,
+                                        editable=False)
+    created_by = models.ForeignKey(User,
+                                   blank=True,
+                                   editable=False,
                                    related_name="team_created_by",
                                    on_delete=models.CASCADE)
     # when and by whom the team was last modified
     last_modified_date = models.DateTimeField(auto_now=True, blank=False)
-    last_modified_by = models.ForeignKey(User, null=True, blank=True,
+    last_modified_by = models.ForeignKey(User,
+                                         null=True,
+                                         blank=True,
                                          related_name="team_last_modified_by",
                                          on_delete=models.CASCADE)
     # name of the team
@@ -39,14 +44,17 @@ class Team(models.Model):
 class TeamMembership(models.Model):
     """Object describing user's membership on a project team."""
 
-    added_date = models.DateTimeField(auto_now_add=True, blank=False,
+    added_date = models.DateTimeField(auto_now_add=True,
+                                      blank=False,
                                       editable=False)
     # the user
-    member = models.ForeignKey(User, blank=False,
+    member = models.ForeignKey(User,
+                               blank=False,
                                related_name="member_memberships",
                                on_delete=models.CASCADE)
     # the team
-    team = models.ForeignKey(Team, blank=False,
+    team = models.ForeignKey(Team,
+                             blank=False,
                              related_name="team_memberships",
                              on_delete=models.CASCADE)
     # indicates if the user is a group owner

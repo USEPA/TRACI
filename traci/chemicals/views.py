@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Chemical management views.
 
@@ -25,10 +24,11 @@ from chemicals.serializers import ChemicalSerializer
 # REST Api Chemical views
 #########################
 
+
 class APIChemicalListView(APIView):
     """Get a JSON list of all chemicals (GET)."""
 
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get(self, request, exclude=None, _format=None):
         """Return all chemicals."""
@@ -39,9 +39,10 @@ class APIChemicalListView(APIView):
 
 def get_units(request):
     """Retrieve a list of units for the specified resource/release type"""
-    #if request.is_ajax():
+    # if request.is_ajax():
     #    type_id = request.GET.get('type_id', '')
-    #units =
+    # units =
+
 
 def get_chemicals(request):
     """Retrieve a filtered list of chemicals."""
@@ -50,7 +51,8 @@ def get_chemicals(request):
         exceptions = json.loads(request.GET.get('except', '[]'))
         if exceptions:
             chemicals = Chemical.objects.exclude(
-                reduce(or_, [Q(name__iexact=query) for query in exceptions])).filter(name__icontains=query)[:20]
+                reduce(or_, [Q(name__iexact=query) for query in exceptions
+                             ])).filter(name__icontains=query)[:20]
         else:
             chemicals = Chemical.objects.filter(name__icontains=query)[:20]
         results = []

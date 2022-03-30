@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Models for Chemical Releases.
 
@@ -23,15 +22,22 @@ class Release(models.Model):
     release_quantity = models.FloatField(blank=True, null=True, default=0)
     release_unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
     # Media through which the Releases are output, null if Resource/Input.
-    release_media = models.ForeignKey("Media", on_delete=models.SET_NULL, blank=True, null=True)
+    release_media = models.ForeignKey("Media",
+                                      on_delete=models.SET_NULL,
+                                      blank=True,
+                                      null=True)
     # Parent process reference
     process = models.ForeignKey("Process", on_delete=models.CASCADE)
-    # ReleaseImpactFactor is the data from Excel tool, now stored in the following Chemical tables:
-    # chemicals_chemical, chemicals_ecotox, chemicals_fossilfuel, chemicals_hhcf, chemicals_unit
+
+    # ReleaseImpactFactor is the data from Excel tool, now stored
+    # in the following Chemical tables:
+    # chemicals_chemical, chemicals_ecotox, chemicals_fossilfuel,
+    # chemicals_hhcf, chemicals_unit
 
     def __factor(self, emission):
         try:
-            return float(emission) * self.release_quantity * ReleaseFactor(self.release_unit)
+            return float(emission) * self.release_quantity * ReleaseFactor(
+                self.release_unit)
         except (ValueError, TypeError):
             return 0
 
@@ -64,7 +70,8 @@ class Release(models.Model):
         return self.__factor(self.chemical.smog_air)
 
     # Ecotox section
-    # The functions in VB program don't match the data from the Excel sheet (which is in the PSQL DB).
+    # The functions in VB program don't match the data from the Excel sheet
+    # (which is in the PSQL DB).
     # Therefore, we will be focusing on the data in the Excel Sheet/PSQL DB.
     def EcotoxAirU(self):
         """Calculate the EcotoxAirU for this chemical release."""
@@ -91,10 +98,14 @@ class Release(models.Model):
         return self.__factor(self.chemical.ecotox.ecotox_agr_soilc)
 
     # Human Health section
-    # The functions in VB program don"t match the data from the Excel sheet (which is in the PSQL DB).
+    # The functions in VB program don't match the data from the Excel sheet
+    # (which is in the PSQL DB).
     # Therefore, we will be focusing on the data in the Excel Sheet/PSQL DB.
     def HumanHealthCancer(self):
-        """Calculate the HumanHealthCancer for this chemical release, summing all the cancers."""
+        """
+        Calculate the HumanHealthCancer for this chemical release,
+        summing all the cancers.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_urban_air_cancer) + \
             self.__factor(self.chemical.hhcf.hhcf_rural_air_cancer) + \
             self.__factor(self.chemical.hhcf.hhcf_freshwater_cancer) + \
@@ -103,19 +114,27 @@ class Release(models.Model):
             self.__factor(self.chemical.hhcf.hhcf_agrsoil_cancer)
 
     def HumanHealthUrbanAirCancer(self):
-        """Calculate the HumanHealthUrbanAirCancer for this chemical release."""
+        """
+        Calculate the HumanHealthUrbanAirCancer for this chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_urban_air_cancer)
 
     def HumanHealthRuralAirCancer(self):
-        """Calculate the HumanHealthRuralAirCancer for this chemical release."""
+        """
+        Calculate the HumanHealthRuralAirCancer for this chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_rural_air_cancer)
 
     def HumanHealthFreshwaterCancer(self):
-        """Calculate the HumanHealthFreshwaterCancer for this chemical release."""
+        """
+        Calculate the HumanHealthFreshwaterCancer for this chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_freshwater_cancer)
 
     def HumanHealthSeawaterCancer(self):
-        """Calculate the HumanHealthSeawaterCancer for this chemical release."""
+        """
+        Calculate the HumanHealthSeawaterCancer for this chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_seawater_cancer)
 
     def HumanHealthNativeSoilCancer(self):
@@ -123,11 +142,17 @@ class Release(models.Model):
         return self.__factor(self.chemical.hhcf.hhcf_natsoil_cancer)
 
     def HumanHealthAgriculturalSoilCancer(self):
-        """Calculate the HumanHealthAgriculturalSoilCancer for this chemical release."""
+        """
+        Calculate the HumanHealthAgriculturalSoilCancer for this
+        chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_agrsoil_cancer)
 
     def HumanHealthNonCancer(self):
-        """Calculate the HumanHealthNonCancer for this chemical release, summing all the non-cancers."""
+        """
+        Calculate the HumanHealthNonCancer for this chemical release,
+        summing all the non-cancers.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_urban_air_noncanc) + \
             self.__factor(self.chemical.hhcf.hhcf_rural_air_noncanc) + \
             self.__factor(self.chemical.hhcf.hhcf_freshwater_noncanc) + \
@@ -136,31 +161,46 @@ class Release(models.Model):
             self.__factor(self.chemical.hhcf.hhcf_agrsoil_noncanc)
 
     def HumanHealthUrbanAirNonCancer(self):
-        """Calculate the HumanHealthUrbanAirNonCancer for this chemical release."""
+        """
+        Calculate the HumanHealthUrbanAirNonCancer for this chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_urban_air_noncanc)
 
     def HumanHealthRuralAirNonCancer(self):
-        """Calculate the HumanHealthRuralAirNonCancer for this chemical release."""
+        """
+        Calculate the HumanHealthRuralAirNonCancer for this chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_rural_air_noncanc)
 
     def HumanHealthFreshwaterNonCancer(self):
-        """Calculate the HumanHealthFreshwaterNonCancer for this chemical release."""
+        """
+        Calculate the HumanHealthFreshwaterNonCancer for this chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_freshwater_noncanc)
 
     def HumanHealthSeawaterNonCancer(self):
-        """Calculate the HumanHealthSeawaterNonCancer for this chemical release."""
+        """
+        Calculate the HumanHealthSeawaterNonCancer for this chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_seawater_noncanc)
 
     def HumanHealthNativeSoilNonCancer(self):
-        """Calculate the HumanHealthNativeSoilNonCancer for this chemical release."""
+        """
+        Calculate the HumanHealthNativeSoilNonCancer for this chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_natsoil_noncanc)
 
     def HumanHealthAgriculturalSoilNonCancer(self):
-        """Calculate the HumanHealthAgrSoilNonCancer for this chemical release."""
+        """
+        Calculate the HumanHealthAgrSoilNonCancer for this chemical release.
+        """
         return self.__factor(self.chemical.hhcf.hhcf_agrsoil_noncanc)
 
     def GetImpactValue(self, impact):
-        """Return the value for the given impact, summing totals in the case of ecotox or hhcf"""
+        """
+        Return the value for the given impact,
+        summing totals in the case of ecotox or hhcf.
+        """
         if impact == "GlobalWarmingPotential":
             return self.GlobalWarmingPotential()
         if impact == "Acidification":
@@ -178,9 +218,12 @@ class Release(models.Model):
         if impact == "SmogAir":
             return self.SmogAir()
         if impact == "EcoToxicity":
-            return self.EcotoxCFagriculturalSoilCfreshwater() + self.EcotoxCFairCfreshwater() + \
-                self.EcotoxCFairUfreshwater() + self.EcotoxCFfreshWaterCfreshwater() + \
-                self.EcotoxCFfreshWaterUfreshwater() + self.EcotoxCFnativeSoilCfreshwater() + \
+            return self.EcotoxCFagriculturalSoilCfreshwater() + \
+                self.EcotoxCFairCfreshwater() + \
+                self.EcotoxCFairUfreshwater() + \
+                self.EcotoxCFfreshWaterCfreshwater() + \
+                self.EcotoxCFfreshWaterUfreshwater() + \
+                self.EcotoxCFnativeSoilCfreshwater() + \
                 self.EcotoxCFseaWaterCfreshwater()
         if impact == "EcotoxCFairUfreshwater":
             return self.EcotoxCFairUfreshwater()
@@ -197,13 +240,19 @@ class Release(models.Model):
         if impact == "EcotoxCFagriculturalSoilCfreshwater":
             return self.EcotoxCFagriculturalSoilCfreshwater()
         if impact == "HumanHealthCancer":
-            return self.HumanHealthUrbanAirCancer() + self.HumanHealthSeawaterCancer() + \
-                self.HumanHealthRuralAirCancer() + self.HumanHealthNativeSoilCancer() + \
-                self.HumanHealthFreshwaterCancer() + self.HumanHealthAgriculturalSoilCancer()
+            return self.HumanHealthUrbanAirCancer() + \
+                self.HumanHealthSeawaterCancer() + \
+                self.HumanHealthRuralAirCancer() + \
+                self.HumanHealthNativeSoilCancer() + \
+                self.HumanHealthFreshwaterCancer() + \
+                self.HumanHealthAgriculturalSoilCancer()
         if impact == "HumanHealthNonCancer":
-            return self.HumanHealthUrbanAirNonCancer() + self.HumanHealthSeawaterNonCancer() + \
-                self.HumanHealthRuralAirNonCancer() + self.HumanHealthNativeSoilNonCancer() + \
-                self.HumanHealthFreshwaterNonCancer() + self.HumanHealthAgriculturalSoilNonCancer()
+            return self.HumanHealthUrbanAirNonCancer() + \
+                self.HumanHealthSeawaterNonCancer() + \
+                self.HumanHealthRuralAirNonCancer() + \
+                self.HumanHealthNativeSoilNonCancer() + \
+                self.HumanHealthFreshwaterNonCancer() + \
+                self.HumanHealthAgriculturalSoilNonCancer()
         if impact == "HumanHealthUrbanAirCancer":
             return self.HumanHealthUrbanAirCancer()
         if impact == "HumanHealthUrbanAirNonCancer":

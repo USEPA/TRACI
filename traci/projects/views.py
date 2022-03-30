@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """Definition of Projects views."""
 
 import json
@@ -11,11 +10,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, ListView, UpdateView, CreateView, DetailView, \
-    DeleteView
-from products.models import Product, LifeCycleStage, Process, Release, Resource
+from django.views.generic import TemplateView, ListView, UpdateView, \
+    CreateView, DetailView, DeleteView
+from products.models import Product, LifeCycleStage, Process, Release
 from projects.forms import ProjectForm
 from projects.models import Project
+
 
 # Create your views here.
 class ProjectListView(ListView):
@@ -33,14 +33,15 @@ class ProjectDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['products_list'] = Product.objects.filter(project=context['object'])
+        context['products_list'] = Product.objects.filter(
+            project=context['object'])
         return context
 
 
 def get_projects():
     """TODO"""
     projects = list(Project.objects.values())
-    #data = list(serializers.serialize('json', projects))
+    # data = list(serializers.serialize('json', projects))
     data = json.dumps(projects)
     return HttpResponse(data)
 
@@ -87,15 +88,19 @@ class ProjectDeleteView(DeleteView):
 class ProjectCalculationsView(TemplateView):
     """
     The first step in running calculations.
-    On a GET request, this should return a view where the user can choose calculation settings.
-    On a POST request, this should perform the chosen calculations and return to a results viewing page.
+    On a GET request, this should return a view where the user can choose
+    calculation settings. On a POST request, this should perform the chosen
+    calculations and return to a results viewing page.
     """
     model = Project
     template_name = 'project_calculations.html'
 
     @method_decorator(login_required)
     def run_release_calculations(self, release_list):
-        """Run release related calculations on the provided list of release objects."""
+        """
+        Run release related calculations on the
+        provided list of release objects.
+        """
 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
@@ -106,7 +111,9 @@ class ProjectCalculationsView(TemplateView):
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
-        """Perform the chosen calculations and return to a results viewing page."""
+        """
+        Perform the chosen calculations and return to a results viewing page.
+        """
         # TODO Form
         # form = ?
         pk = self.kwargs['pk']

@@ -2,8 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
-
 """Definition of forms."""
 
 from django import forms
@@ -16,9 +14,15 @@ class BootstrapAuthenticationForm(AuthenticationForm):
 
     username = forms.CharField(max_length=254,
                                widget=forms.TextInput({
-                                   'class': 'form-control',
-                                   'placeholder': 'User name'}))
+                                   'class':
+                                   'form-control',
+                                   'placeholder':
+                                   'User name'
+                               }))
     password = forms.CharField(label=_("Password"),
                                widget=forms.PasswordInput({
-                                   'class': 'form-control',
-                                   'placeholder': 'Password'}))
+                                   'class':
+                                   'form-control',
+                                   'placeholder':
+                                   'Password'
+                               }))

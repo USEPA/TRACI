@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Models for Projects (LCI Data).
 
@@ -13,6 +12,7 @@ Available models:
 from django.db import models
 from constants.models import TRACI_SCOPE_OPTIONS
 
+
 class Project(models.Model):
     """Project object containing LCI Data."""
     name = models.CharField(null=False, blank=False, max_length=255)
@@ -21,7 +21,9 @@ class Project(models.Model):
     org_unit = models.CharField(blank=True, null=True, max_length=63)
     contact = models.CharField(blank=True, null=True, max_length=127)
     phone_num = models.CharField(blank=True, null=True, max_length=31)
-    # NOTE: No default selected ** scope = models.CharField(...choices=YN_CHOICES, default="cradle_to_grave")
-    scope = models.CharField(blank=True, null=True, max_length=127, choices=TRACI_SCOPE_OPTIONS)
+    scope = models.CharField(blank=True,
+                             null=True,
+                             max_length=127,
+                             choices=TRACI_SCOPE_OPTIONS)
     description = models.CharField(blank=True, null=True, max_length=255)
     functional_unit = models.CharField(blank=True, null=True, max_length=31)

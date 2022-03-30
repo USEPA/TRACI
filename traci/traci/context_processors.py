@@ -1,10 +1,8 @@
-
 # pylint: skip-file
 # context_processors.py (traci)
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 This file contains software infomation.
 

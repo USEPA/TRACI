@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Models related to support functions.
 
@@ -14,8 +13,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from constants.models import YN_CHOICES
 
-
 # https://stackoverflow.com/questions/38443628/import-error-cannot-import-name-get-model
+
 
 def get_support_storage_path(instance, filename):
     """
@@ -47,7 +46,9 @@ class SupportType(models.Model):
     created_by = models.CharField(blank=True, null=True, max_length=255)
     last_modified_by = models.CharField(blank=True, null=True, max_length=255)
 
-    user = models.ForeignKey(User, null=True, blank=True,
+    user = models.ForeignKey(User,
+                             null=True,
+                             blank=True,
                              on_delete=models.SET_NULL)
 
     name = models.CharField(blank=True, null=True, max_length=255)
@@ -55,13 +56,17 @@ class SupportType(models.Model):
     the_description = models.TextField(null=True, blank=True)
 
     weblink = models.CharField(blank=True, null=True, max_length=255)
-    ordering = models.DecimalField(null=True, blank=True, max_digits=10,
+    ordering = models.DecimalField(null=True,
+                                   blank=True,
+                                   max_digits=10,
                                    decimal_places=1)
 
     class Meta:
         """TODO Add docstring."""
 
-        ordering = ["ordering", ]
+        ordering = [
+            "ordering",
+        ]
 
     def __str__(self):
         """TODO Add docstring."""
@@ -76,7 +81,9 @@ class Priority(models.Model):
     created_by = models.CharField(blank=True, null=True, max_length=255)
     last_modified_by = models.CharField(blank=True, null=True, max_length=255)
 
-    user = models.ForeignKey(User, null=True, blank=True,
+    user = models.ForeignKey(User,
+                             null=True,
+                             blank=True,
                              on_delete=models.SET_NULL)
 
     name = models.CharField(blank=True, null=True, max_length=255)
@@ -84,13 +91,17 @@ class Priority(models.Model):
     the_description = models.TextField(null=True, blank=True)
 
     weblink = models.CharField(blank=True, null=True, max_length=255)
-    ordering = models.DecimalField(null=True, blank=True, max_digits=10,
+    ordering = models.DecimalField(null=True,
+                                   blank=True,
+                                   max_digits=10,
                                    decimal_places=1)
 
     class Meta:
         """TODO Add docstring."""
 
-        ordering = ["ordering", ]
+        ordering = [
+            "ordering",
+        ]
 
     def __str__(self):
         """TODO Add docstring."""
@@ -104,42 +115,60 @@ class Support(models.Model):
     modified = models.DateTimeField(auto_now=True, null=True, blank=True)
     created_by = models.CharField(blank=True, null=True, max_length=255)
     last_modified_by = models.CharField(blank=True, null=True, max_length=255)
-    make_public = models.CharField(blank=True, null=True, max_length=5,
+    make_public = models.CharField(blank=True,
+                                   null=True,
+                                   max_length=5,
                                    choices=YN_CHOICES)
-    share_with_user_group = models.CharField(blank=True, null=True,
-                                             max_length=5, choices=YN_CHOICES)
+    share_with_user_group = models.CharField(blank=True,
+                                             null=True,
+                                             max_length=5,
+                                             choices=YN_CHOICES)
 
-    attachment = models.FileField(null=True, blank=True,
+    attachment = models.FileField(null=True,
+                                  blank=True,
                                   upload_to=get_support_storage_path)
 
-    user = models.ForeignKey(User, null=True, blank=True,
+    user = models.ForeignKey(User,
+                             null=True,
+                             blank=True,
                              on_delete=models.SET_NULL)
-    support_type = models.ForeignKey(SupportType, null=True, blank=True,
+    support_type = models.ForeignKey(SupportType,
+                                     null=True,
+                                     blank=True,
                                      on_delete=models.SET_NULL)
-    priority = models.ForeignKey(Priority, null=True, blank=True,
+    priority = models.ForeignKey(Priority,
+                                 null=True,
+                                 blank=True,
                                  on_delete=models.SET_NULL)
 
     name = models.CharField(blank=True, null=True, max_length=255)
     subject = models.CharField(blank=True, null=True, max_length=255)
-    length_of_reference = models.CharField(blank=True, null=True,
+    length_of_reference = models.CharField(blank=True,
+                                           null=True,
                                            max_length=255)
     author = models.CharField(blank=True, null=True, max_length=255)
 
-    is_closed = models.CharField(blank=True, null=True, max_length=5,
+    is_closed = models.CharField(blank=True,
+                                 null=True,
+                                 max_length=5,
                                  choices=YN_CHOICES)
 
     the_description = models.TextField(null=True, blank=True)
     resolution = models.TextField(null=True, blank=True)
 
     weblink = models.CharField(blank=True, null=True, max_length=255)
-    ordering = models.DecimalField(null=True, blank=True, max_digits=10,
+    ordering = models.DecimalField(null=True,
+                                   blank=True,
+                                   max_digits=10,
                                    decimal_places=1)
     date_resolved = models.DateField(blank=True, null=True)
 
     class Meta:
         """TODO Add docstring."""
 
-        ordering = ["ordering", ]
+        ordering = [
+            "ordering",
+        ]
 
     def __str__(self):
         """TODO Add docstring."""

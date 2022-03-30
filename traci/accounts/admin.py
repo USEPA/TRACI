@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Defines classes used to generate 'Accounts' Django Admin portion of website.
 
@@ -20,9 +19,12 @@ class UserProfileAdmin(admin.ModelAdmin):
     """Assigns 'USER ID' number, once user registers with HELP."""
 
     list_display = ("user_id", )
-    search_fields = ("user__username",)
-    exclude = ('created_by', 'last_modified_by',)
-    list_filter = ("user_id",)
+    search_fields = ("user__username", )
+    exclude = (
+        'created_by',
+        'last_modified_by',
+    )
+    list_filter = ("user_id", )
     list_per_page = 25
 
 

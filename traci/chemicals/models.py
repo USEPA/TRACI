@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Models for chemicals.
 
@@ -18,7 +17,9 @@ from constants.models import TRACI_FLAG_OPTIONS, DEFAULT_TRACI_FLAG
 
 
 class Unit(models.Model):
-    """Available units for measuring resources and releases (inputs and outputs)"""
+    """
+    Available units for measuring resources and releases (inputs and outputs).
+    """
 
     name = models.CharField(blank=False, null=False, max_length=63)
     description = models.CharField(blank=True, null=True, max_length=255)
@@ -53,11 +54,19 @@ class Hhcf(models.Model):
     """Info related to a chemical's Human Health Characterization Factor."""
 
     hhcf_urban_air_cancer = models.FloatField(blank=True, null=True, default=0)
-    hhcf_urban_air_noncanc = models.FloatField(blank=True, null=True, default=0)
+    hhcf_urban_air_noncanc = models.FloatField(blank=True,
+                                               null=True,
+                                               default=0)
     hhcf_rural_air_cancer = models.FloatField(blank=True, null=True, default=0)
-    hhcf_rural_air_noncanc = models.FloatField(blank=True, null=True, default=0)
-    hhcf_freshwater_cancer = models.FloatField(blank=True, null=True, default=0)
-    hhcf_freshwater_noncanc = models.FloatField(blank=True, null=True, default=0)
+    hhcf_rural_air_noncanc = models.FloatField(blank=True,
+                                               null=True,
+                                               default=0)
+    hhcf_freshwater_cancer = models.FloatField(blank=True,
+                                               null=True,
+                                               default=0)
+    hhcf_freshwater_noncanc = models.FloatField(blank=True,
+                                                null=True,
+                                                default=0)
     hhcf_seawater_cancer = models.FloatField(blank=True, null=True, default=0)
     hhcf_seawater_noncanc = models.FloatField(blank=True, null=True, default=0)
     hhcf_natsoil_cancer = models.FloatField(blank=True, null=True, default=0)
@@ -73,7 +82,7 @@ class Hhcf(models.Model):
 
 
 class Chemical(models.Model):
-    """Chemical object contains information related to chemicals and other chemicals."""
+    """Contains information related to chemicals and other chemicals."""
 
     name = models.CharField(blank=False, null=False, max_length=255)
     cas = models.CharField(blank=False, null=False, max_length=32)

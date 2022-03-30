@@ -3,7 +3,6 @@
 # coding=utf-8
 # pylint: skip-file
 # We skip this file because it wasn't written by/for EPA.
-
 """
 Module related to tests for user accounts.
 
@@ -40,7 +39,7 @@ from copy import copy
 from functools import wraps
 from urllib.parse import unquote, urljoin, urlparse, urlsplit
 from urllib.request import url2pathname
-from django.test import TestCase
+# from django.test import TestCase
 from django.apps import apps
 from django.conf import settings
 from django.core import mail
@@ -51,7 +50,7 @@ from django.core.management import call_command
 from django.core.management.color import no_style
 from django.core.management.sql import emit_post_migrate_signal
 from django.core.servers.basehttp import ThreadedWSGIServer, WSGIRequestHandler
-from django.db import DEFAULT_DB_ALIAS, connection, connections, transaction
+from django.db import DEFAULT_DB_ALIAS, connections, transaction
 from django.forms.fields import CharField
 from django.http import QueryDict
 from django.http.request import split_domain_port, validate_host
@@ -59,22 +58,15 @@ from django.test.client import Client
 from django.test.html import HTMLParseError, parse_html
 from django.test.signals import setting_changed, template_rendered
 from django.test.utils import (
-    CaptureQueriesContext, ContextList, compare_xml, modify_settings,
+    CaptureQueriesContext,
+    ContextList,
+    compare_xml,
+    modify_settings,
     override_settings,
 )
 from django.utils.decorators import classproperty
 from django.utils.encoding import force_text
 from django.views.static import serve
-
-
-class FooTest(TestCase):
-    """Base class for all app specific tests."""
-
-    fixtures = ['testdata_01.json']
-
-
-__all__ = ('TestCase', 'TransactionTestCase',
-           'SimpleTestCase', 'skipffdbfeature', 'skipunlessdbfeature')
 
 
 def to_list(value):
@@ -96,6 +88,14 @@ def assert_and_parse_html(self, html, user_msg, msg):
     return dom
 
 
+__all__ = (
+    'TestCase',
+    'TransactionTestCase',
+    'SimpleTestCase',
+)
+#    'skipffdbfeature', 'skipunlessdbfeature')
+
+
 class _AssertNumQueriesContext(CaptureQueriesContext):
     """Add docstring."""  # TODO add docstring.
 
@@ -111,14 +111,10 @@ class _AssertNumQueriesContext(CaptureQueriesContext):
         executed = len(self)
         self.test_case.assertEqual(
             executed, self.num,
-            "%d queries executed, %d expected\nCaptured queries were:\n%s" % (
-                executed, self.num,
-                '\n'.join(
-                    '%d. %s' % (i, query['sql']) for i, query in
-                    enumerate(self.captured_queries, start=1)
-                )
-            )
-        )
+            "%d queries executed, %d expected\nCaptured queries were:\n%s" %
+            (executed, self.num, '\n'.join(
+                '%d. %s' % (i, query['sql'])
+                for i, query in enumerate(self.captured_queries, start=1))))
 
 
 class _AssertTemplateUsedContext:
@@ -195,9 +191,8 @@ class _CursorFailure:
             "Database queries are not allowed in SimpleTestCase. "
             "Either use TestCase or TransactionTestCase to ensure proper "
             "test isolation or "
-            "set %s.allow_database_queries to True to silence this failure."
-            % self.cls_name
-        )
+            "set %s.allow_database_queries to True to silence this failure." %
+            self.cls_name)
 
 
 class SimpleTestCase(unittest.TestCase):
@@ -216,7 +211,8 @@ class SimpleTestCase(unittest.TestCase):
         """[summary]."""
         super().setupclass()
         if cls._overridden_settings:
-            cls._cls_overridden_context = override_settings(**cls._overridden_settings)
+            cls._cls_overridden_context = override_settings(
+                **cls._overridden_settings)
             cls._cls_overridden_context.enable()
         if cls._modified_settings:
             cls._cls_modified_context = modify_settings(cls._modified_settings)
@@ -225,685 +221,691 @@ class SimpleTestCase(unittest.TestCase):
             for alias in connections:
                 conn = connections[alias]
                 conn.cursor = _CursorFailure(cls.__name__, conn.cursor)
-                conn.chunked_cursor = _CursorFailure(cls.__name__, conn.chunked_cursor)
+                conn.chunked_cursor = _CursorFailure(cls.__name__,
+                                                     conn.chunked_cursor)
 
+    def teardownclass(cls):
+        """Add docstring."""  # TODO add docstring.
+        if not cls.allow_database_queries:
+            for alias in connections:
+                conn = connections[alias]
+                conn.cursor = conn.cursor.wrapped
+                conn.chunked_cursor = conn.chunked_cursor.wrapped
+        if hasattr(cls, '_cls_modified_context'):
+            cls._cls_modified_context.disable()
+            delattr(cls, '_cls_modified_context')
+        if hasattr(cls, '_cls_overridden_context'):
+            cls._cls_overridden_context.disable()
+            delattr(cls, '_cls_overridden_context')
+        super().teardownclass()
 
-def teardownclass(cls):
-    """Add docstring."""  # TODO add docstring.
-    if not cls.allow_database_queries:
-        for alias in connections:
-            conn = connections[alias]
-            conn.cursor = conn.cursor.wrapped
-            conn.chunked_cursor = conn.chunked_cursor.wrapped
-    if hasattr(cls, '_cls_modified_context'):
-        cls._cls_modified_context.disable()
-        delattr(cls, '_cls_modified_context')
-    if hasattr(cls, '_cls_overridden_context'):
-        cls._cls_overridden_context.disable()
-        delattr(cls, '_cls_overridden_context')
-    super().teardownclass()
+    def __call__(self, result=None):
+        """
+        Wrapper around the default __call__ method to perform
+        common Django test set up. This means that user-defined Test Cases
+        are not required to include a call to super().setUp().
+        """
+        testmethod = getattr(self, self._testMethodName)
+        skipped = (getattr(self.__class__, "__unittest_skip__", False)
+                   or getattr(testmethod, "__unittest_skip__", False))
 
+        if not skipped:
+            try:
+                self._pre_setup()
+            except Exception:
+                result.addError(self, sys.exc_info())
+                return
+        super().__call__(result)
+        if not skipped:
+            try:
+                self._post_teardown()
+            except Exception:
+                result.addError(self, sys.exc_info())
+                return
 
-def __call__(self, result=None):
-    """
-    Wrapper around default __call__ method perform common Django test set up.
+    def _pre_setup(self):
+        """
+        Perform pre-test setup:
 
-    This means that user-defined Test Cases are not required to include a call
-    to super().setUp().
-    """
-    testmethod = getattr(self, self._testMethodName)
-    skipped = (
-            getattr(self.__class__, "__unittest_skip__", False) or
-            getattr(testmethod, "__unittest_skip__", False)
-    )
+        * Create a test client.
+        * Clear the mail test outbox.
+        """
+        self.client = self.client_class()
+        mail.outbox = []
 
-    if not skipped:
-        try:
-            self._pre_setup()
-        except Exception:
-            result.addError(self, sys.exc_info())
-            return
-    super().__call__(result)
-    if not skipped:
-        try:
-            self._post_teardown()
-        except Exception:
-            result.addError(self, sys.exc_info())
-            return
+    def _post_teardown(self):
+        """Perform post-test things."""
+        pass
 
+    def settings(self, **kwargs):
+        """
+        Context mgr temp sets setting reverts original value exiting context.
+        """
+        return override_settings(**kwargs)
 
-def _pre_setup(self):
-    """
-    Perform pre-test setup:
+    def modify_settings(self, **kwargs):
+        """
+        Context mgr temp applies changes list setting.
 
-    * Create a test client.
-    * Clear the mail test outbox.
-    """
-    self.client = self.client_class()
-    mail.outbox = []
+        Reverts back to original value when exiting the context.
+        """
+        return modify_settings(**kwargs)
 
+    def assertredirects(self,
+                        response,
+                        expected_url,
+                        status_code=302,
+                        target_status_code=200,
+                        msg_prefix='',
+                        fetch_redirect_response=True):
+        """
+        Assert resp redirected to specific URL and redirect URL can be loaded.
 
-def _post_teardown(self):
-    """Perform post-test things."""
-    pass
+        Will not work for external links since it uses the test client to do a
+        request (use fetch_redirect_response=False to check such links without
+        fetching them).
+        """
+        if msg_prefix:
+            msg_prefix += ": "
 
+        if hasattr(response, 'redirect_chain'):
+            # The request was a followed redirect
+            self.assertTrue(
+                response.redirect_chain,
+                msg_prefix + "Response didn't redirect as expected: Response "
+                "code was %d (expected %d)" %
+                (response.status_code, status_code))
 
-def settings(self, **kwargs):
-    """Context mgr temp sets setting reverts original value exiting context."""
-    return override_settings(**kwargs)
+            self.assertEqual(
+                response.redirect_chain[0][1], status_code,
+                msg_prefix + "Initial response didn't redirect as expected: "
+                "Response code was %d (expected %d)" %
+                (response.redirect_chain[0][1], status_code))
 
+            url, status_code = response.redirect_chain[-1]
+            scheme, netloc, path, query, fragment = urlsplit(url)
 
-def modify_settings(self, **kwargs):
-    """
-    Context mgr temp applies changes list setting.
+            self.assertEqual(
+                response.status_code, target_status_code,
+                msg_prefix + "Response didn't redirect as expected: Final "
+                "Response code was %d (expected %d)" %
+                (response.status_code, target_status_code))
 
-    Reverts back to original value when exiting the context.
-    """
-    return modify_settings(**kwargs)
+        else:
+            # Not a followed redirect
+            self.assertEqual(
+                response.status_code, status_code,
+                msg_prefix + "Response didn't redirect as expected: Response "
+                "code was %d (expected %d)" %
+                (response.status_code, status_code))
 
+            url = response.url
+            scheme, netloc, path, query, fragment = urlsplit(url)
 
-def assertredirects(self, response, expected_url, status_code=302,
-                    target_status_code=200, msg_prefix='',
-                    fetch_redirect_response=True):
-    """
-    Assert response redirected to specific URL and redirect URL can be loaded.
+            # Prepend the request path to handle relative path redirects.
+            if not path.startswith('/'):
+                url = urljoin(response.request['PATH_INFO'], url)
+                path = urljoin(response.request['PATH_INFO'], path)
 
-    Will not work for external links since it uses the test client to do a
-    request (use fetch_redirect_response=False to check such links without
-    fetching them).
-    """
-    if msg_prefix:
-        msg_prefix += ": "
+            if fetch_redirect_response:
+                # netloc might be empty, or in cases where Django tests the
+                # HTTP scheme, the convention is for netloc to be 'testserver'.
+                # Trust both as "internal" URLs here.
+                domain, port = split_domain_port(netloc)
+                if domain and not validate_host(domain,
+                                                settings.ALLOWED_HOSTS):
+                    raise ValueError(
+                        "The test client is unable to fetch remote URLs (got "
+                        "%s). "
+                        "If the host is served by Django, add '%s' to "
+                        "ALLOWED_HOSTS. "
+                        "Otherwise, use assertredirects(..., "
+                        "fetch_redirect_response=False)." % (url, domain))
+                redirect_response = response.client.get(
+                    path, QueryDict(query), secure=(scheme == 'https'))
 
-    if hasattr(response, 'redirect_chain'):
-        # The request was a followed redirect
-        self.assertTrue(
-            response.redirect_chain,
-            msg_prefix + "Response didn't redirect as expected: Response "
-                         "code was %d (expected %d)"
-            % (response.status_code, status_code)
-        )
+                # Get the redirection page, using the same client that was used
+                # to obtain the original response.
+                self.assertEqual(
+                    redirect_response.status_code, target_status_code,
+                    msg_prefix + "could not retrieve redirection page '%s': "
+                    "response code was %d (expected %d)" %
+                    (path, redirect_response.status_code, target_status_code))
 
         self.assertEqual(
-            response.redirect_chain[0][1], status_code,
-            msg_prefix + "Initial response didn't redirect as expected: "
-                         "Response code was %d (expected %d)"
-            % (response.redirect_chain[0][1], status_code)
-        )
+            url, expected_url, msg_prefix +
+            "Response redirected to '%s', expected '%s'" % (url, expected_url))
 
-        url, status_code = response.redirect_chain[-1]
-        scheme, netloc, path, query, fragment = urlsplit(url)
+    def _assert_contains(self, response, text, status_code, msg_prefix, html):
+        # If the response supports deferred rendering and hasn't been rendered
+        # yet, then ensure that it does get rendered before proceeding further.
+        if hasattr(response, 'render') and callable(
+                response.render) and not response.is_rendered:
+            response.render()
 
-        self.assertEqual(
-            response.status_code, target_status_code,
-            msg_prefix + "Response didn't redirect as expected: Final "
-                         "Response code was %d (expected %d)"
-            % (response.status_code, target_status_code)
-        )
+        if msg_prefix:
+            msg_prefix += ": "
 
-    else:
-        # Not a followed redirect
         self.assertEqual(
             response.status_code, status_code,
-            msg_prefix + "Response didn't redirect as expected: Response "
-                         "code was %d (expected %d)"
-            % (response.status_code, status_code)
-        )
+            msg_prefix + "could not retrieve content: Response code was %d"
+            " (expected %d)" % (response.status_code, status_code))
 
-        url = response.url
-        scheme, netloc, path, query, fragment = urlsplit(url)
+        if response.streaming:
+            content = b''.join(response.streaming_content)
+        else:
+            content = response.content
+        if not isinstance(text, bytes) or html:
+            text = force_text(text, encoding=response.charset)
+            content = content.decode(response.charset)
+            text_repr = "'%s'" % text
+        else:
+            text_repr = repr(text)
+        if html:
+            content = assert_and_parse_html(
+                self, content, None, "Response's content is not valid"
+                " HTML:")
+            text = assert_and_parse_html(self, text, None,
+                                         "Second argument is not valid HTML:")
+        real_count = content.count(text)
+        return text_repr, real_count, msg_prefix
 
-        # Prepend the request path to handle relative path redirects.
-        if not path.startswith('/'):
-            url = urljoin(response.request['PATH_INFO'], url)
-            path = urljoin(response.request['PATH_INFO'], path)
+    def assertcontains(self,
+                       response,
+                       text,
+                       count=None,
+                       status_code=200,
+                       msg_prefix='',
+                       html=False):
+        """
+        Assert resp indicates that some content was retrieved successfully.
 
-        if fetch_redirect_response:
-            # netloc might be empty, or in cases where Django tests the
-            # HTTP scheme, the convention is for netloc to be 'testserver'.
-            # Trust both as "internal" URLs here.
-            domain, port = split_domain_port(netloc)
-            if domain and not validate_host(domain, settings.ALLOWED_HOSTS):
-                raise ValueError(
-                    "The test client is unable to fetch remote URLs (got "
-                    "%s). "
-                    "If the host is served by Django, add '%s' to "
-                    "ALLOWED_HOSTS. "
-                    "Otherwise, use assertredirects(..., "
-                    "fetch_redirect_response=False)."
-                    % (url, domain)
-                )
-            redirect_response = response.client.get(path, QueryDict(query), secure=(scheme == 'https'))
+        (i.e., the HTTP status code was as expected) and
+        ``text`` occur ``count`` times in the content of the response.
+        If ``count`` is None, the count does not matter - assertion is
+        true if text occurs at least once in response.
+        """
+        text_repr, real_count, msg_prefix = self._assert_contains(
+            response, text, status_code, msg_prefix, html)
 
-            # Get the redirection page, using the same client that was used
-            # to obtain the original response.
+        if count is not None:
             self.assertEqual(
-                redirect_response.status_code, target_status_code,
-                msg_prefix + "could not retrieve redirection page '%s': "
-                             "response code was %d (expected %d)"
-                % (path, redirect_response.status_code, target_status_code)
-            )
+                real_count, count,
+                msg_prefix + "Found %d instances of %s in response (expected "
+                "%d)" % (real_count, text_repr, count))
+        else:
+            self.assertTrue(
+                real_count != 0,
+                msg_prefix + "could not find %s in response" % text_repr)
 
-    self.assertEqual(
-        url, expected_url, msg_prefix + "Response redirected to '%s', expected '%s'" % (url, expected_url)
-    )
+    def assertnotcontains(self,
+                          response,
+                          text,
+                          status_code=200,
+                          msg_prefix='',
+                          html=False):
+        """
+        Assert response indicates that some content was retrieved successfully.
 
+        (i.e., the HTTP status code was as expected) and that ``text`` does not
+        occur in the content of the response.
+        """
+        text_repr, real_count, msg_prefix = self._assert_contains(
+            response, text, status_code, msg_prefix, html)
 
-def _assert_contains(self, response, text, status_code, msg_prefix, html):
-    # If the response supports deferred rendering and hasn't been rendered
-    # yet, then ensure that it does get rendered before proceeding further.
-    if hasattr(response, 'render') and callable(
-            response.render) and not response.is_rendered:
-        response.render()
-
-    if msg_prefix:
-        msg_prefix += ": "
-
-    self.assertEqual(
-        response.status_code, status_code,
-        msg_prefix + "could not retrieve content: Response code was %d"
-                     " (expected %d)" % (response.status_code, status_code)
-    )
-
-    if response.streaming:
-        content = b''.join(response.streaming_content)
-    else:
-        content = response.content
-    if not isinstance(text, bytes) or html:
-        text = force_text(text, encoding=response.charset)
-        content = content.decode(response.charset)
-        text_repr = "'%s'" % text
-    else:
-        text_repr = repr(text)
-    if html:
-        content = assert_and_parse_html(self, content, None,
-                                        "Response's content is not valid"
-                                        " HTML:")
-        text = assert_and_parse_html(self, text, None,
-                                     "Second argument is not valid HTML:")
-    real_count = content.count(text)
-    return text_repr, real_count, msg_prefix
-
-
-def assertcontains(self, response, text, count=None, status_code=200,
-                   msg_prefix='', html=False):
-    """
-    Assert response indicates that some content was retrieved successfully.
-
-    (i.e., the HTTP status code was as expected) and ``text`` occur ``count``
-    times in the content of the response. If ``count`` is None, the count does
-    not matter - assertion is true if text occurs at least once in response.
-    """
-    text_repr, real_count, msg_prefix = self._assert_contains(
-        response, text, status_code, msg_prefix, html)
-
-    if count is not None:
         self.assertEqual(
-            real_count, count,
-            msg_prefix + "Found %d instances of %s in response (expected "
-                         "%d)" % (
-                real_count, text_repr, count)
-        )
-    else:
-        self.assertTrue(real_count != 0,
-                        msg_prefix + "could not find %s in response" %
-                        text_repr)
+            real_count, 0,
+            msg_prefix + "Response should not contain %s" % text_repr)
 
+    def assertformerror(self, response, form, field, errors, msg_prefix=''):
+        """
+        Assert form used to render the response has a specific field error.
+        """
+        if msg_prefix:
+            msg_prefix += ": "
 
-def assertnotcontains(self, response, text, status_code=200, msg_prefix='',
-                      html=False):
-    """
-    Assert response indicates that some content was retrieved successfully.
+        # Put context(s) into a list to simplify processing.
+        contexts = to_list(response.context)
+        if not contexts:
+            self.fail(msg_prefix +
+                      "Response did not use any contexts to render "
+                      "the response")
 
-    (i.e., the HTTP status code was as expected) and that ``text`` does not
-    occur in the content of the response.
-    """
-    text_repr, real_count, msg_prefix = self._assert_contains(
-        response, text, status_code, msg_prefix, html)
+        # Put error(s) into a list to simplify processing.
+        errors = to_list(errors)
 
-    self.assertEqual(real_count, 0,
-                     msg_prefix + "Response should not contain %s" %
-                     text_repr)
-
-
-def assertformerror(self, response, form, field, errors, msg_prefix=''):
-    """Assert form used to render the response has a specific field error."""
-    if msg_prefix:
-        msg_prefix += ": "
-
-    # Put context(s) into a list to simplify processing.
-    contexts = to_list(response.context)
-    if not contexts:
-        self.fail(
-            msg_prefix + "Response did not use any contexts to render "
-                         "the response")
-
-    # Put error(s) into a list to simplify processing.
-    errors = to_list(errors)
-
-    # Search all contexts for the error.
-    found_form = False
-    for i, context in enumerate(contexts):
-        if form not in context:
-            continue
-        found_form = True
-        for err in errors:
-            if field:
-                if field in context[form].errors:
-                    field_errors = context[form].errors[field]
-                    self.assertTrue(
-                        err in field_errors,
-                        msg_prefix + "The field '%s' on form '%s' in"
-                                     " context %d does not contain the "
-                                     "error '%s'"
-                                     " (actual errors: %s)" %
-                        (field, form, i, err, repr(field_errors))
-                    )
-                elif field in context[form].fields:
-                    self.fail(
-                        msg_prefix + "The field '%s' on form '%s' in "
-                                     "context %d contains no errors" %
-                        (field, form, i)
-                    )
+        # Search all contexts for the error.
+        found_form = False
+        for i, context in enumerate(contexts):
+            if form not in context:
+                continue
+            found_form = True
+            for err in errors:
+                if field:
+                    if field in context[form].errors:
+                        field_errors = context[form].errors[field]
+                        self.assertTrue(
+                            err in field_errors,
+                            msg_prefix + "The field '%s' on form '%s' in"
+                            " context %d does not contain the "
+                            "error '%s'"
+                            " (actual errors: %s)" %
+                            (field, form, i, err, repr(field_errors)))
+                    elif field in context[form].fields:
+                        self.fail(msg_prefix +
+                                  "The field '%s' on form '%s' in "
+                                  "context %d contains no errors" %
+                                  (field, form, i))
+                    else:
+                        self.fail(msg_prefix +
+                                  "The form '%s' in context %d does "
+                                  "not contain the field '%s'" %
+                                  (form, i, field))
                 else:
-                    self.fail(
-                        msg_prefix + "The form '%s' in context %d does "
-                                     "not contain the field '%s'" %
-                        (form, i, field)
-                    )
-            else:
-                non_field_errors = context[form].non_field_errors()
-                self.assertTrue(
-                    err in non_field_errors,
-                    msg_prefix + "The form '%s' in context %d does not"
-                                 " contain the non-field error '%s'"
-                                 " (actual errors: %s)" %
-                    (form, i, err, non_field_errors)
-                )
-    if not found_form:
-        self.fail(
-            msg_prefix + "The form '%s' was not used to render the "
-                         "response" % form)
-
-
-def assertformseterror(self, response, formset, form_index, field, errors,
-                       msg_prefix=''):
-    """
-    Assert that a formset used to render the response has a specific error.
-
-    For field errors, specify the ``form_index`` and the ``field``.
-    For non-field errors, specify the ``form_index`` and the ``field`` as
-    None.
-    For non-form errors, specify ``form_index`` as None and the ``field``
-    as None.
-    """
-    # Add punctuation to msg_prefix
-    if msg_prefix:
-        msg_prefix += ": "
-
-    # Put context(s) into a list to simplify processing.
-    contexts = to_list(response.context)
-    if not contexts:
-        self.fail(msg_prefix + 'Response did not use any contexts to '
-                               'render the response')
-
-    # Put error(s) into a list to simplify processing.
-    errors = to_list(errors)
-
-    # Search all contexts for the error.
-    found_formset = False
-    for i, context in enumerate(contexts):
-        if formset not in context:
-            continue
-        found_formset = True
-        for err in errors:
-            if field is not None:
-                if field in context[formset].forms[form_index].errors:
-                    field_errors = \
-                        context[formset].forms[form_index].errors[field]
+                    non_field_errors = context[form].non_field_errors()
                     self.assertTrue(
-                        err in field_errors,
-                        msg_prefix + "The field '%s' on formset '%s', "
-                                     "form %d in context %d does not "
-                                     "contain the "
-                                     "error '%s' (actual errors: %s)" %
-                        (field, formset, form_index, i, err,
-                         repr(field_errors))
-                    )
-                elif field in context[formset].forms[form_index].fields:
-                    self.fail(
-                        msg_prefix + "The field '%s' on formset '%s', "
-                                     "form %d in context %d contains no "
-                                     "errors"
-                        % (field, formset, form_index, i)
-                    )
+                        err in non_field_errors,
+                        msg_prefix + "The form '%s' in context %d does not"
+                        " contain the non-field error '%s'"
+                        " (actual errors: %s)" %
+                        (form, i, err, non_field_errors))
+        if not found_form:
+            self.fail(msg_prefix + "The form '%s' was not used to render the "
+                      "response" % form)
+
+    def assertformseterror(self,
+                           response,
+                           formset,
+                           form_index,
+                           field,
+                           errors,
+                           msg_prefix=''):
+        """
+        Assert that a formset used to render the response has a specific error.
+
+        For field errors, specify the ``form_index`` and the ``field``.
+        For non-field errors, specify the ``form_index`` and the ``field`` as
+        None.
+        For non-form errors, specify ``form_index`` as None and the ``field``
+        as None.
+        """
+        # Add punctuation to msg_prefix
+        if msg_prefix:
+            msg_prefix += ": "
+
+        # Put context(s) into a list to simplify processing.
+        contexts = to_list(response.context)
+        if not contexts:
+            self.fail(msg_prefix + 'Response did not use any contexts to '
+                      'render the response')
+
+        # Put error(s) into a list to simplify processing.
+        errors = to_list(errors)
+
+        # Search all contexts for the error.
+        found_formset = False
+        for i, context in enumerate(contexts):
+            if formset not in context:
+                continue
+            found_formset = True
+            for err in errors:
+                if field is not None:
+                    if field in context[formset].forms[form_index].errors:
+                        field_errors = \
+                            context[formset].forms[form_index].errors[field]
+                        self.assertTrue(
+                            err in field_errors,
+                            msg_prefix + "The field '%s' on formset '%s', "
+                            "form %d in context %d does not "
+                            "contain the "
+                            "error '%s' (actual errors: %s)" %
+                            (field, formset, form_index, i, err,
+                             repr(field_errors)))
+                    elif field in context[formset].forms[form_index].fields:
+                        self.fail(msg_prefix +
+                                  "The field '%s' on formset '%s', "
+                                  "form %d in context %d contains no "
+                                  "errors" % (field, formset, form_index, i))
+                    else:
+                        self.fail(msg_prefix + "The formset '%s', form %d in "
+                                  "context %d does not contain the "
+                                  "field '%s'" %
+                                  (formset, form_index, i, field))
+                elif form_index is not None:
+                    non_field_errors = context[formset].forms[
+                        form_index].non_field_errors()
+                    self.assertFalse(
+                        non_field_errors,
+                        msg_prefix + "The formset '%s', form %d in context %d "
+                        "does not contain any non-field "
+                        "errors." % (formset, form_index, i))
+                    self.assertTrue(
+                        err in non_field_errors,
+                        msg_prefix + "The formset '%s', form %d in context %d "
+                        "does not contain the non-field error "
+                        "'%s' (actual errors: %s)" %
+                        (formset, form_index, i, err, repr(non_field_errors)))
                 else:
-                    self.fail(
-                        msg_prefix + "The formset '%s', form %d in "
-                                     "context %d does not contain the "
-                                     "field '%s'"
-                        % (formset, form_index, i, field)
-                    )
-            elif form_index is not None:
-                non_field_errors = context[formset].forms[form_index].non_field_errors()
-                self.assertFalse(non_field_errors,
-                                 msg_prefix + "The formset '%s', form %d in context %d "
-                                              "does not contain any non-field "
-                                              "errors." % (formset, form_index, i)
-                                 )
-                self.assertTrue(err in non_field_errors,
-                                msg_prefix + "The formset '%s', form %d in context %d "
-                                             "does not contain the non-field error "
-                                             "'%s' (actual errors: %s)" % (
-                                    formset, form_index, i, err, repr(non_field_errors))
-                                )
-            else:
-                non_form_errors = context[formset].non_form_errors()
-                self.assertFalse(non_form_errors,
-                                 msg_prefix + "The formset '%s' in context %d does not "
-                                              "contain any non-form errors." % (formset, i)
-                                 )
-                self.assertTrue(err in non_form_errors,
-                                msg_prefix + "The formset '%s' in context %d does not "
-                                             "contain the non-form error '%s' ("
-                                             "actual errors: %s)" % (formset, i, err, repr(non_form_errors))
-                                )
-    if not found_formset:
-        self.fail(msg_prefix + "The formset '%s' was not used to render the response" % formset)
+                    non_form_errors = context[formset].non_form_errors()
+                    self.assertFalse(
+                        non_form_errors,
+                        msg_prefix + "The formset '%s' in context %d does not "
+                        "contain any non-form errors." % (formset, i))
+                    self.assertTrue(
+                        err in non_form_errors,
+                        msg_prefix + "The formset '%s' in context %d does not "
+                        "contain the non-form error '%s' ("
+                        "actual errors: %s)" %
+                        (formset, i, err, repr(non_form_errors)))
+        if not found_formset:
+            self.fail(msg_prefix +
+                      "The formset '%s' was not used to render the response" %
+                      formset)
 
+    def _assert_template_used(self, response, template_name, msg_prefix):
+        if response is None and template_name is None:
+            raise TypeError(
+                'response and/or template_name argument must be provided')
 
-def _assert_template_used(self, response, template_name, msg_prefix):
-    if response is None and template_name is None:
-        raise TypeError('response and/or template_name argument must be provided')
+        if msg_prefix:
+            msg_prefix += ": "
 
-    if msg_prefix:
-        msg_prefix += ": "
+        if template_name is not None and response is not None and not hasattr(
+                response, 'templates'):
+            raise ValueError(
+                "assertTemplateUsed() and assertTemplateNotUsed() are only "
+                "usable on responses fetched using the Django test Client.")
 
-    if template_name is not None and response is not None and not hasattr(response, 'templates'):
-        raise ValueError(
-            "assertTemplateUsed() and assertTemplateNotUsed() are only "
-            "usable on responses fetched using the Django test Client."
-        )
+        if not hasattr(response, 'templates') or (response is None
+                                                  and template_name):
+            if response:
+                template_name = response
+                response = None
+            # use this template with context manager
+            return template_name, None, msg_prefix
 
-    if not hasattr(response, 'templates') or (response is None and template_name):
-        if response:
-            template_name = response
-            response = None
-        # use this template with context manager
-        return template_name, None, msg_prefix
+        template_names = [
+            tonnes.name for tonnes in response.templates
+            if tonnes.name is not None
+        ]
+        return None, template_names, msg_prefix
 
-    template_names = [tonnes.name for tonnes in response.templates if
-                      tonnes.name is not None]
-    return None, template_names, msg_prefix
+    def asserttemplateused(self,
+                           response=None,
+                           template_name=None,
+                           msg_prefix='',
+                           count=None):
+        """
+        Assert template with provided name used in rendering response.
+        Usable as context manager.
+        """
+        context_mgr_template, template_names, msg_prefix = \
+            self._assert_template_used(response, template_name, msg_prefix)
 
+        if context_mgr_template:
+            # Use assertTemplateUsed as context manager.
+            return _AssertTemplateUsedContext(self, context_mgr_template)
 
-def asserttemplateused(self, response=None, template_name=None, msg_prefix='', count=None):
-    """
-    Assert template with provided name used in rendering response.
+        if not template_names:
+            self.fail(msg_prefix + "No templates used to render the response")
 
-    Usable as context manager.
-    """
-    context_mgr_template, template_names, msg_prefix = self._assert_template_used(response, template_name, msg_prefix)
+        self.assertTrue(
+            template_name in template_names,
+            msg_prefix + "Template '%s' was not a template used to render"
+            " the response. Actual template(s) used: %s" %
+            (template_name, ', '.join(template_names)))
 
-    if context_mgr_template:
-        # Use assertTemplateUsed as context manager.
-        return _AssertTemplateUsedContext(self, context_mgr_template)
+        if count is not None:
+            self.assertEqual(
+                template_names.count(template_name), count,
+                msg_prefix + "Template '%s' was expected to be rendered %d "
+                "time(s) but was actually rendered %d time(s)." %
+                (template_name, count, template_names.count(template_name)))
+        return
 
-    if not template_names:
-        self.fail(msg_prefix + "No templates used to render the response")
+    def asserttemplatenotused(self,
+                              response=None,
+                              template_name=None,
+                              msg_prefix=''):
+        """
+        Assert template with provided name was NOT used in rendering response.
 
-    self.assertTrue(template_name in template_names,
-                    msg_prefix + "Template '%s' was not a template used to render"
-                                 " the response. Actual template(s) used: %s"
-                    % (template_name, ', '.join(template_names))
-                    )
+        Usable as context manager.
+        """
+        context_mgr_template, template_names, msg_prefix = \
+            self._assert_template_used(response, template_name, msg_prefix)
+        if context_mgr_template:
+            # Use assertTemplateNotUsed as context manager.
+            return _AssertTemplateNotUsedContext(self, context_mgr_template)
 
-    if count is not None:
-        self.assertEqual(
-            template_names.count(template_name), count,
-            msg_prefix + "Template '%s' was expected to be rendered %d "
-                         "time(s) but was actually rendered %d time(s)."
-            % (template_name, count, template_names.count(template_name))
-        )
-    return
+        return self.assertFalse(
+            template_name in template_names,
+            msg_prefix + "Template '%s' was used unexpectedly in rendering "
+            "the response" % template_name)
 
+    @contextmanager
+    def _assert_raises_message_cm(self, expected_exception, expected_message):
+        with self.assertRaises(expected_exception) as con_man:
+            yield con_man
+        self.assertIn(expected_message, str(con_man.exception))
 
-def asserttemplatenotused(self, response=None, template_name=None, msg_prefix=''):
-    """
-    Assert template with provided name was NOT used in rendering the response.
+    def assertraisesmessage(self, expected_exception, expected_message, *args,
+                            **kwargs):
+        """
+        Assert expected_message is found in the message of a raised exception.
 
-    Usable as context manager.
-    """
-    context_mgr_template, template_names, msg_prefix = \
-        self._assert_template_used(response, template_name, msg_prefix)
-    if context_mgr_template:
-        # Use assertTemplateNotUsed as context manager.
-        return _AssertTemplateNotUsedContext(self, context_mgr_template)
+        Args:
+            expected_exception: Exception class expected to be raised.
+            expected_message: expected error message string value.
+            args: Function to be called and extra positional args.
+            kwargs: Extra kwargs.
+            :param expected_exception:
+            :param expected_message:
+            :param self:
+        """
+        callable_obj = None
+        if args:
+            callable_obj = args[0]
+            args = args[1:]
 
-    return self.assertFalse(template_name in template_names,
-                            msg_prefix + "Template '%s' was used unexpectedly in rendering "
-                                         "the response" % template_name
-                            )
+        con_man = self._assert_raises_message_cm(expected_exception,
+                                                 expected_message)
+        # Assertion used in context manager fashion.
+        if callable_obj is None:
+            return con_man
+        # Assertion was passed a callable.
+        with con_man:
+            return callable_obj(*args, **kwargs)
 
+    def assertfieldoutput(self,
+                          fieldclass,
+                          valid,
+                          invalid,
+                          field_args=None,
+                          field_kwargs=None,
+                          empty_value=''):
+        """
+        Assert that a form field behaves correctly with various inputs.
 
-@contextmanager
-def _assert_raises_message_cm(self, expected_exception, expected_message):
-    with self.assertRaises(expected_exception) as con_man:
-        yield con_man
-    self.assertIn(expected_message, str(con_man.exception))
+        Args:
+            fieldclass: the class of the field to be tested.
+            valid: a dictionary mapping valid inputs to their expected
+                    cleaned values.
+            invalid: a dictionary mapping invalid inputs to one or more
+                    raised error messages.
+            field_args: the args passed to instantiate the field
+            field_kwargs: the kwargs passed to instantiate the field
+            empty_value: the expected clean output for inputs in empty_values
+            :param fieldclass:
+            :param valid:
+            :param invalid:
+            :param field_args:
+            :param field_kwargs:
+            :param empty_value:
+            :param self:
+        """
+        if field_args is None:
+            field_args = []
+        if field_kwargs is None:
+            field_kwargs = {}
+        required = fieldclass(*field_args, **field_kwargs)
+        optional = fieldclass(*field_args, **dict(field_kwargs,
+                                                  required=False))
+        # test valid inputs
+        for t_input, output in valid.items():
+            self.assertEqual(required.clean(t_input), output)
+            self.assertEqual(optional.clean(t_input), output)
+        # test invalid inputs
+        for t_input, errors in invalid.items():
+            with self.assertRaises(ValidationError) as context_manager:
+                required.clean(t_input)
+            self.assertEqual(context_manager.exception.messages, errors)
 
+            with self.assertRaises(ValidationError) as context_manager:
+                optional.clean(t_input)
+            self.assertEqual(context_manager.exception.messages, errors)
+        # test required inputs
+        error_required = [force_text(required.error_messages['required'])]
+        for empty in required.empty_values:
+            with self.assertRaises(ValidationError) as context_manager:
+                required.clean(empty)
+            self.assertEqual(context_manager.exception.messages,
+                             error_required)
+            self.assertEqual(optional.clean(empty), empty_value)
+        # test that max_length and min_length are always accepted
+        if issubclass(fieldclass, CharField):
+            field_kwargs.update({'min_length': 2, 'max_length': 20})
+            self.assertIsInstance(fieldclass(*field_args, **field_kwargs),
+                                  fieldclass)
 
-def assertraisesmessage(self, expected_exception, expected_message, *args, **kwargs):
-    """
-    Assert expected_message is found in the the message of a raised exception.
+    def asserthtmlequal(self, html1, html2, msg=None):
+        """
+        Assert that two HTML snippets are semantically the same.
 
-    Args:
-        expected_exception: Exception class expected to be raised.
-        expected_message: expected error message string value.
-        args: Function to be called and extra positional args.
-        kwargs: Extra kwargs.
-        :param expected_exception:
-        :param expected_message:
-        :param self:
-    """
-    callable_obj = None
-    if args:
-        callable_obj = args[0]
-        args = args[1:]
+        Whitespace in most cases is ignored, and attribute ordering is not
+        significant. The arguments must be valid HTML.
+        """
+        dom1 = assert_and_parse_html(self, html1, msg,
+                                     'First argument is not valid HTML:')
+        dom2 = assert_and_parse_html(self, html2, msg,
+                                     'Second argument is not valid HTML:')
 
-    con_man = self._assert_raises_message_cm(expected_exception, expected_message)
-    # Assertion used in context manager fashion.
-    if callable_obj is None:
-        return con_man
-    # Assertion was passed a callable.
-    with con_man:
-        return callable_obj(*args, **kwargs)
-
-
-def assertfieldoutput(self, fieldclass, valid, invalid, field_args=None,
-                      field_kwargs=None, empty_value=''):
-    """
-    Assert that a form field behaves correctly with various inputs.
-
-    Args:
-        fieldclass: the class of the field to be tested.
-        valid: a dictionary mapping valid inputs to their expected
-                cleaned values.
-        invalid: a dictionary mapping invalid inputs to one or more
-                raised error messages.
-        field_args: the args passed to instantiate the field
-        field_kwargs: the kwargs passed to instantiate the field
-        empty_value: the expected clean output for inputs in empty_values
-        :param fieldclass:
-        :param valid:
-        :param invalid:
-        :param field_args:
-        :param field_kwargs:
-        :param empty_value:
-        :param self:
-    """
-    if field_args is None:
-        field_args = []
-    if field_kwargs is None:
-        field_kwargs = {}
-    required = fieldclass(*field_args, **field_kwargs)
-    optional = fieldclass(*field_args,
-                          **dict(field_kwargs, required=False))
-    # test valid inputs
-    for t_input, output in valid.items():
-        self.assertEqual(required.clean(t_input), output)
-        self.assertEqual(optional.clean(t_input), output)
-    # test invalid inputs
-    for t_input, errors in invalid.items():
-        with self.assertRaises(ValidationError) as context_manager:
-            required.clean(t_input)
-        self.assertEqual(context_manager.exception.messages, errors)
-
-        with self.assertRaises(ValidationError) as context_manager:
-            optional.clean(t_input)
-        self.assertEqual(context_manager.exception.messages, errors)
-    # test required inputs
-    error_required = [force_text(required.error_messages['required'])]
-    for empty in required.empty_values:
-        with self.assertRaises(ValidationError) as context_manager:
-            required.clean(empty)
-        self.assertEqual(context_manager.exception.messages, error_required)
-        self.assertEqual(optional.clean(empty), empty_value)
-    # test that max_length and min_length are always accepted
-    if issubclass(fieldclass, CharField):
-        field_kwargs.update({'min_length': 2, 'max_length': 20})
-        self.assertIsInstance(fieldclass(*field_args, **field_kwargs), fieldclass)
-
-
-def asserthtmlequal(self, html1, html2, msg=None):
-    """
-    Assert that two HTML snippets are semantically the same.
-
-    Whitespace in most cases is ignored, and attribute ordering is not
-    significant. The arguments must be valid HTML.
-    """
-    dom1 = assert_and_parse_html(self, html1, msg,
-                                 'First argument is not valid HTML:')
-    dom2 = assert_and_parse_html(self, html2, msg,
-                                 'Second argument is not valid HTML:')
-
-    if dom1 != dom2:
-        standardmsg = '%s != %s' % (
-            safe_repr(dom1, True), safe_repr(dom2, True))
-        diff = ('\n' + '\n'.join(difflib.ndiff(
-            str(dom1).splitlines(), str(dom2).splitlines(),
-        )))
-        standardmsg = self._truncateMessage(standardmsg, diff)
-        self.fail(self._formatMessage(msg, standardmsg))
-
-
-def asserthtmlnotequal(self, html1, html2, msg=None):
-    """Assert that two HTML snippets are not semantically equivalent."""
-    dom1 = assert_and_parse_html(self, html1, msg,
-                                 'First argument is not valid HTML:')
-    dom2 = assert_and_parse_html(self, html2, msg,
-                                 'Second argument is not valid HTML:')
-
-    if dom1 == dom2:
-        standardmsg = '%s == %s' % (
-            safe_repr(dom1, True), safe_repr(dom2, True))
-        self.fail(self._formatMessage(msg, standardmsg))
-
-
-def assertinhtml(self, needle, haystack, count=None, msg_prefix=''):
-    """Add docstring."""  # TODO add docstring.
-    needle = assert_and_parse_html(self, needle, None, 'First argument is not valid HTML:')
-    haystack = assert_and_parse_html(self, haystack, None, 'Second argument is not valid HTML:')
-    real_count = haystack.count(needle)
-    if count is not None:
-        self.assertEqual(real_count, count, msg_prefix +
-                         "Found %d instances of '%s' in response (expected %d)" % (
-                             real_count, needle, count)
-                         )
-    else:
-        self.assertTrue(real_count != 0, msg_prefix + "could not find '%s' in response" % needle)
-
-
-def assertjsonequal(self, raw, expected_data, msg=None):
-    """
-    Assert that the JSON fragments raw and expected_data are equal.
-
-    Usual JSON non-significant whitespace rules apply as the heavyweight
-    is delegated to the json library.
-    """
-    try:
-        data = json.loads(raw)
-    except ValueError:
-        self.fail("First argument is not valid JSON: %r" % raw)
-    if isinstance(expected_data, str):
-        try:
-            expected_data = json.loads(expected_data)
-        except ValueError:
-            self.fail(
-                "Second argument is not valid JSON: %r" % expected_data)
-    self.assertEqual(data, expected_data, msg=msg)
-
-
-def assertjsonnotequal(self, raw, expected_data, msg=None):
-    """
-    Assert that the JSON fragments raw and expected_data are not equal.
-
-    Usual JSON non-significant whitespace rules apply as the heavyweight
-    is delegated to the json library.
-    """
-    try:
-        data = json.loads(raw)
-    except ValueError:
-        self.fail("First argument is not valid JSON: %r" % raw)
-    if isinstance(expected_data, str):
-        try:
-            expected_data = json.loads(expected_data)
-        except ValueError:
-            self.fail(
-                "Second argument is not valid JSON: %r" % expected_data)
-    self.assertNotEqual(data, expected_data, msg=msg)
-
-
-def assertxmlequal(self, xml1, xml2, msg=None):
-    """
-    Assert that two XML snippets are semantically the same.
-
-    Whitespace in most cases is ignored and attribute ordering is not
-    significant. The arguments must be valid XML.
-    """
-    try:
-        result = compare_xml(xml1, xml2)
-    except Exception as exc:
-        standardmsg = 'First or second argument is not valid XML\n%s' % exc
-        self.fail(self._formatMessage(msg, standardmsg))
-    else:
-        if not result:
-            standardmsg = '%s != %s' % (
-                safe_repr(xml1, True), safe_repr(xml2, True))
+        if dom1 != dom2:
+            standardmsg = '%s != %s' % (safe_repr(dom1,
+                                                  True), safe_repr(dom2, True))
             diff = ('\n' + '\n'.join(
-                difflib.ndiff(xml1.splitlines(), xml2.splitlines())
-            ))
+                difflib.ndiff(
+                    str(dom1).splitlines(),
+                    str(dom2).splitlines(),
+                )))
             standardmsg = self._truncateMessage(standardmsg, diff)
             self.fail(self._formatMessage(msg, standardmsg))
 
+    def asserthtmlnotequal(self, html1, html2, msg=None):
+        """Assert that two HTML snippets are not semantically equivalent."""
+        dom1 = assert_and_parse_html(self, html1, msg,
+                                     'First argument is not valid HTML:')
+        dom2 = assert_and_parse_html(self, html2, msg,
+                                     'Second argument is not valid HTML:')
 
-def assertxmlnotequal(self, xml1, xml2, msg=None):
-    """
-    Assert that two XML snippets are not semantically equivalent.
-
-    Whitespace in most cases is ignored and attribute ordering is not
-    significant. The arguments must be valid XML.
-    """
-    try:
-        result = compare_xml(xml1, xml2)
-    except Exception as exc:
-        standardmsg = 'First or second argument is not valid XML\n%s' % exc
-        self.fail(self._formatMessage(msg, standardmsg))
-    else:
-        if result:
-            standardmsg = '%s == %s' % (
-                safe_repr(xml1, True), safe_repr(xml2, True))
+        if dom1 == dom2:
+            standardmsg = '%s == %s' % (safe_repr(dom1,
+                                                  True), safe_repr(dom2, True))
             self.fail(self._formatMessage(msg, standardmsg))
+
+    def assertinhtml(self, needle, haystack, count=None, msg_prefix=''):
+        """Add docstring."""  # TODO add docstring.
+        needle = assert_and_parse_html(self, needle, None,
+                                       'First argument is not valid HTML:')
+        haystack = assert_and_parse_html(self, haystack, None,
+                                         'Second argument is not valid HTML:')
+        real_count = haystack.count(needle)
+        if count is not None:
+            self.assertEqual(
+                real_count, count, msg_prefix +
+                "Found %d instances of '%s' in response (expected %d)" %
+                (real_count, needle, count))
+        else:
+            self.assertTrue(
+                real_count != 0,
+                msg_prefix + "could not find '%s' in response" % needle)
+
+    def assertjsonequal(self, raw, expected_data, msg=None):
+        """
+        Assert that the JSON fragments raw and expected_data are equal.
+
+        Usual JSON non-significant whitespace rules apply as the heavyweight
+        is delegated to the json library.
+        """
+        try:
+            data = json.loads(raw)
+        except ValueError:
+            self.fail("First argument is not valid JSON: %r" % raw)
+        if isinstance(expected_data, str):
+            try:
+                expected_data = json.loads(expected_data)
+            except ValueError:
+                self.fail("Second argument is not valid JSON: %r" %
+                          expected_data)
+        self.assertEqual(data, expected_data, msg=msg)
+
+    def assertjsonnotequal(self, raw, expected_data, msg=None):
+        """
+        Assert that the JSON fragments raw and expected_data are not equal.
+
+        Usual JSON non-significant whitespace rules apply as the heavyweight
+        is delegated to the json library.
+        """
+        try:
+            data = json.loads(raw)
+        except ValueError:
+            self.fail("First argument is not valid JSON: %r" % raw)
+        if isinstance(expected_data, str):
+            try:
+                expected_data = json.loads(expected_data)
+            except ValueError:
+                self.fail("Second argument is not valid JSON: %r" %
+                          expected_data)
+        self.assertNotEqual(data, expected_data, msg=msg)
+
+    def assertxmlequal(self, xml1, xml2, msg=None):
+        """
+        Assert that two XML snippets are semantically the same.
+
+        Whitespace in most cases is ignored and attribute ordering is not
+        significant. The arguments must be valid XML.
+        """
+        try:
+            result = compare_xml(xml1, xml2)
+        except Exception as exc:
+            standardmsg = 'First or second argument is not valid XML\n%s' % exc
+            self.fail(self._formatMessage(msg, standardmsg))
+        else:
+            if not result:
+                standardmsg = '%s != %s' % (safe_repr(
+                    xml1, True), safe_repr(xml2, True))
+                diff = ('\n' + '\n'.join(
+                    difflib.ndiff(xml1.splitlines(), xml2.splitlines())))
+                standardmsg = self._truncateMessage(standardmsg, diff)
+                self.fail(self._formatMessage(msg, standardmsg))
+
+    def assertxmlnotequal(self, xml1, xml2, msg=None):
+        """
+        Assert that two XML snippets are not semantically equivalent.
+
+        Whitespace in most cases is ignored and attribute ordering is not
+        significant. The arguments must be valid XML.
+        """
+        try:
+            result = compare_xml(xml1, xml2)
+        except Exception as exc:
+            standardmsg = 'First or second argument is not valid XML\n%s' % exc
+            self.fail(self._formatMessage(msg, standardmsg))
+        else:
+            if result:
+                standardmsg = '%s == %s' % (safe_repr(
+                    xml1, True), safe_repr(xml2, True))
+                self.fail(self._formatMessage(msg, standardmsg))
 
 
 class TransactionTestCase(SimpleTestCase):
@@ -953,7 +955,8 @@ class TransactionTestCase(SimpleTestCase):
                 enter=True,
             )
             for db_name in self._databases_names(include_mirrors=False):
-                emit_post_migrate_signal(verbosity=0, interactive=False,
+                emit_post_migrate_signal(verbosity=0,
+                                         interactive=False,
                                          db=db_name)
         try:
             self._fixture_setup()
@@ -979,9 +982,8 @@ class TransactionTestCase(SimpleTestCase):
         # including mirrors or not. Otherwise, just on the default DB.
         if cls.multi_db:
             return [
-                alias for alias in connections
-                if include_mirrors or not
-                connections[alias].settings_dict['TEST']['MIRROR']
+                alias for alias in connections if include_mirrors
+                or not connections[alias].settings_dict['TEST']['MIRROR']
             ]
 
         return [DEFAULT_DB_ALIAS]
@@ -1006,20 +1008,22 @@ class TransactionTestCase(SimpleTestCase):
 
             # If we need to provide replica initial data from migrated apps,
             # then do so.
-            if self.serialized_rollback and hasattr(connections[db_name],
-                                                    "_test_serialized_contents"):
+            if self.serialized_rollback and hasattr(
+                    connections[db_name], "_test_serialized_contents"):
                 if self.available_apps is not None:
                     apps.unset_available_apps()
                 connections[db_name].creation.deserialize_db_from_string(
-                    connections[db_name]._test_serialized_contents
-                )
+                    connections[db_name]._test_serialized_contents)
                 if self.available_apps is not None:
                     apps.set_available_apps(self.available_apps)
 
             if self.fixtures:
                 # We have to use this slightly awkward syntax due to the fact
                 # that we're using *args and **kwargs together.
-                call_command('loaddata', *self.fixtures, **{'verbosity': 0, 'database': db_name})
+                call_command('loaddata', *self.fixtures, **{
+                    'verbosity': 0,
+                    'database': db_name
+                })
 
     def _should_reload_connections(self):
         return True
@@ -1059,34 +1063,45 @@ class TransactionTestCase(SimpleTestCase):
         for db_name in self._databases_names(include_mirrors=False):
             # Flush the database
             inhibit_post_migrate = (
-                    self.available_apps is not None or
-                    (  # Inhibit the post_migrate signal when using serialized
-                        # rollback to avoid trying to recreate the
-                        # serialized data.
-                            self.serialized_rollback and
-                            hasattr(connections[db_name],
-                                    '_test_serialized_contents')
-                    )
-            )
-            call_command('flush', verbosity=0, interactive=False,
-                         database=db_name, reset_sequences=False,
+                self.available_apps is not None
+                or (  # Inhibit the post_migrate signal when using serialized
+                    # rollback to avoid trying to recreate the
+                    # serialized data.
+                    self.serialized_rollback and hasattr(
+                        connections[db_name], '_test_serialized_contents')))
+            call_command('flush',
+                         verbosity=0,
+                         interactive=False,
+                         database=db_name,
+                         reset_sequences=False,
                          allow_cascade=self.available_apps is not None,
                          inhibit_post_migrate=inhibit_post_migrate)
 
-    def assert_queryset_equal(self, queryset, values, transform=repr, ordered=True, msg=None):
+    def assert_queryset_equal(self,
+                              queryset,
+                              values,
+                              transform=repr,
+                              ordered=True,
+                              msg=None):
         """Add docstring."""  # TODO add docstring.
         items = map(transform, queryset)
         if not ordered:
             return self.assertEqual(Counter(items), Counter(values), msg=msg)
         values = list(values)
-        # For example queryset.iterator() could be passed as queryset, but it does not
-        # have 'ordered' attribute.
-        if len(values) > 1 and hasattr(queryset, 'ordered') and not queryset.ordered:
+        # For example queryset.iterator() could be passed as queryset,
+        # but it does not have 'ordered' attribute.
+        if len(values) > 1 and hasattr(queryset,
+                                       'ordered') and not queryset.ordered:
             raise ValueError("Trying to compare non-ordered queryset "
                              "against more than one ordered values")
         return self.assertEqual(list(items), values, msg=msg)
 
-    def assert_num_queries(self, num, func=None, *args, using=DEFAULT_DB_ALIAS, **kwargs):
+    def assert_num_queries(self,
+                           num,
+                           func=None,
+                           *args,
+                           using=DEFAULT_DB_ALIAS,
+                           **kwargs):
         """Add docstring."""  # TODO add docstring.
         conn = connections[using]
 
@@ -1100,7 +1115,8 @@ class TransactionTestCase(SimpleTestCase):
 
 def conns_support_trans():
     """Return True if all connections support transactions."""
-    return all(conn.features.supports_transactions for conn in connections.all())
+    return all(conn.features.supports_transactions
+               for conn in connections.all())
 
 
 class TestCase(TransactionTestCase):
@@ -1143,8 +1159,10 @@ class TestCase(TransactionTestCase):
         if cls.fixtures:
             for db_name in cls._databases_names(include_mirrors=False):
                 try:
-                    call_command('loaddata', *cls.fixtures,
-                                 **{'verbosity': 0, 'database': db_name})
+                    call_command('loaddata', *cls.fixtures, **{
+                        'verbosity': 0,
+                        'database': db_name
+                    })
                 except Exception:
                     cls._rollback_atomics(cls.cls_atomics)
                     raise
@@ -1180,7 +1198,8 @@ class TestCase(TransactionTestCase):
             self.set_up_test_data()
             return super()._fixture_setup()
 
-        assert not self.reset_sequences, 'reset_sequences cannot be used on TestCase instances'
+        assert not (self.reset_sequences,
+                    'reset_sequences cannot be used on TestCase instances')
         self.atomics = self._enter_atomics()
 
     def _fixture_teardown(self):
@@ -1195,10 +1214,8 @@ class TestCase(TransactionTestCase):
 
     @staticmethod
     def _should_check_constraints(conn):
-        return (
-                conn.features.can_defer_constraint_checks and
-                not conn.needs_rollback and conn.is_usable()
-        )
+        return (conn.features.can_defer_constraint_checks
+                and not conn.needs_rollback and conn.is_usable())
 
 
 class CheckCondition:
@@ -1209,12 +1226,13 @@ class CheckCondition:
 
     def add_condition(self, condition, reason):
         """Add docstring."""  # TODO add docstring.
-        return self.__class__(*self.conditions + ((condition, reason),))
+        return self.__class__(*self.conditions + ((condition, reason), ))
 
     def __get__(self, instance, cls=None):
         # Trigger access for all bases.
-        if any(getattr(base, '__unittest_skip__', False) for base in
-               cls.__bases__):
+        if any(
+                getattr(base, '__unittest_skip__', False)
+                for base in cls.__bases__):
             return True
         for condition, reason in self.conditions:
             if condition():
@@ -1227,10 +1245,12 @@ class CheckCondition:
 
 def _deferredskip(condition, reason):
     """Add docstring."""  # TODO add docstring.
+
     def decorator(test_func):
         """Add docstring."""  # TODO add docstring.
-        if not (isinstance(test_func, type) and
-                issubclass(test_func, unittest.TestCase)):
+        if not (isinstance(test_func, type)
+                and issubclass(test_func, unittest.TestCase)):
+
             @wraps(test_func)
             def skip_wrapper(*args, **kwargs):
                 """Add docstring."""  # TODO add docstring.
@@ -1246,36 +1266,44 @@ def _deferredskip(condition, reason):
             # avoid triggering the descriptor.
             skip = test_func.__dict__.get('__unittest_skip__')
             if isinstance(skip, CheckCondition):
-                test_item.__unittest_skip__ = skip.add_condition(condition,
-                                                                 reason)
+                test_item.__unittest_skip__ = skip.add_condition(
+                    condition, reason)
             elif skip is not True:
-                test_item.__unittest_skip__ = CheckCondition((condition, reason))
+                test_item.__unittest_skip__ = CheckCondition(
+                    (condition, reason))
         return test_item
 
     return decorator
 
-    def skipffdbfeature(*features):
-        """Skip a test if a database has at least one of the named features."""
+    # def skipffdbfeature(*features):
+    #     """
+    #     Skip a test if a database has at least one of the named features.
+    #     """
 
-    return _deferredskip(lambda: any(getattr(connection.features, feature, False) for feature in features),
-                         "Database has feature(s) %s" % ", ".join(features)
-                         )
+    # return _deferredskip(
+    #     lambda: any(
+    #         getattr(connection.features, feature, False)
+    #         for feature in features),
+    #     "Database has feature(s) %s" % ", ".join(features))
 
-    def skipunlessdbfeature(*features):
-        """Skip a test unless a database has all the named features."""
+    # def skipunlessdbfeature(*features):
+    #     """Skip a test unless a database has all the named features."""
 
-    return _deferredskip(
-        lambda: not all(getattr(connection.features, feature, False) for feature in features),
-        "Database does not support feature(s): %s" % ", ".join(features)
-    )
+    # return _deferredskip(
+    #     lambda: not all(
+    #         getattr(connection.features, feature, False)
+    #         for feature in features),
+    #     "Database does not support feature(s): %s" % ", ".join(features))
 
-    def skipunlessanydbfeature(*features):
-        """Skip a test unless a database has any of the named features."""
+    # def skipunlessanydbfeature(*features):
+    #     """Skip a test unless a database has any of the named features."""
 
-    return _deferredskip(
-        lambda: not any(getattr(connection.features, feature, False) for feature in features),
-        "Database does not support any of the feature(s): %s" % ", ".join(features)
-    )
+    # return _deferredskip(
+    #     lambda: not any(
+    #         getattr(connection.features, feature, False)
+    #         for feature in features),
+    #     "Database does not support any of the feature(s): %s" %
+    #     ", ".join(features))
 
 
 class QuietWSGIRequestHandler(WSGIRequestHandler):
@@ -1335,7 +1363,8 @@ class FSFilesHandler(WSGIHandler):
         # invokes staticfiles' finders functionality.
         # TODO: Modify if/when that internal API is refactored
         final_rel_path = os_rel_path.replace('\\', '/').lstrip('/')
-        return serve(request, final_rel_path,
+        return serve(request,
+                     final_rel_path,
                      document_root=self.get_base_dir())
 
     def __call__(self, environ, start_response):
@@ -1385,7 +1414,11 @@ class _MediaFilesHandler(FSFilesHandler):
 class LiveServerThread(threading.Thread):
     """Thread for running a live http server while the tests are running."""
 
-    def __init__(self, host, static_handler, connections_override=None, port=0):
+    def __init__(self,
+                 host,
+                 static_handler,
+                 connections_override=None,
+                 port=0):
         self.httpd = self._create_server()
         self.host = host
         self.port = port
@@ -1396,7 +1429,7 @@ class LiveServerThread(threading.Thread):
         super().__init__()
 
     def run(self):
-        """Setup live server databases then loop over handling HTTP requests."""
+        """Setup live server DBs then loop over handling HTTP requests."""
         if self.connections_override:
             # Override this thread's database connections with the ones
             # provided by the main thread.
@@ -1466,8 +1499,7 @@ class LiveServerTestCase(TransactionTestCase):
         #         connections_override[conn.alias] = conn
 
         cls._live_server_modified_settings = modify_settings(
-            ALLOWED_HOSTS={'append': cls.host},
-        )
+            ALLOWED_HOSTS={'append': cls.host}, )
         cls._live_server_modified_settings.enable()
         cls.server_thread = cls._create_server_thread(connections_override)
         cls.server_thread.daemon = True
@@ -1476,7 +1508,8 @@ class LiveServerTestCase(TransactionTestCase):
         # Wait for the live server to be ready
         cls.server_thread.is_ready.wait()
         if cls.server_thread.error:
-            # Clean up behind ourselves, since teardownclass won't get called in case of errors.
+            # Clean up behind ourselves, since teardownclass
+            # won't get called in case of errors.
             cls._teardownclass()
             raise cls.server_thread.error
 
@@ -1526,9 +1559,8 @@ class SerializeMixin:
     def setupclass(cls):
         """[summary]."""
         if cls.lockfile is None:
-            raise ValueError(
-                "{}.lockfile isn't set. Set it to a unique value "
-                "in the base class.".format(cls.__name__))
+            raise ValueError("{}.lockfile isn't set. Set it to a unique value "
+                             "in the base class.".format(cls.__name__))
         cls._lockfile = open(cls.lockfile)
         locks.lock(cls._lockfile, locks.LOCK_EX)
         super().setupclass()
