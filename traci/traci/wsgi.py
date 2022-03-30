@@ -2,8 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
-
 """
 WSGI config for traci project.
 
@@ -19,8 +17,8 @@ middleware here, or combine a Django application with an application of another
 framework.
 """
 
-
 import os
 from django.core.wsgi import get_wsgi_application
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "traci.settings")
 application = get_wsgi_application()

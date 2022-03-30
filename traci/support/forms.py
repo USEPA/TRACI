@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Form used to manage support.
 
@@ -28,31 +27,41 @@ class SupportForm(forms.ModelForm):
         """TODO Add docstring."""
         super(SupportForm, self).__init__(*args, **kwargs)
 
-    name = forms.CharField(label=_("Issue"), widget=forms.TextInput(
-        attrs={'class': 'form-control'}), required=False)
-    subject = forms.CharField(label=_("Subject"), widget=forms.TextInput(
-        attrs={'class': 'form-control'}), required=False)
-    support_type = forms.ModelChoiceField(label=_("Type of Inquiry"),
-                                          queryset=SupportType.objects.all(),
-                                          widget=forms.Select(
-                                              attrs={'class': 'form-control'}),
-                                          required=False)
+    name = forms.CharField(
+        label=_("Issue"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False)
+    subject = forms.CharField(
+        label=_("Subject"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False)
+    support_type = forms.ModelChoiceField(
+        label=_("Type of Inquiry"),
+        queryset=SupportType.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=False)
 
-    the_description = forms.CharField(label=_("Problem Description"),
-                                      widget=forms.Textarea(
-                                          attrs={'class': 'form-control'}),
-                                      required=False)
-    weblink = forms.CharField(label=_("Email Address"), widget=forms.TextInput(
-        attrs={'class': 'form-control'}), required=False,
-                              help_text="Please Submit Your Return Email Address")
+    the_description = forms.CharField(
+        label=_("Problem Description"),
+        widget=forms.Textarea(attrs={'class': 'form-control'}),
+        required=False)
+    weblink = forms.CharField(
+        label=_("Email Address"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False,
+        help_text="Please Submit Your Return Email Address")
 
     class Meta:
         """Add docstring."""
 
         model = Support
         fields = (
-            "name", "subject", "support_type", "the_description",
-            "weblink",)
+            "name",
+            "subject",
+            "support_type",
+            "the_description",
+            "weblink",
+        )
 
 
 class SupportAdminForm(forms.ModelForm):
@@ -62,44 +71,57 @@ class SupportAdminForm(forms.ModelForm):
         """TODO Add docstring."""
         super(SupportAdminForm, self).__init__(*args, **kwargs)
 
-    name = forms.CharField(label=_("Issue"), widget=forms.TextInput(
-        attrs={'class': 'form-control'}), required=False)
-    subject = forms.CharField(label=_("Subject"), widget=forms.TextInput(
-        attrs={'class': 'form-control'}), required=False)
-    support_type = forms.ModelChoiceField(label=_("Type of Support"),
-                                          queryset=SupportType.objects.all(),
-                                          widget=forms.Select(
-                                              attrs={'class': 'form-control'}),
-                                          required=False)
-    resolution = forms.CharField(label=_("Resolution"), widget=forms.Textarea(
-        attrs={'class': 'form-control'}), required=False)
-    is_closed = forms.ChoiceField(label=_("Closed ?"), choices=YN_CHOICES,
-                                  widget=forms.Select(
-                                      attrs={'class': 'form-control'}),
-                                  required=False)
+    name = forms.CharField(
+        label=_("Issue"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False)
+    subject = forms.CharField(
+        label=_("Subject"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False)
+    support_type = forms.ModelChoiceField(
+        label=_("Type of Support"),
+        queryset=SupportType.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=False)
+    resolution = forms.CharField(
+        label=_("Resolution"),
+        widget=forms.Textarea(attrs={'class': 'form-control'}),
+        required=False)
+    is_closed = forms.ChoiceField(
+        label=_("Closed ?"),
+        choices=YN_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=False)
 
-    date_resolved = forms.DateField(label=_("Date Resolved"),
-                                    widget=forms.SelectDateWidget(
-                                        attrs={'class': 'form-control'}),
-                                    required=False)
+    date_resolved = forms.DateField(
+        label=_("Date Resolved"),
+        widget=forms.SelectDateWidget(attrs={'class': 'form-control'}),
+        required=False)
 
-    the_description = forms.CharField(label=_("Problem Description"),
-                                      widget=forms.Textarea(
-                                          attrs={'class': 'form-control'}),
-                                      required=False)
-    weblink = forms.CharField(label=_("Website Reference"),
-                              widget=forms.TextInput(
-                                  attrs={'class': 'form-control'}),
-                              required=False)
+    the_description = forms.CharField(
+        label=_("Problem Description"),
+        widget=forms.Textarea(attrs={'class': 'form-control'}),
+        required=False)
+    weblink = forms.CharField(
+        label=_("Website Reference"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False)
 
     class Meta:
         """Add docstring."""
 
         model = Support
         fields = (
-            "name", "subject", "support_type", "the_description",
+            "name",
+            "subject",
+            "support_type",
+            "the_description",
             "weblink",
-            "resolution", "is_closed", "date_resolved",)
+            "resolution",
+            "is_closed",
+            "date_resolved",
+        )
 
 
 class SupportTypeForm(forms.ModelForm):
@@ -109,14 +131,16 @@ class SupportTypeForm(forms.ModelForm):
         """TODO Add docstring."""
         super(SupportTypeForm, self).__init__(*args, **kwargs)
 
-    name = forms.CharField(label=_("Support Type"), widget=forms.TextInput(
-        attrs={'class': 'form-control'}), required=False)
+    name = forms.CharField(
+        label=_("Support Type"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False)
 
     class Meta:
         """Add docstring."""
 
         model = SupportType
-        fields = ("name",)
+        fields = ("name", )
 
 
 class PriorityForm(forms.ModelForm):
@@ -126,14 +150,16 @@ class PriorityForm(forms.ModelForm):
         """TODO Add docstring."""
         super(PriorityForm, self).__init__(*args, **kwargs)
 
-    name = forms.CharField(label=_("Priority"), widget=forms.TextInput(
-        attrs={'class': 'form-control'}), required=False)
+    name = forms.CharField(
+        label=_("Priority"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=False)
 
     class Meta:
         """TODO Add docstring."""
 
         model = Priority
-        fields = ("name",)
+        fields = ("name", )
 
 
 class InformationRequestForm(forms.ModelForm):
@@ -144,32 +170,37 @@ class InformationRequestForm(forms.ModelForm):
     # typically traci@epa.gov
     sent_to_email = DEFAULT_FROM_EMAIL
     # contact info for the person submitting the request
-    requestor_first_name = forms.CharField(label=_("First"),
-                                           widget=forms.TextInput(attrs={
-                                               'class': 'form-control'}),
-                                           required=True, max_length=255)
-    requestor_last_name = forms.CharField(label=_("Last"),
-                                          widget=forms.TextInput(
-                                              attrs={'class': 'form-control'}),
-                                          required=True, max_length=255)
-    requestor_email_address = forms.CharField(label=_("Return Email Address"),
-                                              widget=forms.TextInput(attrs={
-                                                  'class': 'form-control'}),
-                                              required=True, max_length=255)
+    requestor_first_name = forms.CharField(
+        label=_("First"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=True,
+        max_length=255)
+    requestor_last_name = forms.CharField(
+        label=_("Last"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=True,
+        max_length=255)
+    requestor_email_address = forms.CharField(
+        label=_("Return Email Address"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=True,
+        max_length=255)
     # request details
-    request_subject = forms.CharField(label=_("Subject"),
-                                      widget=forms.TextInput(
-                                          attrs={'class': 'form-control'}),
-                                      required=True, max_length=255)
-    request_details = forms.CharField(label=_("Details"),
-                                      widget=forms.Textarea(
-                                          attrs={'class': 'form-control'}),
-                                      required=True, max_length=255)
+    request_subject = forms.CharField(
+        label=_("Subject"),
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=True,
+        max_length=255)
+    request_details = forms.CharField(
+        label=_("Details"),
+        widget=forms.Textarea(attrs={'class': 'form-control'}),
+        required=True,
+        max_length=255)
 
     class Meta:
         """TODO Add docstring."""
 
         model = InformationRequest
         fields = ("requestor_first_name", "requestor_last_name",
-                  "requestor_email_address",
-                  "request_subject", "request_details")
+                  "requestor_email_address", "request_subject",
+                  "request_details")

@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 This file houses test cases for the Support module.
 
@@ -16,7 +15,8 @@ Available functions:
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.test.client import RequestFactory
-from support.test_data.support_data import SUPPORT_ONE, data, files, SUPPORT_FORM
+from support.test_data.support_data import SUPPORT_ONE, data, files, \
+    SUPPORT_FORM
 
 
 class TestSupport(TestCase):
@@ -25,7 +25,8 @@ class TestSupport(TestCase):
     def setUp(self):
         """Prepare necessary objects for testing the Support module."""
         self.client = Client()
-        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.user = User.objects.create_user(username='testuser',
+                                             password='12345')
         self.client.login(username='testuser', password='12345')
         self.factory = RequestFactory()
 
@@ -84,42 +85,50 @@ class TestSupport(TestCase):
 
     def test_search_support_for_last_30_get(self):
         """Tests the search support for last30 get."""
-        response = self.client.get('/support/support/search/result/thirty/', SUPPORT_FORM)
+        response = self.client.get('/support/support/search/result/thirty/',
+                                   SUPPORT_FORM)
         self.assertContains(response, 'id', 25, 200)
 
     def test_search_support_for_last_30_post(self):
         """Tests the search support for last30 post."""
-        response = self.client.post('/support/support/search/result/thirty/', SUPPORT_FORM)
+        response = self.client.post('/support/support/search/result/thirty/',
+                                    SUPPORT_FORM)
         self.assertContains(response, 'id', 25, 200)
 
     def test_search_support_for_last_60_get(self):
         """Tests the search support for last60 get."""
-        response = self.client.get('/support/support/search/result/sixty/', SUPPORT_FORM)
+        response = self.client.get('/support/support/search/result/sixty/',
+                                   SUPPORT_FORM)
         self.assertContains(response, 'id', 25, 200)
 
     def test_search_support_for_last_60_post(self):
         """Tests the search support for last60 post."""
-        response = self.client.post('/support/support/search/result/sixty/', SUPPORT_FORM)
+        response = self.client.post('/support/support/search/result/sixty/',
+                                    SUPPORT_FORM)
         self.assertContains(response, 'id', 25, 200)
 
     def test_search_support_for_last_90_get(self):
         """Tests the search support for last90 get."""
-        response = self.client.get('/support/support/search/result/ninety/', SUPPORT_FORM)
+        response = self.client.get('/support/support/search/result/ninety/',
+                                   SUPPORT_FORM)
         self.assertContains(response, 'id', 25, 200)
 
     def test_search_support_for_last_90_post(self):
         """Tests the search support for last90 post."""
-        response = self.client.post('/support/support/search/result/ninety/', SUPPORT_FORM)
+        response = self.client.post('/support/support/search/result/ninety/',
+                                    SUPPORT_FORM)
         self.assertContains(response, 'id', 25, 200)
 
     def test_search_support_for_last_180_get(self):
         """Tests the search support for last180 get."""
-        response = self.client.get('/support/support/search/result/one_eighty/', SUPPORT_FORM)
+        response = self.client.get(
+            '/support/support/search/result/one_eighty/', SUPPORT_FORM)
         self.assertContains(response, 'id', 25, 200)
 
     def test_search_support_for_last_180_post(self):
         """Tests the search support for last180 post."""
-        response = self.client.post('/support/support/search/result/one_eighty/', SUPPORT_FORM)
+        response = self.client.post(
+            '/support/support/search/result/one_eighty/', SUPPORT_FORM)
         self.assertContains(response, 'id', 25, 200)
 
     def test_create_support_type_get(self):
@@ -179,20 +188,25 @@ class TestSupport(TestCase):
 
     # def test_search_priority_post(self):
     #     """Tests the search priority post."""
-    #     response = self.client.post('/support/priority/search/', SUPPORT_FORM)
+    #     response = self.client.post(
+    #         '/support/priority/search/', SUPPORT_FORM)
     #     self.assertContains(response, 'id', 2, 200)
 
     # def test_support_ticket_create_one(self):
     #     """Test the support ticket form when you use suggestion."""
     #     # create/(?P<support_type_name>\w+)
     #     response = self.client.get('/support/create/suggestion/')
-    #     self.assertContains(response, 'Describe your suggestion for TRACI below.', 1, 200)
+    #     self.assertContains(
+    #         response,
+    #         'Describe your suggestion for TRACI below.', 1, 200)
 
     # def test_support_ticket_create_two(self):
     #     """Test the support ticket form when you do not use suggestion."""
     #     # create/(?P<support_type_name>\w+)
     #     response = self.client.get('/support/create/OtherWordsHERE/')
-    #     self.assertContains(response, 'Describe the problem you encountered with TRACI below.', 1, 200)
+    #     self.assertContains(
+    #         response,
+    #         'Describe the problem you encountered with TRACI below.', 1, 200)
 
     # def test_support_post_one(self):
     #    """Tests the support ticket post method on an invalid form."""
@@ -210,4 +224,6 @@ class TestSupport(TestCase):
     #     """Test the support ticket edit form when you use suggestion."""
     #     # edit/(?P<support_type_name>\w+)/(?P<obj_id>\d+)/$'
     #     response = self.client.get('/support/edit/suggestion/1/')
-    #     self.assertContains(response, 'Describe your suggestion for TRACI below.', 1, 404)
+    #     self.assertContains(
+    #         response,
+    #         'Describe your suggestion for TRACI below.', 1, 404)

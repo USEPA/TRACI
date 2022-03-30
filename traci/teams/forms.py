@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Forms for managing teams.
 
@@ -19,13 +18,14 @@ class TeamManagementForm(forms.ModelForm):
     """Form For Creating or Updating a Project."""
 
     # name of the project
-    name = forms.CharField(label=_("Name"),
-                           help_text="Project names must be unique",
-                           widget=forms.TextInput(
-                               attrs={'class': 'form-control'}), required=True)
+    name = forms.CharField(
+        label=_("Name"),
+        help_text="Project names must be unique",
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required=True)
 
     class Meta:
         """Meta data for the Team Management Form."""
 
         model = Team
-        fields = ("name",)
+        fields = ("name", )

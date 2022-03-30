@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Application configuration objects store metadata for an application.
 
@@ -25,6 +24,7 @@ in the apps.py.
 # Python Version Installed to check python version against requirements.txt
 import sys
 from django.apps import AppConfig
+
 print(sys.version)
 
 

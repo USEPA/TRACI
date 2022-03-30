@@ -2,15 +2,16 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Models for Products (LCI Products).
 
 Available models:
 - Media option for an instance of a chemical such as Water, Air, etc.
 - Location option for a Process.
-- Process is a part of the parent life cycle stage, can contain one or more resource/release chemicals.
-- LifeCycleStageName is a stage of the product"s life cycle with one or more processes
+- Process is a part of the parent life cycle stage, can contain one or
+  more resource/release chemicals.
+- LifeCycleStageName is a stage of the product"s life cycle with one or
+  more processes
 - Product is an end product
 """
 
@@ -36,8 +37,9 @@ class LifeCycleStageName(models.Model):
 
 class LifeCycleStage(models.Model):
     """
-    Life Cycle Stage cross-reference with product, constitutes a single life cycle stage "entry" in a product.
-    Each entry can have multiple instances of processes, manufacturing of a chemical for example.
+    Life Cycle Stage cross-reference with product, constitutes a
+    single life cycle stage "entry" in a product. Each entry can have
+    multiple instances of processes, manufacturing of a chemical for example.
     """
     # One of some pre-approved stage names
     name = models.ForeignKey(LifeCycleStageName, on_delete=models.CASCADE)
@@ -61,7 +63,10 @@ class Location(models.Model):
     geo_level_id = models.IntegerField(null=True, blank=True)
     # Parent can be either United States (in the case of states or regions)
     # or a State/Region (in the case of Cities or Counties).
-    parent = models.ForeignKey("Location", on_delete=models.SET_NULL, null=True, blank=True)
+    parent = models.ForeignKey("Location",
+                               on_delete=models.SET_NULL,
+                               null=True,
+                               blank=True)
 
 
 class ProcessName(models.Model):
@@ -72,11 +77,13 @@ class ProcessName(models.Model):
 class Process(models.Model):
     """Process information for LCI, instance of a process at a location."""
     # Parent life cycle stage
-    lifecyclestage = models.ForeignKey(LifeCycleStage, on_delete=models.CASCADE)
+    lifecyclestage = models.ForeignKey(LifeCycleStage,
+                                       on_delete=models.CASCADE)
     name = models.ForeignKey("ProcessName", on_delete=models.CASCADE)
     # Location will be a one to many with the Location table, foreign key ref
     location = models.ForeignKey("Location", on_delete=models.CASCADE)
-    # Step 3: resource/release (dropdown with static options) - is actually a child of lc_stage
+    # Step 3: resource/release (dropdown with static options) -
+    #         is actually a child of lc_stage
 
 
 class Media(models.Model):
@@ -115,11 +122,18 @@ class WaterUse(models.Model):
 class Resource(models.Model):
     """Information for resources (inputs)."""
     substance_type = models.ForeignKey(SubstanceType, on_delete=models.CASCADE)
-    # Depending on the substance type, one of the three options will be populated:
-    fossil_fuel = models.ForeignKey(FossilFuel, null=True, on_delete=models.SET_NULL)
-    water_use = models.ForeignKey(WaterUse, null=True, on_delete=models.SET_NULL)
+    # Depending on the substance type, one of three options will be populated:
+    fossil_fuel = models.ForeignKey(FossilFuel,
+                                    null=True,
+                                    on_delete=models.SET_NULL)
+    water_use = models.ForeignKey(WaterUse,
+                                  null=True,
+                                  on_delete=models.SET_NULL)
     land_use = models.ForeignKey(LandUse, null=True, on_delete=models.SET_NULL)
-    resource_media = models.ForeignKey("Media", on_delete=models.SET_NULL, blank=True, null=True)
+    resource_media = models.ForeignKey("Media",
+                                       on_delete=models.SET_NULL,
+                                       blank=True,
+                                       null=True)
     resource_quantity = models.FloatField(blank=True, null=True, default=0)
     resource_unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
     # Parent process reference

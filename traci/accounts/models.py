@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 Models related to users and profiles.
 
@@ -50,7 +49,7 @@ class Country(models.Model):
         :return:
         """
         # NOTE: DON'T REMOVE THE PARENTHESES, IT BREAKS MIGRATIONS
-        return (self.country,)
+        return (self.country, )
 
     def __str__(self):
         """Request country."""
@@ -62,8 +61,10 @@ class State(models.Model):
 
     state = models.CharField(blank=False, max_length=255)
     abbreviation = models.CharField(blank=False, max_length=4)
-    country = models.ForeignKey(
-        Country, null=True, blank=True, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country,
+                                null=True,
+                                blank=True,
+                                on_delete=models.CASCADE)
 
     def __str__(self):
         """Method to stringify a State."""
@@ -80,7 +81,7 @@ class Sector(models.Model):
         :return:
         """
         # NOTE: DON'T REMOVE THE PARENTHESES, IT BREAKS MIGRATIONS
-        return (self.sector,)
+        return (self.sector, )
 
     def __str__(self):
         """Method to stringify a Sector."""
@@ -97,7 +98,7 @@ class Role(models.Model):
         :return:
         """
         # NOTE: DON'T REMOVE THE PARENTHESES, IT BREAKS MIGRATIONS
-        return (self.role,)
+        return (self.role, )
 
     def __str__(self):
         """Method to stringify a Role."""
@@ -110,26 +111,35 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, blank=False, on_delete=models.CASCADE)
 
     # created/modified info
-    created = models.DateTimeField(auto_now_add=True, blank=False,
+    created = models.DateTimeField(auto_now_add=True,
+                                   blank=False,
                                    editable=False)
     last_modified = models.DateTimeField(auto_now=True, blank=False)
 
     # affiliation and job information
     affiliation = models.CharField(blank=True, null=True, max_length=255)
-    sector = models.ForeignKey(Sector, null=True, blank=True,
+    sector = models.ForeignKey(Sector,
+                               null=True,
+                               blank=True,
                                on_delete=models.CASCADE)
     job_title = models.CharField(blank=True, null=True, max_length=255)
-    role = models.ForeignKey(Role, null=True, blank=True,
+    role = models.ForeignKey(Role,
+                             null=True,
+                             blank=True,
                              on_delete=models.CASCADE)
 
     # address
     address_line1 = models.CharField(blank=True, null=True, max_length=255)
     address_line2 = models.CharField(blank=True, null=True, max_length=255)
     city = models.CharField(blank=True, null=True, max_length=255)
-    state = models.ForeignKey(State, null=True, blank=True,
+    state = models.ForeignKey(State,
+                              null=True,
+                              blank=True,
                               on_delete=models.CASCADE)
     zipcode = models.CharField(blank=True, null=True, max_length=255)
-    country = models.ForeignKey(Country, null=True, blank=True,
+    country = models.ForeignKey(Country,
+                                null=True,
+                                blank=True,
                                 on_delete=models.CASCADE)
 
     def __str__(self):

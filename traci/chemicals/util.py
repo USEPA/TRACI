@@ -2,7 +2,6 @@
 # !/usr/bin/env python3
 # coding=utf-8
 # young.daniel@epa.gov
-
 """
 This file contains utility classes and functions.
 
@@ -10,7 +9,9 @@ Available Classes/Functions:
 - Conversion Factors for retrieving various conversion factors.
 """
 
-# TODO Refactor the units database. It doesn't quite match the logic in the old software...
+
+# TODO Refactor the units database.
+# It doesn't quite match the logic in the old software...
 def ReleaseFactor(uom):
     """Retrieve the conversion factor for a Release unit."""
     if uom in ('gram', 'gm'):
@@ -26,6 +27,7 @@ def ReleaseFactor(uom):
         return 0.45359237
     return 2000 * 0.45359237
 
+
 def CoalFactor(uom):
     """Retrieve the conversion factor for a Coal unit."""
     if uom == 'btu':
@@ -40,12 +42,13 @@ def CoalFactor(uom):
         return 11300
     return 22600000
 
+
 def OilFactor(uom):
     """Retrieve the conversion factor for an Oil unit."""
     if uom == 'btu':
         return 0.0010545
     if uom in ('kilogram', 'kg'):
-        return 0.0000000461525620459621 # 41.868e3 MJ/ton  / 907.18474 kg/ton;
+        return 0.0000000461525620459621  # 41.868e3 MJ/ton  / 907.18474 kg/ton;
     if uom == 'megajoule':
         return 1.0
     if uom == 'millionBTU':
@@ -54,11 +57,12 @@ def OilFactor(uom):
         return 11300
     return 41868
 
+
 def NaturalGasFactor(uom):
     """Retrieve the conversion factor for a NaturalGas unit."""
     if uom == 'btu':
         return 0.0010545
-    if uom in('cubicmeter', 'M3'):
+    if uom in ('cubicmeter', 'M3'):
         return 38.1
     if uom == 'hundredcubicfeet':
         return 105505585.262
@@ -77,6 +81,7 @@ def NaturalGasFactor(uom):
         return 1055055852.62
     return 105.4804
 
+
 def LandUseFactor(uom):
     """Retrieve the conversion factor for a LandUse unit."""
     if uom in ('acre', 'Acres'):
@@ -88,6 +93,7 @@ def LandUseFactor(uom):
     if uom in ('squarekilometer', 'SQ.Km'):
         return 0.386102
     return 1
+
 
 def WaterUseFactor(uom):
     """Retrieve the conversion factor for a WaterUse unit."""
