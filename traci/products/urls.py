@@ -11,7 +11,7 @@ Available functions:
 - None yet
 """
 
-from django.conf.urls import url
+from django.urls import re_path
 from products.views import ProductCreateView, ProductEditView, \
     ProductDetailView, ProductDeleteView, LifeCycleStageCreateView, \
     LifeCycleStageEditView, LifeCycleStageDetailView, \
@@ -22,67 +22,67 @@ from products.views import ProductCreateView, ProductEditView, \
 
 urlpatterns = [
     # URLs for Product CRUD operations.
-    url(r'^create/?$', ProductCreateView.as_view(), name='create_product'),
-    url(r'^edit/(?P<pk>\d+)/?$',
+    re_path(r'^create/?$', ProductCreateView.as_view(), name='create_product'),
+    re_path(r'^edit/(?P<pk>\d+)/?$',
         ProductEditView.as_view(),
         name='edit_product'),
-    url(r'^detail/(?P<pk>\d+)/?$',
+    re_path(r'^detail/(?P<pk>\d+)/?$',
         ProductDetailView.as_view(),
         name='detail_product'),
-    url(r'^delete/(?P<pk>\d+)/?$',
+    re_path(r'^delete/(?P<pk>\d+)/?$',
         ProductDeleteView.as_view(),
         name='delete_product'),
 
     # URLs for LifeCycleStageName CRUD operations.
-    url(r'^lifecyclestage/create/?$',
+    re_path(r'^lifecyclestage/create/?$',
         LifeCycleStageCreateView.as_view(),
         name='lifecyclestage_create'),
-    url(r'^lifecyclestage/edit/(?P<pk>\d+)/?$',
+    re_path(r'^lifecyclestage/edit/(?P<pk>\d+)/?$',
         LifeCycleStageEditView.as_view(),
         name='edit_lifecyclestage'),
-    url(r'^lifecyclestage/detail/(?P<pk>\d+)/?$',
+    re_path(r'^lifecyclestage/detail/(?P<pk>\d+)/?$',
         LifeCycleStageDetailView.as_view(),
         name='detail_lifecyclestage'),
-    url(r'^lifecyclestage/delete/(?P<pk>\d+)/?$',
+    re_path(r'^lifecyclestage/delete/(?P<pk>\d+)/?$',
         LifeCycleStageDeleteView.as_view(),
         name='delete_lifecyclestage'),
 
     # URLs for Process CRUD operations.
-    url(r'^process/create/?$',
+    re_path(r'^process/create/?$',
         ProcessCreateView.as_view(),
         name='create_process'),
-    url(r'^process/edit/(?P<pk>\d+)/?$',
+    re_path(r'^process/edit/(?P<pk>\d+)/?$',
         ProcessEditView.as_view(),
         name='edit_process'),
-    url(r'^process/detail/(?P<pk>\d+)/?$',
+    re_path(r'^process/detail/(?P<pk>\d+)/?$',
         ProcessDetailView.as_view(),
         name='detail_process'),
-    url(r'^process/delete/(?P<pk>\d+)/?$',
+    re_path(r'^process/delete/(?P<pk>\d+)/?$',
         ProcessDeleteView.as_view(),
         name='delete_process'),
 
     # URLs for ResourceRelease CRUD operations.
-    url(r'^resourcerelease/create/?$',
+    re_path(r'^resourcerelease/create/?$',
         ResourceReleaseCreateView.as_view(),
         name='create_resourcerelease'),
     # URLs for Release
-    url(r'^release/edit/(?P<pk>\d+)/?$',
+    re_path(r'^release/edit/(?P<pk>\d+)/?$',
         ReleaseEditView.as_view(),
         name='edit_release'),
-    url(r'^release/delete/(?P<pk>\d+)/?$',
+    re_path(r'^release/delete/(?P<pk>\d+)/?$',
         ReleaseDeleteView.as_view(),
         name='delete_release'),
-    url(r'^release/factors/(?P<pk>\d+)/?$',
+    re_path(r'^release/factors/(?P<pk>\d+)/?$',
         release_factor_view,
         name='release_factors'),
     # URLs for Resource
-    url(r'^resource/edit/(?P<pk>\d+)/?$',
+    re_path(r'^resource/edit/(?P<pk>\d+)/?$',
         ResourceEditView.as_view(),
         name='edit_resource'),
-    url(r'^resource/delete/(?P<pk>\d+)/?$',
+    re_path(r'^resource/delete/(?P<pk>\d+)/?$',
         ResourceDeleteView.as_view(),
         name='delete_resource'),
-    url(r'^resource/factors/(?P<pk>\d+)/?$',
+    re_path(r'^resource/factors/(?P<pk>\d+)/?$',
         resource_factor_view,
         name='delete_resource'),
 ]

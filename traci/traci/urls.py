@@ -4,7 +4,7 @@
 # young.daniel@epa.gov
 """Definition of urls for traci."""
 
-from django.conf.urls import url
+from django.urls import re_path
 from django.contrib import admin
 from django.urls import include
 
@@ -14,24 +14,24 @@ from traci.views import home, contact, about, DashboardView, citation, \
 admin.autodiscover()
 
 urlpatterns = [
-    url('admin/doc/?', include('django.contrib.admindocs.urls')),
-    url(r'^admin/?', admin.site.urls),
-    url(r'^$', home, name='home'),
-    url(r'^contact/?$', contact, name='contact'),
-    url(r'^about/?$', about, name='about'),
-    url(r'^dashboard/?$', DashboardView.as_view(), name='dashboard'),
-    url(r'^scenario/?$', ScenarioView.as_view(), name='scenario'),
-    url(r'^support/', include('support.urls')),
-    url(r'^chemicals/', include('chemicals.urls')),
-    url(r'^teams/', include('teams.urls')),
-    url(r'^products/', include('products.urls')),
-    url(r'^projects/', include('projects.urls')),
-    url(r'^citation/?$', citation, name='citation'),
-    url(r'^download_manual/?$', download_manual, name="download_manual"),
-    url(r'^download_excel_tool/?$',
+    re_path('admin/doc/?', include('django.contrib.admindocs.urls')),
+    re_path(r'^admin/?', admin.site.urls),
+    re_path(r'^$', home, name='home'),
+    re_path(r'^contact/?$', contact, name='contact'),
+    re_path(r'^about/?$', about, name='about'),
+    re_path(r'^dashboard/?$', DashboardView.as_view(), name='dashboard'),
+    re_path(r'^scenario/?$', ScenarioView.as_view(), name='scenario'),
+    re_path(r'^support/', include('support.urls')),
+    re_path(r'^chemicals/', include('chemicals.urls')),
+    re_path(r'^teams/', include('teams.urls')),
+    re_path(r'^products/', include('products.urls')),
+    re_path(r'^projects/', include('projects.urls')),
+    re_path(r'^citation/?$', citation, name='citation'),
+    re_path(r'^download_manual/?$', download_manual, name="download_manual"),
+    re_path(r'^download_excel_tool/?$',
         download_excel_tool,
         name="download_excel_tool"),
 
     # User profile / accounts pages.
-    url(r'^accounts/', include('accounts.urls')),
+    re_path(r'^accounts/', include('accounts.urls')),
 ]
