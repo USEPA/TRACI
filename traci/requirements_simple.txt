@@ -1,0 +1,34 @@
+# Check Python versions = "version Python 3.7.4 (64-bit)."
+# This requirements document was generated in the following way:
+# 1. Create a new python virtual environment.
+# 2. Install packages in this environment from the previous requirements file in Github
+# 3. Delete the existing requirements file.
+# 4. Generate this requirements file.
+# This method ensures that all installed packages are in the requirements file, which
+# includes packages that are sub-requirements of other packages.
+
+#---------------------------------------------------------------------------------------#
+# All of these packages appear to be necessary for both Windows and Linux environments. #
+#---------------------------------------------------------------------------------------#
+
+Django==4.0.4                   # Python Modules.
+djangorestframework==3.13.1     # Powerful and flexible toolkit for building Web APIs.
+django-session-security==2.6.6  # Provides a mechanism to logout inactive authenticated users.
+psycopg2==2.9.3                 # Python-PostgreSQL Database Adapter.
+requests==2.27.1                # Automatically decompresses gzip-encoded responses,
+                                # decodes response content to unicode when possible.
+
+# Linting Packages
+pep8==1.7.1                     # Tool to check your Python code against some of the style conventions in PEP 8.
+pycodestyle==2.8.0              # Tool to check your Python code against some of the style conventions in PEP 8 & PEP 257.
+pydocstyle==6.1.1
+pylint==2.13.5                  # Static code analysis tool which looks for programming errors, helps enforcing PEP 8 coding standard.
+pylint_django==2.5.3            # pylint_django.checkers.db_performance looks for migrations which add new model fields and these fields have a default value.
+flake8==4.0.1                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder's McCabe script.
+
+# Testing Packages
+coverage==5.5.                  # Measures code coverage, typically during test execution.
+pytest==5.2.2                   # Framework to write small tests, yet scales to support complex functional testing for apps/lib.
+
+# Other Functionality Packages
+openpyxl==3.0.9                 # Python library to read/write Excel 2010 xlsx/xlsm/xltx/xltm files.
