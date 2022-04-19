@@ -14,7 +14,7 @@ Available functions:
 
 from django import forms
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from traci.settings import DEFAULT_FROM_EMAIL
 from constants.models import YN_CHOICES
 from support.models import SupportType, Support, Priority, InformationRequest

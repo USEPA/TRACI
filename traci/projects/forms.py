@@ -6,7 +6,7 @@
 
 from django.forms import ModelForm, CharField, TextInput, Textarea, \
     ChoiceField, Select
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from constants.models import TRACI_SCOPE_OPTIONS
 from projects.models import Project
 
