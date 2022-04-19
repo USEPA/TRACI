@@ -12,7 +12,7 @@ Available functions:
 - Team management
 """
 
-from django.conf.urls import url
+from django.urls import re_path
 from teams.views import APITeamListView, APITeamDetailView, \
     APITeamMembershipListView, APITeamMembershipDetailView, \
     TeamCreateView, TeamManagementView, TeamEditView
@@ -20,23 +20,23 @@ from teams.views import APITeamListView, APITeamDetailView, \
 urlpatterns = [
 
     # REST api for teams.
-    url(r'^api/team/$', APITeamListView.as_view(), name='api_team_list'),
-    url(r'^api/team/(?P<team_id>\d+)/$',
+    re_path(r'^api/team/$', APITeamListView.as_view(), name='api_team_list'),
+    re_path(r'^api/team/(?P<team_id>\d+)/$',
         APITeamDetailView.as_view(),
         name='api_team_detail'),
-    url(r'^api/team/(?P<team_id>\d+)/membership/$',
+    re_path(r'^api/team/(?P<team_id>\d+)/membership/$',
         APITeamMembershipListView.as_view(),
         name='api_team_membership_list'),
-    url(r'^api/team/(?P<team_id>\d+)/membership/(?P<membership_id>\d+)/$',
+    re_path(r'^api/team/(?P<team_id>\d+)/membership/(?P<membership_id>\d+)/$',
         APITeamMembershipDetailView.as_view(),
         name='api_team_membership_detail'),
 
     # Team management.
-    url(r'^team/$', TeamCreateView.as_view(), name='team_create'),
-    url(r'^team/(?P<team_id>\d+)/manage$',
+    re_path(r'^team/$', TeamCreateView.as_view(), name='team_create'),
+    re_path(r'^team/(?P<team_id>\d+)/manage$',
         TeamManagementView.as_view(),
         name='team_manage'),
-    url(r'^team/(?P<team_id>\d+)/edit$',
+    re_path(r'^team/(?P<team_id>\d+)/edit$',
         TeamEditView.as_view(),
         name='team_edit'),
 ]

@@ -15,44 +15,44 @@ Available functions:
 - Username management
 """
 
-from django.conf.urls import url
+from django.urls import re_path
 from accounts.views import login, logout, ProfileView, UserRegistrationView, \
     UserApprovalView, UserDenialView, PasswordResetRequestView, \
     PasswordResetConfirmView, UsernameReminderRequestView
 
 urlpatterns = [
     # login
-    url(r'^login/$', login, name='login'),
-    url(r'^logout/$', logout, name='logout'),
+    re_path(r'^login/$', login, name='login'),
+    re_path(r'^logout/$', logout, name='logout'),
 
     # view/edit existing profile
-    url(r'^profile/$', ProfileView.as_view(), name='profile'),
+    re_path(r'^profile/$', ProfileView.as_view(), name='profile'),
 
     # new user registration
-    url(r'^register/$', UserRegistrationView.as_view(), name='register'),
+    re_path(r'^register/$', UserRegistrationView.as_view(), name='register'),
     # Give admins a chance to approve or deny new users, taken from Greenscope
-    url(r'^register/approve/(?P<uidb64>[0-9A-Za-z]+)/$',
+    re_path(r'^register/approve/(?P<uidb64>[0-9A-Za-z]+)/$',
         UserApprovalView.as_view(),
         name='register_approve'),
-    url(r'^register/deny/(?P<uidb64>[0-9A-Za-z]+)/$',
+    re_path(r'^register/deny/(?P<uidb64>[0-9A-Za-z]+)/$',
         UserDenialView.as_view(),
         name='register_deny'),
-    # url(r'^register/activate/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+    # re_path(r'^register/activate/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
     #    UserActivationView.as_view(), name='register_activate'),
 
     # password management
-    url(r'^password/reset/$',
+    re_path(r'^password/reset/$',
         PasswordResetRequestView.as_view(),
         name="password_reset"),
-    url(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
+    re_path(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
         PasswordResetConfirmView.as_view(),
         name='reset_password_confirm'),
-    url(r'^password/reset/confirm/$',
+    re_path(r'^password/reset/confirm/$',
         PasswordResetConfirmView.as_view(),
         name='reset_password_confirm_no_token'),
 
     # username management
-    url(r'^username/$',
+    re_path(r'^username/$',
         UsernameReminderRequestView.as_view(),
         name="username_reminder"),
 ]
