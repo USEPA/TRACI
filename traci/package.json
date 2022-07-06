@@ -6,7 +6,7 @@
         "gulp": "^4.0.2",
         "jquery": ">=3.5.0",
         "jquery-ui-dist": "^1.12.1",
-        "jquery-validation": ">=1.19.3",
+        "jquery-validation": ">=1.19.5",
         "popper.js": "^1.15.0"
     },
     "scripts": {
