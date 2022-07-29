@@ -91,8 +91,6 @@ class Chemical(models.Model):
     global_warming_air = models.FloatField(blank=True, null=True, default=0)
     acidification_air = models.FloatField(blank=True, null=True, default=0)
     hh_particulate_air = models.FloatField(blank=True, null=True, default=0)
-    eutrophication_air = models.FloatField(blank=True, null=True, default=0)
-    eutrophication_water = models.FloatField(blank=True, null=True, default=0)
     ozone_depletion_air = models.FloatField(blank=True, null=True, default=0)
     smog_air = models.FloatField(blank=True, null=True, default=0)
 

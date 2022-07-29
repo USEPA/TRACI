@@ -53,14 +53,6 @@ class Release(models.Model):
         """Calculate the HumanHealthCriteria for this chemical release."""
         return self.__factor(self.chemical.hh_particulate_air)
 
-    def EutrophicationAir(self):
-        """Calculate the EutrophicationAir for this chemical release."""
-        return self.__factor(self.chemical.eutrophication_air)
-
-    def EutrophicationWater(self):
-        """Calculate the EutrophicationWater for this chemical release."""
-        return self.__factor(self.chemical.eutrophication_water)
-
     def OzoneDepletion(self):
         """Calculate the OzoneDepletion for this chemical release."""
         return self.__factor(self.chemical.ozone_depletion_air)
@@ -207,12 +199,6 @@ class Release(models.Model):
             return self.Acidification()
         if impact == "HumanHealthCriteria":
             return self.HumanHealthCriteria()
-        if impact == "Eutrophication":
-            return self.EutrophicationAir() + self.EutrophicationWater()
-        if impact == "EutrophicationAir":
-            return self.EutrophicationAir()
-        if impact == "EutrophicationWater":
-            return self.EutrophicationWater()
         if impact == "OzoneDepletion":
             return self.OzoneDepletion()
         if impact == "SmogAir":
@@ -287,10 +273,6 @@ class Release(models.Model):
                 return "moles H+ equiv"
             if impact == "HumanHealthCriteria":
                 return "total DALYs"
-            if impact == "EutrophicationAir":
-                return "kg N"
-            if impact == "EutrophicationWater":
-                return "kg N"
             if impact == "OzoneDepletion":
                 return "kg CFC-11"
             if impact == "SmogAir":

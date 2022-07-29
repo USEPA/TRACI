@@ -370,9 +370,6 @@ def release_factor_view(request, pk):
         'GlobalWarmingPotential',
         'Acidification',
         'HumanHealthCriteria',
-        'Eutrophication',
-        'EutrophicationAir',
-        'EutrophicationWater',
         'OzoneDepletion',
         'SmogAir',
         # Disabling ecotox fields because they don't

@@ -13,7 +13,7 @@
 
 coverage==5.5.                  # Measures code coverage, typically during test execution.
 django-session-security==2.6.6  # Provides a mechanism to logout inactive authenticated users.
-Django==3.2.12                  # Python Modules.
+Django==4.0.6                   # Python Modules.
 djangorestframework==3.12.4     # Powerful and flexible toolkit for building Web APIs.
 entrypoints==0.3                # Python packages to advertise objects with some common interface.
 et-xmlfile==1.0.1               # An implementation of lxml.xmlfile for the standard library.
