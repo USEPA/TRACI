@@ -5,9 +5,9 @@
 """
 manage.py does the same thing as django-admin.
 
-Additionally puts your project’s package on sys.path. It sets the
+Additionally puts your project's package on sys.path. It sets the
 DJANGO_SETTINGS_MODULE environment variable so that it points to your
-project’s settings.py file.
+project's settings.py file.
 """
 
 import os
