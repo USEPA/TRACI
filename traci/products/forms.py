@@ -6,7 +6,7 @@
 
 from django.forms import ModelForm, CharField, TextInput, ModelChoiceField, \
     Select, FloatField, NumberInput
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from products.models import Product, LifeCycleStageName, LifeCycleStage, \
     Process, Location, ProcessName, Media, SubstanceType, Resource, Release
 from projects.models import Project

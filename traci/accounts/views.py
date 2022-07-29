@@ -40,7 +40,7 @@ from django.views.decorators.cache import never_cache
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.template import loader
 from django.template.response import TemplateResponse
 from accounts.forms import SetPasswordForm, ProfileUpdateForm, \

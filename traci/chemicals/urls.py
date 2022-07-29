@@ -11,10 +11,10 @@ Available functions:
 - REST api for chemicals
 """
 
-from django.conf.urls import url
+from django.urls import re_path
 from chemicals.views import get_chemicals, get_units
 
 urlpatterns = [
-    url(r'^api/chemical_list/?$', get_chemicals, name='chemical_list'),
-    url(r'^api/units_for_type/?$', get_units, name='units_for_type'),
+    re_path(r'^api/chemical_list/?$', get_chemicals, name='chemical_list'),
+    re_path(r'^api/units_for_type/?$', get_units, name='units_for_type'),
 ]
