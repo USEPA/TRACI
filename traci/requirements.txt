@@ -1,53 +1,34 @@
-# Check Python versions = "version Python 3.7.4 (64-bit)."
-# This requirements document was generated in the following way:
-# 1. Create a new python virtual environment.
-# 2. Install packages in this environment from the previous requirements file in Github
-# 3. Delete the existing requirements file.
-# 4. Generate this requirements file.
-# This method ensures that all installed packages are in the requirements file, which
-# includes packages that are sub-requirements of other packages.
-
-#---------------------------------------------------------------------------------------#
-# All of these packages appear to be necessary for both Windows and Linux environments. #
-#---------------------------------------------------------------------------------------#
-
-coverage==5.5.                  # Measures code coverage, typically during test execution.
-django-session-security==2.6.6  # Provides a mechanism to logout inactive authenticated users.
-Django==4.0.6                   # Python Modules.
-djangorestframework==3.12.4     # Powerful and flexible toolkit for building Web APIs.
-entrypoints==0.3                # Python packages to advertise objects with some common interface.
-et-xmlfile==1.0.1               # An implementation of lxml.xmlfile for the standard library.
-flake8==3.7.9                   # Flake8 is a wrapper around these tools: PyFlakes; pycodestyle; Ned Batchelder's McCabe script.
-idna==2.8                       # Internationalized Domain Names in Applications (IDNA).
-importlib-metadata==0.23        # Library to access the metadata for a Python package.
-isort==4.3.21                   # Python utility / library to sort imports alphabetically, and automatically separated into sections.
-jdcal==1.4.1                    # Julian dates from proleptic Gregorian and Julian calendars.
-lazy-object-proxy==1.4.3        # A fast and thorough lazy object proxy.
-mccabe==0.6.1                   # McCabe checker, plugin for flake8.
-more-itertools==7.2.0           # More routines for operating on iterables, beyond itertools.
-mypy-extensions==0.4.3          # Experimental type system extensions for programs checked with the mypy typechecker.
-mypy==0.740                     # Optional static typing for Python.
-openpyxl==3.0.0                 # Python library to read/write Excel 2010 xlsx/xlsm/xltx/xltm files.
-packaging==19.2                 # Core utilities for Python packages.
-pep8==1.7.1                     # Tool to check your Python code against some of the style conventions in PEP 8.
-pluggy==0.13.0                  # Core framework used by the pytest, tox, and devpi projects.
-psycopg2==2.9.1                 # Python-PostgreSQL Database Adapter.
-py==1.8.0                       # Python development support library.
-pycodestyle==2.5.0              # Tool to check your Python code against some of the style conventions in PEP 8 & PEP 257.
-pyflakes==2.1.1                 # Analyzes programs and detects various errors.
-pylint_django==2.0.12           # pylint_django.checkers.db_performance looks for migrations which add new model fields and these fields have a default value.
-pylint-plugin-utils==0.6        # Utilities and helpers for writing Pylint plugins.
-pylint==2.4.3                   # Static code analysis tool which looks for programming errors, helps enforcing PEP 8 coding standard.
-pyparsing==2.4.5                # Python parsing module.
-pytest==5.2.2                   # Framework to write small tests, yet scales to support complex functional testing for apps/lib.
-pytz==2019.3                    # UTC is pytz.timezone('UTC') True.
-requests==2.22.0                # Automatically decompresses gzip-encoded responses, decodes response content to unicode when possible.
-setuptools==41.6.0              # Easily download, build, install, upgrade, and uninstall Python packages.
-six==1.13.0                     # Python 2 and 3 compatibility utilities.
-sqlparse==0.3.0                 # Non-validating SQL parser provides support parsing, splitting and formatting SQL statements.
-Typed-ast==1.4.0                # Python 3 package that provides a parser similar to the standard ast library.
-typing-extensions==3.7.4.1      # Backported and Experimental Type Hints for Python 3.5+.
-urllib3==1.25.7                 # HTTP library with thread-safe connection pooling, file post, and more.
-wcwidth==0.1.7                  # Library for implementing a Terminal Emulator, or programs that carefully produce output to be interpreted by one.
-wrapt==1.11.2                   # Transparent object proxy for Python, can be used as basis for construction of function wrappers and decorator functions.
-zipp==0.6.0                     # A pathlib-compatible Zipfile object wrapper. A backport of the Path object.
+asgiref==3.5.0
+astroid==2.11.2
+certifi==2021.10.8
+charset-normalizer==2.0.12
+colorama==0.4.4
+dill==0.3.4
+Django==4.0.4
+django-session-security==2.6.6
+djangorestframework==3.13.1
+et-xmlfile==1.1.0
+flake8==4.0.1
+idna==3.3
+isort==5.10.1
+lazy-object-proxy==1.7.1
+mccabe==0.6.1
+openpyxl==3.0.9
+pep8==1.7.1
+platformdirs==2.5.1
+psycopg2==2.9.3
+pycodestyle==2.8.0
+pydocstyle==6.1.1
+pyflakes==2.4.0
+pylint==2.13.5
+pylint-django==2.5.3
+pylint-plugin-utils==0.7
+pytz==2022.1
+requests==2.27.1
+snowballstemmer==2.2.0
+sqlparse==0.4.2
+tomli==2.0.1
+typing_extensions==4.1.1
+tzdata==2022.1
+urllib3==1.26.9
+wrapt==1.14.0
